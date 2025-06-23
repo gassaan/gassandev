@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3 style="margin: 8em auto 1.2em auto; text-align: center; font-size: 0.75em; color: #484848; font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace; font-weight: 100; max-width: 370px;">
+        Contact me
+    </h3>
+<div style="display: flex; flex-direction: column; align-items: center; max-width: 370px; margin: 1.5em auto 2em auto; background: #fbe9cd; padding: 1.1em 1.1em; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); border: 0.1px solid #484848;">
+    <img src="./on phone.png" alt="Profile Photo" style="width: 140px; height: 140px; border-radius: 50%; object-fit: cover; margin-bottom: 1.2em; border: 1px solid #484848;">
+    <ul style="list-style: none; padding: 0; margin: 0;">
+        <li style="margin-bottom: 1em; display: flex; align-items: flex-start;">
+            <span style="font-size: 1.2em; margin-right: 0.7em; color: #e09f3e;">*</span>
+            <div>
+                <div style="font-size: 0.75em; font-weight: bold; color: #484848;">Mobile</div>
+                <div style="font-size: 0.7em; color: #484848;">+960 7669999 / +960 7979746</div>
+            </div>
+        </li>
+        <li style="margin-bottom: 1em; display: flex; align-items: flex-start;">
+            <span style="font-size: 1.2em; margin-right: 0.7em; color: #e09f3e;">*</span>
+            <div>
+                <div style="font-size: 0.75em; font-weight: bold; color: #484848;">Email</div>
+                <div style="font-size: 0.7em; color: #484848;">ghazcern@outlook.com</div>
+            </div>
+        </li>
+        <li style="display: flex; align-items: flex-start;">
+            <span style="font-size: 1.2em; margin-right: 0.7em; color: #e09f3e;">*</span>
+            <div>
+                <div style="font-size: 0.75em; font-weight: bold; color: #484848;">Social Media</div>
+                <div style="font-size: 0.7em; color: #484848;">
+                    <a href="https://twitter.com/yourhandle" style="color:#484848; text-decoration:none; margin-right:0.8em;">X</a>
+                    <a href="https://linkedin.com/in/yourhandle" style="color:#484848; text-decoration:none; margin-right:0.8em;">Facebook</a>
+                    <a href="https://github.com/yourhandle" style="color:#484848; text-decoration:none;">Instagram</a>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+<div style="width: 100vw; position: fixed; top: 0; left: 1; right: 1; background: #fbe9cd; z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,0.07); border-bottom: 0.1px solid #484848; display: flex; align-items: center; justify-content: space-between; padding: 0.2em 1.6em;">
+        <div style="flex: 1; display: flex; justify-content: center;">
+            <h2 style="color: rgb(54, 54, 54); margin: 0; text-align: center; font-size: 1em; font-weight: 00; font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;">gassan.dev</h2>
+        </div>
+        <div>
+            <button id="menuToggle" class="dropbtn" aria-label="Open menu">&#9776;</button>
+            <style>
+                .custom-dropdown-anim {
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    width: 100vw;
+                    background: #fbe9cd;
+                    box-shadow: 0 0px 0px rgba(0,0,0,0.07);
+                    border-bottom: 0.1px solid #484848;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 0 0 0 0;
+                    z-index: 11;
+                    opacity: 0;
+                    transform: translateY(1px);
+                    pointer-events: none;
+                    transition: opacity 0.28s cubic-bezier(.4,0,.2,1), transform 0.28s cubic-bezier(.4,0,.2,1), padding 0.18s;
+                }
+                .custom-dropdown-anim.open {
+                    opacity: 1;
+                    transform: translateY(0);
+                    pointer-events: auto;
+                    padding: 1.5em 0 1.2em 0;
+                }
+            </style>
+            <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const menuToggle = document.getElementById('menuToggle');
+                const topBar = menuToggle.closest('div[style*="position: fixed"]');
+                let dropdown = null;
+
+                menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (!dropdown) {
+                        dropdown = document.createElement('div');
+                        dropdown.className = 'custom-dropdown-anim';
+                        dropdown.innerHTML = `
+                            <div style="display: flex; gap: 2em;">
+                                <a href="index.html" style="font-size:0.70em; color:#484848; text-decoration:none; font-family:'Fira Mono',monospace; padding:0.4em 1.2em; border-radius:6px; transition:background 0.2s;" onmouseover="this.style.background='#fbe9cd'" onmouseout="this.style.background='none'">Home</a>
+                                <a href="about.html" style="font-size:0.70em; color:#484848; text-decoration:none; font-family:'Fira Mono',monospace; padding:0.4em 1.2em; border-radius:6px; transition:background 0.2s;" onmouseover="this.style.background='#fbe9cd'" onmouseout="this.style.background='none'">About</a>
+                                <a href="contact.html" style="font-size:0.70em; color:#484848; text-decoration:none; font-family:'Fira Mono',monospace; padding:0.4em 1.2em; border-radius:6px; transition:background 0.2s;" onmouseover="this.style.background='#fbe9cd'" onmouseout="this.style.background='none'">Contact</a>
+                            </div>
+                        `;
+                        topBar.appendChild(dropdown);
+                        // Force reflow for transition
+                        void dropdown.offsetWidth;
+                        dropdown.classList.add('open');
+
+                        // Close dropdown on outside click
+                        setTimeout(() => {
+                            document.addEventListener('click', closeDropdown, { once: true });
+                        }, 0);
+                    } else {
+                        closeDropdown();
+                    }
+                    function closeDropdown(ev) {
+                        if (!ev || (!dropdown.contains(ev.target) && ev.target !== menuToggle)) {
+                            dropdown.classList.remove('open');
+                            setTimeout(() => {
+                                if (dropdown) {
+                                    dropdown.remove();
+                                    dropdown = null;
+                                }
+                            }, 280);
+                        }
+                    }
+                });
+            });
+            </script>
+        </div>
+    </div>
+    
+<style>
+    body {
+        background-color: #fbe9cd;
+        margin: 0;
+        padding: 0;
+    }
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+    .dropbtn {
+        background: none;
+            border: none;
+            font-size: 1.8em;
+            cursor: pointer;
+            padding: 0.2em 0.5em;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #fff;
+            min-width: 120px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            border-radius: 6px;
+            z-index: 1;
+        }
+        .dropdown-content a {
+            color: #484848;
+            padding: 0.7em 1em;
+            text-decoration: none;
+            display: block;
+            font-size: 1em;
+            border-bottom: 1px solid #fbe9cd;
+        }
+        .dropdown-content a:last-child {
+            border-bottom: none;
+        }
+        .dropdown:hover .dropdown-content,
+        .dropdown:focus-within .dropdown-content {
+            display: block;
+        }
+        .dropbtn:focus {
+            outline: none;
+        }
+    </style>
+    <div style="display: flex; justify-content: center; margin: 0 auto 2.5em auto;">
+          
+        <!-- Removed stray </button> and merged both buttons into a single flex container -->
+        <div style="display: flex; justify-content: center; gap: 1em; margin: 0 auto 2.5em auto;">
+            <button 
+                style="padding: 4px 10px; background-color: #333; color: #fff; border: 0.5px solid #484848; border-radius: 8px; font-size: 0.7em; cursor: pointer; box-shadow: 0 0.5px 10px rgba(0,0,0,0.13); margin-top: 0.1px;"
+                onmouseover="this.style.backgroundColor='#fbe9cd'; this.style.color='#484848';"
+                onmouseout="this.style.backgroundColor='#333'; this.style.color='#fff';"
+                onclick="window.location.href='index.html';"
+            >
+                home
+            </button>
+            
+        </div>
+        
+    <footer style="width: 100vw; background: #fbe9cd; border-top: 0.1px solid #484848; box-shadow: 0 -2px 8px rgba(0,0,0,0.04); text-align: center; padding: 1em 0; font-size: 0.6em; color: #484848; font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace; position: fixed; left: 0; bottom: 0; z-index: 9;">
+        Copy Right © 2025 gassan.dev | All rights reserved.
+    </footer>
+</body>
+</html>
