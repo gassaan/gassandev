@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="dv" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ހަބަރު</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thaana:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg: #17092f;
+        --bg-header: #150a2c;
+        --ticker-bg: #4b2f8f;
+        --accent: #9b7bf0;
+        --text-heading: #f6f4ff;
+        --text-body: #c9bdec;
+        --dot: #4a3a7a;
+        --dot-active: #9b7bf0;
+        --card-bg: #efd98f;
+    }
+    html[data-theme="light"] {
+        --bg: #f4f1fb;
+        --bg-header: #ffffff;
+        --ticker-bg: #6a48c9;
+        --accent: #6a48c9;
+        --text-heading: #221545;
+        --text-body: #4b3c78;
+        --dot: #d8cff2;
+        --dot-active: #6a48c9;
+        --card-bg: #efd98f;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+        margin: 0;
+        background: var(--bg);
+        font-family: 'Noto Sans Thaana', 'MV Boli', sans-serif;
+        color: var(--text-heading);
+        transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .page {
+        max-width: 480px;
+        margin: 0 auto;
+        min-height: 100vh;
+        background: var(--bg);
+        position: relative;
+        padding-top: 4.2em;
+        padding-bottom: 3em;
+    }
+
+    /* Header */
+    .topbar {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 480px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.9em 1.2em;
+        background: var(--bg-header);
+        z-index: 20;
+        direction: ltr;
+    }
+    .icon-btn {
+        background: none;
+        border: none;
+        color: var(--accent);
+        cursor: pointer;
+        padding: 0.4em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .icon-btn svg { width: 22px; height: 22px; }
+    .logo {
+        font-size: 1.5em;
+        font-weight: 700;
+        color: var(--text-heading);
+        margin: 0;
+    }
+
+    /* Nav dropdown */
+    .nav-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        direction: rtl;
+        background: var(--bg-header);
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        overflow: hidden;
+        max-height: 0;
+        opacity: 0;
+        transition: max-height 0.28s ease, opacity 0.24s ease;
+    }
+    .nav-dropdown.open {
+        max-height: 240px;
+        opacity: 1;
+    }
+    .nav-dropdown a {
+        color: var(--text-heading);
+        text-decoration: none;
+        font-size: 0.95em;
+        padding: 0.9em 1.4em;
+        border-top: 1px solid rgba(155, 123, 240, 0.15);
+    }
+    .nav-dropdown a:hover { color: var(--accent); }
+
+    /* Hero */
+    .hero { padding: 0 1.2em; }
+    .hero-card {
+        background: var(--card-bg);
+        border-radius: 22px;
+        overflow: hidden;
+        line-height: 0;
+    }
+    .hero-card img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .headline {
+        font-size: 1.5em;
+        font-weight: 700;
+        line-height: 1.5;
+        text-align: right;
+        margin: 0.9em 0 0.6em;
+        color: var(--text-heading);
+    }
+    .body-text {
+        font-size: 0.95em;
+        line-height: 2;
+        text-align: right;
+        color: var(--text-body);
+        margin: 0 0 1.4em;
+    }
+
+    /* Carousel dots */
+    .dots {
+        display: flex;
+        justify-content: center;
+        gap: 0.5em;
+        margin: 1.6em 0 0.4em;
+    }
+    .dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--dot);
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .dot.active {
+        background: var(--dot-active);
+        transform: scale(1.2);
+    }
+
+    /* Ticker */
+    .ticker {
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 480px;
+        background: var(--ticker-bg);
+        overflow: hidden;
+        padding: 0.8em 0;
+        z-index: 15;
+    }
+    .ticker-track {
+        display: flex;
+        white-space: nowrap;
+        width: max-content;
+        animation: ticker-scroll 22s linear infinite;
+    }
+    .ticker-track span {
+        color: var(--text-heading);
+        font-size: 0.85em;
+        padding: 0 0.9em;
+    }
+    .ticker-track .sep { color: var(--accent); }
+
+    @keyframes ticker-scroll {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .ticker-track { animation: none; }
+    }
+</style>
+</head>
+<body>
+<div class="page">
+
+    <header class="topbar" id="topbar">
+        <button class="icon-btn" id="themeToggle" aria-label="ފެންވަރު ބަދަލުކުރައްވާ">
+            <svg id="themeIcon" viewBox="0 0 24 24"><path fill="currentColor" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <h1 class="logo">ހަބަރު</h1>
+        <button class="icon-btn" id="menuToggle" aria-label="މެނޫ ހުޅުވާ">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+        </button>
+        <nav class="nav-dropdown" id="navDropdown">
+            <a href="#">މައި ސަފުހާ</a>
+            <a href="#">އަޅުގަނޑުމެން</a>
+            <a href="#">ގުޅުއްވާ</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-card">
+                <img src="tv-podium-hero.png" alt="ޓީވީ ބޮލެއް އޮތް ސްޕީކަރެއް ޕޯޑިއަމްގައި">
+            </div>
+
+            <!-- Placeholder copy — replace with real Dhivehi headline/body -->
+            <h2 class="headline">ސުރުޚީގެ މިސާލެއް، މިތާނގައި ބަދަލުކުރައްވާ</h2>
+            <p class="body-text">
+                މިއީ ބަޔާނުގެ ނަމޫނާ ލިޔުމެކެވެ. މި ޖާގައިގައި އަސްލު ލިޔުން ލެއްވުމުން ޑިޒައިން ފުރިހަމަވާނެއެވެ.
+            </p>
+
+            <div class="dots" id="dots">
+                <button class="dot active" data-index="0" aria-label="1"></button>
+                <button class="dot" data-index="1" aria-label="2"></button>
+                <button class="dot" data-index="2" aria-label="3"></button>
+                <button class="dot" data-index="3" aria-label="4"></button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="ticker">
+        <div class="ticker-track" id="tickerTrack">
+            <span>ޚަބަރު</span><span class="sep">&#9670;</span>
+            <span>މުނިފޫހިފިލުވުން</span><span class="sep">&#9670;</span>
+            <span>ކުޅިވަރު</span><span class="sep">&#9670;</span>
+            <span>ޚަބަރު</span><span class="sep">&#9670;</span>
+            <span>މުނިފޫހިފިލުވުން</span><span class="sep">&#9670;</span>
+            <span>ކުޅިވަރު</span><span class="sep">&#9670;</span>
+        </div>
+    </footer>
+
+</div>
+
+<script>
+    // Theme toggle
+    const sunMarkup = '<circle cx="12" cy="12" r="4.2" fill="currentColor"/>' +
+        '<g stroke="currentColor" stroke-width="2" stroke-linecap="round">' +
+        '<path d="M12 3v1.6M12 19.4V21M4.6 4.6l1.13 1.13M18.27 18.27l1.13 1.13M3 12h1.6M19.4 12H21M4.6 19.4l1.13-1.13M18.27 5.73l1.13-1.13"/>' +
+        '</g>';
+    const moonMarkup = '<path fill="currentColor" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+
+    function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        themeIcon.innerHTML = theme === 'light' ? sunMarkup : moonMarkup;
+        localStorage.setItem('theme', theme);
+    }
+    applyTheme(localStorage.getItem('theme') || 'dark');
+    themeToggle.addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+        applyTheme(current === 'light' ? 'dark' : 'light');
+    });
+
+    // Hamburger dropdown
+    const menuToggle = document.getElementById('menuToggle');
+    const navDropdown = document.getElementById('navDropdown');
+    menuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        navDropdown.classList.toggle('open');
+    });
+    document.addEventListener('click', (e) => {
+        if (!navDropdown.contains(e.target) && e.target !== menuToggle) {
+            navDropdown.classList.remove('open');
+        }
+    });
+
+    // Carousel dots (indicator only — wire up real slides when more content exists)
+    const dots = document.querySelectorAll('#dots .dot');
+    let activeIndex = 0;
+    function setActive(index) {
+        dots.forEach(d => d.classList.remove('active'));
+        dots[index].classList.add('active');
+        activeIndex = index;
+    }
+    dots.forEach(dot => {
+        dot.addEventListener('click', () => setActive(Number(dot.dataset.index)));
+    });
+    setInterval(() => setActive((activeIndex + 1) % dots.length), 4000);
+</script>
+</body>
+</html>
