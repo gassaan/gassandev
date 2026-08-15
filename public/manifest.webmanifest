@@ -8,6 +8,7 @@
   "background_color": "#F7F4EE",
   "theme_color": "#0E7C7B",
   "icons": [
+    { "src": "./app-icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
     { "src": "./favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
   ]
 }

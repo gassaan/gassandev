@@ -2,6 +2,11 @@ import { Link } from 'react-router-dom'
 import { Moon, ShoppingCart, Sun } from 'lucide-react'
 import { useTheme } from '@/contexts/ThemeContext'
 import { useCart } from '@/contexts/CartContext'
+// The mark is a single ink colour, so it ships as two pre-coloured cutouts
+// rather than one asset plus a CSS filter or mask: only the active theme's
+// file is ever requested, and each is exactly the palette's ink or cream.
+import logoInk from '@/assets/brand/salhi-logo-ink.png'
+import logoCream from '@/assets/brand/salhi-logo-cream.png'
 
 export function Header() {
   const { theme, toggleTheme } = useTheme()
@@ -10,8 +15,14 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-sand/90 backdrop-blur supports-[backdrop-filter]:bg-sand/75">
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
-        <Link to="/" className="font-display text-xl font-semibold tracking-tight text-ink">
-          Salhi <span className="text-lagoon">Numbers</span>
+        <Link to="/" className="flex items-center" aria-label="Salhi Numbers — home">
+          <img
+            src={theme === 'dark' ? logoCream : logoInk}
+            // Carries the brand name, so it stays the accessible name and the
+            // visible fallback if the image ever fails to load.
+            alt="Salhi Numbers"
+            className="h-11 w-auto object-contain"
+          />
         </Link>
 
         <div className="flex items-center gap-1.5">
