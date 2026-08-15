@@ -1,5 +1,11 @@
 import { useState } from 'react'
 import type { Provider } from '@/types'
+// Imported rather than referenced from /public: the site is served from a
+// subpath (…github.io/gassandev/), where a root-absolute "/logos/x.png" would
+// resolve against the domain root and 404. Importing lets Vite emit a
+// base-aware, content-hashed URL, so swapping the artwork also busts caches.
+import dhiraaguLogo from '@/assets/logos/dhiraagu.png'
+import ooredooLogo from '@/assets/logos/ooredoo.png'
 
 const LABELS: Record<Provider, string> = {
   dhiraagu: 'Dhiraagu',
@@ -7,8 +13,8 @@ const LABELS: Record<Provider, string> = {
 }
 
 const SRC: Record<Provider, string> = {
-  dhiraagu: '/logos/dhiraagu.png',
-  ooredoo: '/logos/ooredoo.png',
+  dhiraagu: dhiraaguLogo,
+  ooredoo: ooredooLogo,
 }
 
 // Sizing is a prop rather than a className so an unrelated utility passed by a

@@ -27,4 +27,19 @@ npm run dev
 
 ## Provider logos
 
-The Dhiraagu and Ooredoo marks live in `public/logos/dhiraagu.png` and `public/logos/ooredoo.png`, supplied by the shop owner and processed to transparent RGBA so they composite correctly on both the sand and dark themes. To replace them with higher-resolution or vector originals, swap those two files (and update the paths in `src/components/ProviderLogo.tsx` if the extension changes). If a file is missing the component falls back to a text badge, so the UI never breaks.
+The Dhiraagu and Ooredoo marks live in `src/assets/logos/`, supplied by the shop owner and processed to transparent RGBA so they composite correctly on both the sand and dark themes. To replace them with higher-resolution or vector originals, swap those two files and push — CI rebuilds. Because they are imported rather than served from `public/`, Vite content-hashes them, so a replacement busts caches automatically.
+
+## Asset paths and the subpath deploy
+
+The site is served from a **project page subpath** (`…github.io/gassandev/`), not a domain root. That makes root-absolute asset URLs a trap: a literal `"/logos/x.png"` in a component resolves against the domain root and 404s in production while working perfectly on a local dev server at `/`. Vite rewrites such paths in `index.html`, but string literals inside components are invisible to it.
+
+So: reference runtime assets by `import`ing them (Vite then emits a base-aware, hashed URL), and keep anything that must live in `public/` — `manifest.webmanifest` especially, which Vite copies verbatim without processing — on **relative** paths. To check a build the way production actually serves it:
+
+```
+npm run build
+mkdir -p /tmp/serve/gassandev && cp -r dist/* /tmp/serve/gassandev/
+cd /tmp/serve && python3 -m http.server 5180
+# open http://127.0.0.1:5180/gassandev/
+```
+
+The Open Graph image is the one deliberate exception: `og:image` must be a fully-qualified absolute URL and a PNG, because WhatsApp and Facebook scrapers resolve neither relative URLs nor SVGs — and those are the primary sharing channels for this shop.
