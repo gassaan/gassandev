@@ -6,6 +6,7 @@ import type { PhoneNumber } from '@/types'
 import { NumberCard } from '@/components/NumberCard'
 import { NumberGridSkeleton } from '@/components/NumberCardSkeleton'
 import { SearchBar } from '@/components/SearchBar'
+import { BrandLogo } from '@/components/BrandLogo'
 import { useDocumentMeta } from '@/hooks/useDocumentMeta'
 
 export function Home() {
@@ -44,23 +45,30 @@ export function Home() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 pb-16">
-      <section className="flex flex-col items-center gap-5 py-10 text-center sm:py-14">
-        <h1 className="max-w-lg font-display text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl">
-          Pick a number that's easy to remember
-        </h1>
-        <p className="max-w-sm text-muted">
-          Nice and regular Dhiraagu &amp; Ooredoo numbers, ready to reserve today.
-        </p>
+      <section className="hero-wash -mx-4 px-4 pb-10 pt-8 sm:pb-12 sm:pt-12">
+        <div className="flex flex-col items-center gap-6 text-center">
+          {/* The mark carries the brand name, so it is the page heading; its
+              alt text supplies the h1's text for assistive tech and search. */}
+          <h1 className="flex justify-center">
+            <BrandLogo className="h-28 drop-shadow-sm sm:h-36" />
+          </h1>
 
-        <form onSubmit={handleSearchSubmit} className="w-full max-w-sm">
-          <SearchBar value={query} onChange={setQuery} />
-        </form>
-
-        {availableCount != null && (
-          <p className="text-sm font-medium text-lagoon">
-            {availableCount} number{availableCount === 1 ? '' : 's'} available
+          <p className="max-w-[19rem] text-[0.95rem] leading-relaxed text-muted sm:max-w-md sm:text-base">
+            Easy-to-remember numbers for Dhiraagu and Ooredoo, ready to reserve today.
           </p>
-        )}
+
+          <form onSubmit={handleSearchSubmit} className="w-full max-w-sm">
+            <SearchBar value={query} onChange={setQuery} />
+          </form>
+
+          {availableCount != null && (
+            <p className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3.5 py-1.5 text-sm text-ink shadow-sm">
+              <span className="h-1.5 w-1.5 rounded-full bg-lagoon" aria-hidden="true" />
+              <span className="font-numeric font-semibold">{availableCount}</span>
+              number{availableCount === 1 ? '' : 's'} available
+            </p>
+          )}
+        </div>
       </section>
 
       {loading ? (
