@@ -27,15 +27,15 @@ Admin auth switches on the same signal, so the database and the login never disa
 1. Create a project at [supabase.com](https://supabase.com).
 2. **SQL Editor → New query** → paste `supabase/schema.sql` → Run. Optionally run `supabase/seed.sql` too, to load the 30 example numbers so the shop isn't empty on day one.
 3. **Authentication → Users → Add user** to create your admin login. Leave public sign-ups disabled — the app never exposes a sign-up form, and this is the only account that can edit stock.
-4. **Project Settings → API** gives you the project URL and the `anon` key.
+4. **Project Settings → API** gives you the project URL and the browser-safe key. Supabase has renamed its keys: what this project calls the **anon** key (including the variable name) now appears in the dashboard as the **publishable** key, `sb_publishable_…` — that is the one to copy. The **secret** key, `sb_secret_…`, is the renamed `service_role`; it bypasses every policy and must never reach this project. The project URL may sit under **Settings → Data API** rather than on the API keys screen.
 5. Locally: copy `.env.example` to `.env.local` and fill both values.
 6. For the deployed site: **Settings → Secrets and variables → Actions** → add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`, then re-run the deploy workflow.
 
 If the secrets are missing the build still succeeds and the site falls back to browser storage, so a forgotten secret degrades rather than breaks.
 
-### About the anon key
+### About the anon (publishable) key
 
-It is compiled into the client bundle, and that is how Supabase is meant to work — the `anon` key identifies the project, it does not authorise anything. **Row level security in `supabase/schema.sql` is the actual protection**, so the policies there matter:
+It is compiled into the client bundle, and that is how Supabase is meant to work — the key identifies the project, it does not authorise anything. **Row level security in `supabase/schema.sql` is the actual protection**, so the policies there matter:
 
 - `numbers` — readable by anyone, writable only when signed in.
 - `orders` — anyone may **insert** one (a customer checking out), but only a signed-in admin may **read** them. There is deliberately no public read policy, because orders carry customer names and phone numbers. `createOrder` is written not to read its row back for the same reason; asking would fail RLS on every checkout.
