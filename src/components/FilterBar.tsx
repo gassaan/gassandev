@@ -56,10 +56,10 @@ export function FilterBar({
           All
         </Chip>
         <Chip active={filters.provider === 'dhiraagu'} onClick={() => setProvider('dhiraagu')}>
-          <ProviderLogo provider="dhiraagu" className="h-4" />
+          <ProviderLogo provider="dhiraagu" size="sm" showLabel />
         </Chip>
         <Chip active={filters.provider === 'ooredoo'} onClick={() => setProvider('ooredoo')}>
-          <ProviderLogo provider="ooredoo" className="h-4" />
+          <ProviderLogo provider="ooredoo" size="sm" showLabel />
         </Chip>
 
         <div className="mx-1 h-5 w-px shrink-0 bg-border" aria-hidden="true" />

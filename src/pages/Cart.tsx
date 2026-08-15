@@ -45,7 +45,9 @@ export function Cart() {
             <ProviderLogo provider={item.provider} />
             <div className="flex-1">
               <p className="font-numeric text-lg font-semibold text-ink">{formatMsisdn(item.msisdn)}</p>
-              <p className="text-xs capitalize text-muted">{item.category} number</p>
+              <p className="text-xs capitalize text-muted">
+                {item.provider} · {item.category}
+              </p>
             </div>
             <p className="font-numeric font-semibold text-ink">MVR {formatCurrency(item.price)}</p>
             <button

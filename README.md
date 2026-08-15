@@ -27,4 +27,4 @@ npm run dev
 
 ## Provider logos
 
-Drop licensed Dhiraagu and Ooredoo logo SVGs into `public/logos/dhiraagu.svg` and `public/logos/ooredoo.svg`. Until then, the UI falls back to a text badge.
+The Dhiraagu and Ooredoo marks live in `public/logos/dhiraagu.png` and `public/logos/ooredoo.png`, supplied by the shop owner and processed to transparent RGBA so they composite correctly on both the sand and dark themes. To replace them with higher-resolution or vector originals, swap those two files (and update the paths in `src/components/ProviderLogo.tsx` if the extension changes). If a file is missing the component falls back to a text badge, so the UI never breaks.

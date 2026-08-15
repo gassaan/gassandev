@@ -64,7 +64,7 @@ export function NumberCard({ number }: { number: PhoneNumber }) {
             </span>
           )}
         </div>
-        <ProviderLogo provider={number.provider} className="shrink-0" />
+        <ProviderLogo provider={number.provider} />
       </div>
 
       <button
