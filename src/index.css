@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+:root {
+  --sand: #f7f4ee;
+  --ink: #0e2a2f;
+  --lagoon: #0e7c7b;
+  --lagoon-soft: #d9edec;
+  --gold: #c9962b;
+  --gold-soft: #f3e6c9;
+  --muted: #6b7c7e;
+  --surface: #ffffff;
+  --border: #dfe6e2;
+  --danger: #b3413a;
+}
+
+:root.dark {
+  --sand: #08171a;
+  --ink: #edf2f1;
+  --lagoon: #2aa9a6;
+  --lagoon-soft: #143633;
+  --gold: #e4b851;
+  --gold-soft: #2c2312;
+  --muted: #8aa3a5;
+  --surface: #102a2e;
+  --border: #1c3a3d;
+  --danger: #e28079;
+}
+
+@theme inline {
+  --color-sand: var(--sand);
+  --color-ink: var(--ink);
+  --color-lagoon: var(--lagoon);
+  --color-lagoon-soft: var(--lagoon-soft);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-danger: var(--danger);
+
+  --font-display: "Space Grotesk", "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+html {
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--sand);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.font-numeric {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.25s ease-out both;
+}
+
+:focus-visible {
+  outline: 2px solid var(--lagoon);
+  outline-offset: 2px;
+}
