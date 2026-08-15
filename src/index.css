@@ -62,6 +62,38 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* The landing fills the screen below the sticky header. svh rather than vh so
+   a mobile browser's collapsing toolbar cannot push the scroll cue out of
+   sight, with a vh fallback for anything that lacks svh. */
+.hero-screen {
+  min-height: calc(100vh - 4rem);
+}
+
+@supports (height: 100svh) {
+  .hero-screen {
+    min-height: calc(100svh - 4rem);
+  }
+}
+
+/* A slow drift, deliberately not a bounce: enough motion for the chevron to
+   read as an invitation to scroll without the page feeling springy. The
+   global reduced-motion rule collapses it to nothing. */
+@keyframes scroll-drift {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(4px);
+    opacity: 1;
+  }
+}
+
+.animate-scroll-drift {
+  animation: scroll-drift 2.4s ease-in-out infinite;
+}
+
 /* A radial wash behind the hero rather than blurred blobs: the outer stop is
    fully transparent, so it fades into the page instead of being hard-clipped
    at the section edge and leaving a visible seam. Lagoon only — gold is
