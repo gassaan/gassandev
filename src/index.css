@@ -62,6 +62,62 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* The number is the product, so it gets the weight of a product photo:
+   raised off the card for regular stock, struck in metal for premium. */
+.number-emboss {
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.85),
+    0 2px 1px rgba(14, 42, 47, 0.22),
+    0 4px 10px rgba(14, 42, 47, 0.14);
+}
+
+:root.dark .number-emboss {
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.1),
+    0 2px 2px rgba(0, 0, 0, 0.6),
+    0 5px 12px rgba(0, 0, 0, 0.45);
+}
+
+.number-gold {
+  /* Weighted dark against the cream card, with a narrow highlight band. A wider
+     or paler band washes out at these sizes and reads as a bleached stripe
+     through the digits rather than as a shine. */
+  background-image: linear-gradient(
+    168deg,
+    #5e3d0c 0%,
+    #8a5f14 16%,
+    #b0801d 34%,
+    #d6a83f 46%,
+    #eccb7e 50%,
+    #d6a83f 54%,
+    #b0801d 68%,
+    #8a5f14 86%,
+    #5e3d0c 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* drop-shadow rather than text-shadow: the fill is transparent, so a
+     text-shadow would show through the glyphs instead of sitting behind them. */
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.55))
+    drop-shadow(0 2px 2px rgba(88, 58, 8, 0.35));
+}
+
+:root.dark .number-gold {
+  background-image: linear-gradient(
+    170deg,
+    #a9761c 0%,
+    #e0b34c 20%,
+    #ffdd8e 42%,
+    #fff4cf 50%,
+    #ffdd8e 58%,
+    #e0b34c 78%,
+    #b07f24 100%
+  );
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.1))
+    drop-shadow(0 2px 4px rgba(0, 0, 0, 0.55));
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
