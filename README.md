@@ -42,4 +42,8 @@ cd /tmp/serve && python3 -m http.server 5180
 # open http://127.0.0.1:5180/gassandev/
 ```
 
+### Why the entry bundle filename is not hashed
+
+GitHub Pages serves `index.html` with `max-age=600`, so a visitor can be holding a ten-minute-old shell at the moment a deploy replaces the site under them. With hashed entry filenames that stale shell requests a bundle the new deploy has already deleted, and the page renders blank until their cache expires — every deploy white-screens returning visitors. `vite.config.ts` therefore pins the entry chunk and CSS to stable names (`assets/index.js`, `assets/index.css`) so a stale shell always resolves. Assets referenced from *inside* the bundle stay content-hashed, because those names always arrive together with the bundle that points at them.
+
 The Open Graph image is the one deliberate exception: `og:image` must be a fully-qualified absolute URL and a PNG, because WhatsApp and Facebook scrapers resolve neither relative URLs nor SVGs — and those are the primary sharing channels for this shop.
