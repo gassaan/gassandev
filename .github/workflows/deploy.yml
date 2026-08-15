@@ -25,6 +25,14 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+        env:
+          # Set these under Settings → Secrets and variables → Actions. If they
+          # are absent the build still succeeds and the site falls back to
+          # browser storage, so a missing secret degrades rather than breaks.
+          # The anon key is designed to be public and ships in the bundle;
+          # row level security in supabase/schema.sql is what protects the data.
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

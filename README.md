@@ -15,11 +15,36 @@ npm run dev
 
 ## Data layer
 
-`src/data/dataService.ts` defines the `DataService` contract (numbers + orders). `src/data/localDataService.ts` implements it against `localStorage`, seeded from `src/data/numbers.seed.ts`. Swap `src/data/index.ts` to a Supabase-backed implementation once `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` are set (see `src/lib/supabaseClient.ts`).
+`src/data/dataService.ts` defines the `DataService` contract (numbers + orders). Two implementations satisfy it, and `src/data/index.ts` picks one at startup based on whether Supabase credentials are present:
+
+- **`supabaseDataService.ts`** — used when `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` are set.
+- **`localDataService.ts`** — the fallback, backed by `localStorage` and seeded from `numbers.seed.ts`. It keeps the shop runnable with no backend, which is also what makes local development and CI work without secrets.
+
+Admin auth switches on the same signal, so the database and the login never disagree about which world they are in.
+
+## Connecting Supabase
+
+1. Create a project at [supabase.com](https://supabase.com).
+2. **SQL Editor → New query** → paste `supabase/schema.sql` → Run. Optionally run `supabase/seed.sql` too, to load the 30 example numbers so the shop isn't empty on day one.
+3. **Authentication → Users → Add user** to create your admin login. Leave public sign-ups disabled — the app never exposes a sign-up form, and this is the only account that can edit stock.
+4. **Project Settings → API** gives you the project URL and the `anon` key.
+5. Locally: copy `.env.example` to `.env.local` and fill both values.
+6. For the deployed site: **Settings → Secrets and variables → Actions** → add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`, then re-run the deploy workflow.
+
+If the secrets are missing the build still succeeds and the site falls back to browser storage, so a forgotten secret degrades rather than breaks.
+
+### About the anon key
+
+It is compiled into the client bundle, and that is how Supabase is meant to work — the `anon` key identifies the project, it does not authorise anything. **Row level security in `supabase/schema.sql` is the actual protection**, so the policies there matter:
+
+- `numbers` — readable by anyone, writable only when signed in.
+- `orders` — anyone may **insert** one (a customer checking out), but only a signed-in admin may **read** them. There is deliberately no public read policy, because orders carry customer names and phone numbers. `createOrder` is written not to read its row back for the same reason; asking would fail RLS on every checkout.
+
+Never put the `service_role` key in this project — it bypasses RLS entirely.
 
 ## Admin panel
 
-`/admin` is protected by `src/contexts/AdminAuthContext.tsx`. It uses Supabase Auth automatically once configured; until then it falls back to a local demo login (`admin@salhinumbers.mv` / `salhi-admin`) shown on the sign-in screen.
+`/admin` is protected by `src/contexts/AdminAuthContext.tsx`. It uses Supabase Auth automatically once configured; until then it falls back to a local demo login (`admin@salhinumbers.mv` / `salhi-admin`) shown on the sign-in screen. Those demo credentials stop working on their own the moment real credentials exist — no code change needed.
 
 ## Deployment
 
