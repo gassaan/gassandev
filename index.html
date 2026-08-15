@@ -24,7 +24,70 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Replaced by React on mount. If it is still on screen the bundle never
+           ran, so it reports why instead of leaving a blank white page. -->
+      <div id="boot" style="font-family: ui-sans-serif, system-ui, sans-serif; max-width: 32rem; margin: 15vh auto; padding: 0 1.5rem; text-align: center; color: #0E2A2F;">
+        <p id="boot-message" style="font-size: 1rem; color: #6B7C7E;">Loading Salhi Numbers…</p>
+        <pre id="boot-error" style="display: none; margin-top: 1rem; padding: 0.75rem; white-space: pre-wrap; word-break: break-word; text-align: left; font-size: 0.75rem; line-height: 1.5; color: #B3413A; background: #fff; border: 1px solid #dfe6e2; border-radius: 0.5rem;"></pre>
+      </div>
+    </div>
+    <script>
+      (function () {
+        var problems = []
+        var shown = false
+
+        // Fatal causes go to the front so the real reason is the first line
+        // read, not whichever request happened to fail earliest.
+        function record(detail, fatal) {
+          if (problems.indexOf(detail) !== -1) return
+          if (fatal) problems.unshift(detail)
+          else problems.push(detail)
+        }
+
+        // Only called for genuinely fatal conditions. A non-critical resource
+        // (the webfont stylesheet) failing is recorded as context but must not
+        // become the headline, or it masks the real cause.
+        function reveal() {
+          if (shown) return
+          var message = document.getElementById('boot-message')
+          var error = document.getElementById('boot-error')
+          if (!message || !error) return
+          shown = true
+          message.textContent = 'Salhi Numbers could not start.'
+          message.style.color = '#0E2A2F'
+          error.style.display = 'block'
+          error.textContent = problems.length
+            ? problems.join('\n')
+            : 'The page loaded but the app never started, and no error was reported.'
+        }
+
+        // Capture phase: resource load failures do not bubble, so a plain
+        // listener on window never sees a 404 on the script or stylesheet.
+        window.addEventListener(
+          'error',
+          function (event) {
+            var target = event.target
+            if (target && target !== window && (target.src || target.href)) {
+              var fatal = target.tagName === 'SCRIPT'
+              record('Failed to load: ' + (target.src || target.href), fatal)
+              if (fatal) reveal()
+            } else {
+              record(event.message || 'Script error', true)
+              reveal()
+            }
+          },
+          true,
+        )
+        window.addEventListener('unhandledrejection', function (event) {
+          record('Unhandled promise rejection: ' + event.reason, true)
+          reveal()
+        })
+        setTimeout(function () {
+          if (document.getElementById('boot')) reveal()
+        }, 10000)
+      })()
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
