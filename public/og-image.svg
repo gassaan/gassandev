@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#0E2A2F"/>
+  <rect width="1200" height="630" fill="#0E7C7B" opacity="0.12"/>
+  <circle cx="1040" cy="120" r="220" fill="#0E7C7B" opacity="0.25"/>
+  <circle cx="120" cy="560" r="180" fill="#C9962B" opacity="0.14"/>
+  <text x="90" y="270" font-family="Arial, sans-serif" font-size="72" font-weight="700" fill="#F7F4EE">Salhi Numbers</text>
+  <text x="90" y="340" font-family="Arial, sans-serif" font-size="34" fill="#D9EDEC">Nice mobile numbers, Maldives</text>
+  <text x="90" y="450" font-family="Arial, sans-serif" font-size="56" font-weight="700" letter-spacing="4" fill="#C9962B">777 1111</text>
+  <text x="90" y="500" font-family="Arial, sans-serif" font-size="26" fill="#8AA3A5">Dhiraagu · Ooredoo</text>
+</svg>
