@@ -71,12 +71,19 @@ export function NumberCard({ number }: { number: PhoneNumber }) {
         type="button"
         onClick={handleCopy}
         aria-label={`Copy number ${formatMsisdn(number.msisdn)}`}
-        className={`group flex items-center gap-2 self-start font-display font-numeric text-3xl font-semibold tracking-tight sm:text-4xl ${
-          isNice ? 'text-gold' : 'text-ink'
-        }`}
+        className="group flex items-center gap-2 self-start"
       >
-        {formatMsisdn(number.msisdn)}
-        <span className="text-muted opacity-0 transition-opacity group-hover:opacity-100">
+        {/* The metallic fill is on this span, not the button: it works by
+            clipping a gradient to the text with a transparent colour, which
+            would otherwise swallow the copy icon along with it. */}
+        <span
+          className={`font-display font-numeric text-4xl font-bold tracking-tight sm:text-5xl ${
+            isNice ? 'number-gold' : 'number-emboss text-ink'
+          }`}
+        >
+          {formatMsisdn(number.msisdn)}
+        </span>
+        <span className="shrink-0 text-muted opacity-0 transition-opacity group-hover:opacity-100">
           {copied ? <Check size={18} className="text-lagoon" /> : <Copy size={18} />}
         </span>
       </button>
