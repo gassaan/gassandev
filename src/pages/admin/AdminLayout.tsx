@@ -1,9 +1,7 @@
 import { NavLink, Navigate, Outlet } from 'react-router-dom'
 import { LayoutDashboard, ListOrdered, LogOut, Phone } from 'lucide-react'
 import { useAdminAuth } from '@/contexts/AdminAuthContext'
-import { useTheme } from '@/contexts/ThemeContext'
-import logoInk from '@/assets/brand/salhi-logo-ink.png'
-import logoCream from '@/assets/brand/salhi-logo-cream.png'
+import { BrandLogo } from '@/components/BrandLogo'
 
 const NAV = [
   { to: '/admin', end: true, label: 'Dashboard', icon: LayoutDashboard },
@@ -13,7 +11,6 @@ const NAV = [
 
 export function AdminLayout() {
   const { isAuthenticated, isLoading, signOut } = useAdminAuth()
-  const { theme } = useTheme()
 
   if (isLoading) return null
   if (!isAuthenticated) return <Navigate to="/admin/login" replace />
@@ -23,11 +20,7 @@ export function AdminLayout() {
       <header className="sticky top-0 z-40 border-b border-border bg-sand/95 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
           <span className="flex items-center gap-2.5">
-            <img
-              src={theme === 'dark' ? logoCream : logoInk}
-              alt="Salhi Numbers"
-              className="h-9 w-auto object-contain"
-            />
+            <BrandLogo className="h-9" />
             <span className="font-display text-lg font-semibold text-lagoon">Admin</span>
           </span>
           <button

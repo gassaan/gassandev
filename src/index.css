@@ -62,6 +62,26 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* A radial wash behind the hero rather than blurred blobs: the outer stop is
+   fully transparent, so it fades into the page instead of being hard-clipped
+   at the section edge and leaving a visible seam. Lagoon only — gold is
+   reserved for premium numbers and decoration would dilute that signal. */
+.hero-wash {
+  background-image: radial-gradient(
+    58% 52% at 50% 16%,
+    rgba(14, 124, 123, 0.09),
+    rgba(14, 124, 123, 0) 70%
+  );
+}
+
+:root.dark .hero-wash {
+  background-image: radial-gradient(
+    58% 52% at 50% 16%,
+    rgba(42, 169, 166, 0.13),
+    rgba(42, 169, 166, 0) 70%
+  );
+}
+
 /* The number is the product, so it gets the weight of a product photo:
    raised off the card for regular stock, struck in metal for premium. */
 .number-emboss {
