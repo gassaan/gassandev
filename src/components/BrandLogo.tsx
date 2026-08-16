@@ -5,7 +5,17 @@ import { useTheme } from '@/contexts/ThemeContext'
 import logoInk from '@/assets/brand/salhi-logo-ink.png'
 import logoCream from '@/assets/brand/salhi-logo-cream.png'
 
-export function BrandLogo({ className = 'h-11' }: { className?: string }) {
+interface BrandLogoProps {
+  className?: string
+  /**
+   * Renders a second, purely visual copy — the back face of the rotating
+   * landing mark. Without this the duplicate would announce the brand name
+   * twice and give the h1 a stuttering accessible name.
+   */
+  decorative?: boolean
+}
+
+export function BrandLogo({ className = 'h-11', decorative = false }: BrandLogoProps) {
   const { theme } = useTheme()
 
   return (
@@ -13,7 +23,8 @@ export function BrandLogo({ className = 'h-11' }: { className?: string }) {
       src={theme === 'dark' ? logoCream : logoInk}
       // Carries the brand name, so it stays the accessible name and the
       // visible fallback if the image ever fails to load.
-      alt="Salhi Numbers"
+      alt={decorative ? '' : 'Salhi Numbers'}
+      aria-hidden={decorative || undefined}
       className={`w-auto object-contain ${className}`}
     />
   )

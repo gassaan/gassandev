@@ -95,6 +95,51 @@ body {
   );
 }
 
+/* The landing mark turns like a coin. The perspective lives on the wrapper
+   rather than the rotating element, so the near edge genuinely comes toward
+   the viewer — a rotateY with no perspective is only a horizontal squash. */
+.logo-3d {
+  perspective: 800px;
+}
+
+.logo-3d-inner {
+  position: relative;
+  display: block;
+  transform-style: preserve-3d;
+  /* The only continuous animation on the site, so promoting it to its own
+     compositor layer is worth the memory and keeps it smooth on phones. */
+  will-change: transform;
+  animation: logo-spin 14s linear infinite;
+}
+
+/* Ends on a whole turn, so when the reduced-motion rule below collapses the
+   animation to a single 0.001ms pass the mark simply sits flat and face-on. */
+@keyframes logo-spin {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+/* Two faces. A lone flat image would show its own mirror image through the far
+   half of every turn, spelling the brand name backwards; hiding each face's
+   back means the copy behind is what you read instead. */
+.logo-3d-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Sits exactly on top of the front face, which is the element that gives the
+   wrapper its size — same asset at the same height, so the two agree. */
+.logo-3d-face-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotateY(180deg);
+}
+
 /* The number is the product, so it gets the weight of a product photo:
    raised off the card for regular stock, struck in metal for premium. */
 .number-emboss {
