@@ -46,10 +46,18 @@ export function Home() {
   return (
     <div className="mx-auto max-w-5xl px-4 pb-16">
       <section className="hero-wash hero-screen -mx-4 flex flex-col items-center justify-center gap-6 px-4 py-12 text-center">
-        {/* The mark carries the brand name, so it is the page heading; its
-            alt text supplies the h1's text for assistive tech and search. */}
+        {/* The mark carries the brand name, so it is the page heading; the
+            front face's alt text supplies the h1's text for assistive tech and
+            search, and the back face is hidden from both. No drop-shadow on
+            either: a flat shadow that does not turn with the mark reads wrong
+            in 3D, and a filter here can defeat backface-visibility. */}
         <h1 className="flex justify-center">
-          <BrandLogo className="h-32 drop-shadow-sm sm:h-44" />
+          <span className="logo-3d">
+            <span className="logo-3d-inner">
+              <BrandLogo className="logo-3d-face block h-32 sm:h-44" />
+              <BrandLogo decorative className="logo-3d-face logo-3d-face-back block h-32 sm:h-44" />
+            </span>
+          </span>
         </h1>
 
         <p className="max-w-[19rem] text-[0.95rem] leading-relaxed text-muted sm:max-w-md sm:text-base">
