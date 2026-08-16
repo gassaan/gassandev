@@ -5,7 +5,7 @@ import { dataService } from '@/data'
 import type { PhoneNumber } from '@/types'
 import { NumberCard } from '@/components/NumberCard'
 import { NumberGridSkeleton } from '@/components/NumberCardSkeleton'
-import { HeroLogo } from '@/components/HeroLogo'
+import { BrandLogo } from '@/components/BrandLogo'
 import { useDocumentMeta } from '@/hooks/useDocumentMeta'
 
 export function Home() {
@@ -46,11 +46,10 @@ export function Home() {
   return (
     <div className="mx-auto max-w-5xl px-4 pb-16">
       <section className="hero-wash hero-screen -mx-4 flex flex-col items-center justify-center gap-6 px-4 py-12 text-center">
-        {/* The mark carries the brand name, so it is the page heading; only the
-            front slice of the slab is exposed to assistive tech, which keeps
-            the h1's accessible name to the brand said once. */}
+        {/* The mark carries the brand name, so it is the page heading, and its
+            alt text is what supplies the h1's text to assistive tech and search. */}
         <h1 className="flex justify-center">
-          <HeroLogo />
+          <BrandLogo className="h-32 sm:h-44" />
         </h1>
 
         <p className="max-w-[19rem] text-[0.95rem] leading-relaxed text-muted sm:max-w-md sm:text-base">
