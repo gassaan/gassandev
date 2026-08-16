@@ -54,7 +54,7 @@ Never put the `service_role` key in this project — it bypasses RLS entirely.
 
 `src/assets/brand/` holds the Salhi Numbers mark as SVG, one file per theme, pre-coloured to the palette's ink and cream so only the active theme's file is ever fetched.
 
-It is vector because the landing page draws it large. The mark started as a 320px-wide PNG; at the hero's size that is roughly 205 CSS pixels, which on a 3x phone means 615 device pixels asked of a 320px source — a 2x upscale, and it looked soft. The SVG was traced from that PNG's alpha channel, upsampled first so the anti-aliasing's sub-pixel edge positions survived into the curves. Measured against the original at its native size, the silhouette matches to an IoU of 0.973, and every disagreeing pixel disappears under a single erosion — the differences are a sub-pixel rim along edges, not a missing stroke or a filled-in counter.
+It is vector so it stays sharp wherever it is drawn. The mark started as a 320px-wide PNG, which the hero rendered at roughly 149 CSS pixels — already a 1.4x upscale on a 3x phone, and visibly soft. The SVG was traced from that PNG's alpha channel, upsampled first so the anti-aliasing's sub-pixel edge positions survived into the curves. Measured against the original at its native size, the silhouette matches to an IoU of 0.973, and every disagreeing pixel disappears under a single erosion — the differences are a sub-pixel rim along edges, not a missing stroke or a filled-in counter.
 
 It is also smaller over the wire: ~15 kB gzipped against ~34 kB for the PNG, which barely compressed. The original raster remains in git history if it is ever needed. If the designer supplies a true vector original, replacing these two files is the whole job.
 
