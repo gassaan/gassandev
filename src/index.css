@@ -95,149 +95,106 @@ body {
   );
 }
 
-/* ── The landing mark: a milled slab that turns slowly ──────────────────────
-   Structure is in HeroLogo.tsx; the geometry lives here. */
+/* ── The landing mark: struck in relief ────────────────────────────────────
+   Structure is in HeroLogo.tsx; the lighting lives here. Deliberately static —
+   no rotation, no sweep — so every bit of the depth has to come from lighting. */
 
 .logo3d {
+  position: relative;
   display: block;
-  /* Short enough that the foreshortening is pronounced. A long perspective
-     flattens the turn into a horizontal squash and the depth stops reading. */
-  perspective: 520px;
-  /* Tuned against the artwork, not picked for drama. The script strokes are
-     only a few pixels wide, so an extrusion much past this merges the letters
-     into a blob and "NUMBERS" is the first thing to go. Scales with the mark
-     at the breakpoint so the slab stays the same thickness proportionally. */
-  --logo-depth: 5px;
+
+  /* One step per chained drop-shadow on the face; ten of them, so the extruded
+     side wall ends up ten times this deep. Stepping rather than one big offset
+     is what makes the wall solid instead of a detached second copy. */
+  --emboss-step: 0.85px;
+  /* The side wall is a face turned away from the light, so it sits darker than
+     the mark itself. */
+  --emboss-side: #04181c;
+  --emboss-cast: rgba(10, 34, 38, 0.38);
+  /* Width of the lit and shaded bands running along each stroke. This is the
+     value the whole effect lives or dies on: the script strokes are only a few
+     pixels wide, so a band much wider than this covers most of a stroke and the
+     ink washes out to grey instead of catching an edge. It is also why the mark
+     is set larger than it used to be — at the old size there was no room across
+     a stroke for a highlight, a mid tone and a shadow. */
+  --emboss-bevel: 1.1px;
+  --emboss-lit: rgba(255, 255, 255, 0.6);
+  --emboss-shade: rgba(0, 0, 0, 0.42);
 }
 
 @media (min-width: 640px) {
   .logo3d {
-    --logo-depth: 7px;
+    --emboss-step: 1.05px;
+    --emboss-bevel: 1.4px;
   }
 }
 
-/* A fixed lean, so the slab is never exactly edge-on: at a quarter turn you
-   still catch its top face. Without this a thin object briefly vanishes
-   mid-turn, and the lean reads as a product shot rather than a diagram. */
-.logo3d-tilt {
+:root.dark .logo3d {
+  --emboss-side: #123236;
+  --emboss-cast: rgba(0, 0, 0, 0.65);
+  --emboss-lit: rgba(255, 255, 255, 0.85);
+  --emboss-shade: rgba(0, 0, 0, 0.5);
+}
+
+.logo3d-face {
   display: block;
-  transform: rotateX(8deg);
-  transform-style: preserve-3d;
+  /* Chained, so each shadow falls on the result of the one before it and the
+     offsets accumulate into a continuous wall rather than ten loose copies.
+     The soft cast shadow goes last, which puts it furthest back. */
+  filter: drop-shadow(var(--emboss-step) var(--emboss-step) 0 var(--emboss-side))
+    drop-shadow(var(--emboss-step) var(--emboss-step) 0 var(--emboss-side))
+    drop-shadow(var(--emboss-step) var(--emboss-step) 0 var(--emboss-side))
+    drop-shadow(var(--emboss-step) var(--emboss-step) 0 var(--emboss-side))
+    drop-shadow(var(--emboss-step) var(--emboss-step) 0 var(--emboss-side))
+    drop-shadow(var(--emboss-step) var(--emboss-step) 0 var(--emboss-side))
+    drop-shadow(var(--emboss-step) var(--emboss-step) 0 var(--emboss-side))
+    drop-shadow(var(--emboss-step) var(--emboss-step) 0 var(--emboss-side))
+    drop-shadow(var(--emboss-step) var(--emboss-step) 0 var(--emboss-side))
+    drop-shadow(var(--emboss-step) var(--emboss-step) 0 var(--emboss-side))
+    drop-shadow(0 8px 14px var(--emboss-cast));
 }
 
-.logo3d-body {
-  position: relative;
-  display: block;
-  transform-style: preserve-3d;
-  /* The only continuous animation on the site, so promoting the whole stack to
-     one compositor layer is worth the memory. Deliberately not set on the
-     slices — that would be two dozen layers instead of one. */
-  will-change: transform;
-  animation: logo-spin 14s linear infinite;
-}
-
-/* Ends on a whole turn, so when the reduced-motion rule below collapses the
-   animation to a single 0.001ms pass the mark simply sits flat and face-on. */
-@keyframes logo-spin {
-  from {
-    transform: rotateY(0deg);
-  }
-  to {
-    transform: rotateY(360deg);
-  }
-}
-
-/* The one in-flow child, so it sizes the stack every other slice lays over. */
-.logo3d-front {
-  position: relative;
-  display: block;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-.logo3d-slice {
-  position: absolute;
-  inset: 0;
-  background-image: var(--logo);
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-/* Sides of a solid object sit in their own shadow. Only worth doing on the
-   cream mark: the ink one is already near-black, so darkening it changes
-   nothing, and stacking alone gives that theme a convincingly solid edge. */
-:root.dark .logo3d-slice {
-  filter: brightness(0.62);
-}
-
-/* A highlight travelling across the face, clipped to the mark's own silhouette
-   so it gleams along the lettering rather than sweeping a rectangle. */
-.logo3d-shine {
+/* The bevel. Each band is the mark's own silhouette with a copy of itself
+   subtracted, shifted a couple of pixels — what is left is the sliver along one
+   side of every stroke. A plain gradient across the artwork cannot do this: it
+   ramps over the bounding box and greys out half the mark instead of catching
+   the edges, which is exactly what it looked like on the first attempt. */
+.logo3d-edge {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  -webkit-mask-image: var(--logo);
-  mask-image: var(--logo);
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-  /* White, never gold: gold is the signal for premium numbers and spending it
-     on decoration here would dilute it. This is a light reflection, not a
-     colour treatment. */
-  background-image: linear-gradient(
-    102deg,
-    transparent 41%,
-    rgba(255, 255, 255, 0.95) 50%,
-    transparent 59%
-  );
-  background-size: 220% 100%;
-  background-repeat: no-repeat;
-  opacity: 0;
-  animation: logo-sheen 14s linear infinite;
+  /* Hidden unless the compositing that carves the band is actually available;
+     without it these would paint as solid slabs over the mark. The @supports
+     below turns them on. */
+  display: none;
+  -webkit-mask-image: var(--logo), var(--logo);
+  mask-image: var(--logo), var(--logo);
+  -webkit-mask-size: contain, contain;
+  mask-size: contain, contain;
+  -webkit-mask-repeat: no-repeat, no-repeat;
+  mask-repeat: no-repeat, no-repeat;
+  mask-composite: subtract;
 }
 
-/* Fires over a fifth of the cycle and then parks fully transparent, so the
-   highlight flashes past as the face swings through the light instead of
-   crawling across it for the rest of the turn. */
-@keyframes logo-sheen {
-  0% {
-    opacity: 0;
-    background-position: -50% 0;
-  }
-  6% {
-    opacity: 1;
-  }
-  16% {
-    opacity: 1;
-  }
-  22%,
-  100% {
-    opacity: 0;
-    background-position: 150% 0;
+@supports (mask-composite: subtract) {
+  .logo3d-edge {
+    display: block;
   }
 }
 
-/* Negative delays phase each sweep onto its own face while that face is turned
-   toward the viewer. A highlight that fires while its face is edge-on or facing
-   away is spent behind the mark and never seen, so these are measured against
-   the rotation rather than guessed: the front sweep runs from roughly -54deg to
-   square on, and the back is the same sweep half a turn later. */
-.logo3d-shine--front {
-  transform: translateZ(calc(var(--logo-depth) * 0.5 + 0.5px));
-  animation-delay: -2.93s;
+/* Light from the top left, so the lit band is the sliver the mark keeps when a
+   copy shifted down-right is taken away. White, never gold: gold is the signal
+   for premium numbers, and spending it here would dilute it. */
+.logo3d-edge--lit {
+  background-color: var(--emboss-lit);
+  -webkit-mask-position: center, calc(50% + var(--emboss-bevel)) calc(50% + var(--emboss-bevel));
+  mask-position: center, calc(50% + var(--emboss-bevel)) calc(50% + var(--emboss-bevel));
 }
 
-.logo3d-shine--back {
-  transform: translateZ(calc(var(--logo-depth) * -0.5 - 0.5px)) rotateY(180deg);
-  animation-delay: -9.93s;
+.logo3d-edge--shade {
+  background-color: var(--emboss-shade);
+  -webkit-mask-position: center, calc(50% - var(--emboss-bevel)) calc(50% - var(--emboss-bevel));
+  mask-position: center, calc(50% - var(--emboss-bevel)) calc(50% - var(--emboss-bevel));
 }
 
 /* The number is the product, so it gets the weight of a product photo:
