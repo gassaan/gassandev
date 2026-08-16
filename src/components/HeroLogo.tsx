@@ -2,8 +2,8 @@ import type { CSSProperties } from 'react'
 import { useTheme } from '@/contexts/ThemeContext'
 // Imported rather than referenced by path: the site is served from a project
 // subpath, so only Vite can write a URL that resolves in production.
-import logoInk from '@/assets/brand/salhi-logo-ink.png'
-import logoCream from '@/assets/brand/salhi-logo-cream.png'
+import logoInk from '@/assets/brand/salhi-logo-ink.svg'
+import logoCream from '@/assets/brand/salhi-logo-cream.svg'
 
 export function HeroLogo() {
   const { theme } = useTheme()
