@@ -2,6 +2,7 @@ import { NavLink, Navigate, Outlet } from 'react-router-dom'
 import { LayoutDashboard, ListOrdered, LogOut, Phone } from 'lucide-react'
 import { useAdminAuth } from '@/contexts/AdminAuthContext'
 import { BrandLogo } from '@/components/BrandLogo'
+import { PageTransition } from '@/components/PageTransition'
 
 const NAV = [
   { to: '/admin', end: true, label: 'Dashboard', icon: LayoutDashboard },
@@ -59,7 +60,9 @@ export function AdminLayout() {
         </nav>
       </header>
       <main className="mx-auto max-w-5xl px-4 py-6">
-        <Outlet />
+        <PageTransition>
+          <Outlet />
+        </PageTransition>
       </main>
     </div>
   )
