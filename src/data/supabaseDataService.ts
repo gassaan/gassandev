@@ -12,6 +12,7 @@ import type {
   NumberStatus,
   Order,
   OrderStatus,
+  PageView,
   PhoneNumber,
   Provider,
 } from '@/types'
@@ -26,6 +27,13 @@ interface NumberRow {
   promo_price: number | string | null
   status: NumberStatus
   is_featured: boolean
+  created_at: string
+}
+
+interface PageViewRow {
+  path: string
+  referrer_host: string | null
+  session_id: string
   created_at: string
 }
 
@@ -330,6 +338,33 @@ export class SupabaseDataService implements DataService {
       status: 'new',
       createdAt: new Date().toISOString(),
     }
+  }
+
+  async recordPageView(view: Omit<PageView, 'createdAt'>) {
+    // No .select(): the public may insert a view but has no read policy, so
+    // asking for the row back would fail RLS on every visitor.
+    const { error } = await this.client.from('page_views').insert({
+      path: view.path,
+      referrer_host: view.referrerHost,
+      session_id: view.sessionId,
+    })
+    if (error) throw new Error(error.message)
+  }
+
+  async listPageViews(sinceIso: string, limit = 10000) {
+    const { data, error } = await this.client
+      .from('page_views')
+      .select('path, referrer_host, session_id, created_at')
+      .gte('created_at', sinceIso)
+      .order('created_at', { ascending: false })
+      .limit(limit)
+    if (error) throw new Error(error.message)
+    return (data as PageViewRow[]).map((row) => ({
+      path: row.path,
+      referrerHost: row.referrer_host,
+      sessionId: row.session_id,
+      createdAt: row.created_at,
+    }))
   }
 
   async listOrders() {

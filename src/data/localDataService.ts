@@ -6,11 +6,15 @@ import type {
   NewOrderInput,
   NumberCounts,
 } from '@/data/dataService'
-import type { NumberFilters, Order, OrderStatus, PhoneNumber } from '@/types'
+import type { NumberFilters, Order, OrderStatus, PageView, PhoneNumber } from '@/types'
 import { getSellingPrice } from '@/utils/format'
 
 const NUMBERS_KEY = 'salhi.numbers.v1'
 const ORDERS_KEY = 'salhi.orders.v1'
+const VIEWS_KEY = 'salhi.pageviews.v1'
+// Without a server this only ever records one browser's own visits, so it is
+// capped to stop it growing without bound in localStorage.
+const VIEWS_CAP = 500
 
 function readNumbers(): PhoneNumber[] {
   const raw = localStorage.getItem(NUMBERS_KEY)
@@ -235,6 +239,32 @@ export class LocalDataService implements DataService {
     orders.push(order)
     writeOrders(orders)
     return order
+  }
+
+  async recordPageView(view: Omit<PageView, 'createdAt'>): Promise<void> {
+    const raw = localStorage.getItem(VIEWS_KEY)
+    let views: PageView[] = []
+    try {
+      views = raw ? (JSON.parse(raw) as PageView[]) : []
+    } catch {
+      views = []
+    }
+    views.push({ ...view, createdAt: new Date().toISOString() })
+    localStorage.setItem(VIEWS_KEY, JSON.stringify(views.slice(-VIEWS_CAP)))
+  }
+
+  async listPageViews(sinceIso: string, limit = 10000): Promise<PageView[]> {
+    const raw = localStorage.getItem(VIEWS_KEY)
+    let views: PageView[] = []
+    try {
+      views = raw ? (JSON.parse(raw) as PageView[]) : []
+    } catch {
+      return []
+    }
+    return views
+      .filter((v) => v.createdAt >= sinceIso)
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+      .slice(0, limit)
   }
 
   async listOrders(): Promise<Order[]> {

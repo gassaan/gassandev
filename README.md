@@ -27,15 +27,15 @@ Admin auth switches on the same signal, so the database and the login never disa
 1. Create a project at [supabase.com](https://supabase.com).
 2. **SQL Editor → New query** → paste `supabase/schema.sql` → Run. Optionally run `supabase/seed.sql` too, to load the 30 example numbers so the shop isn't empty on day one.
 3. **Authentication → Users → Add user** to create your admin login. Leave public sign-ups disabled — the app never exposes a sign-up form, and this is the only account that can edit stock.
-4. **Project Settings → API** gives you the project URL and the `anon` key.
+4. **Project Settings → API** gives you the project URL and the browser-safe key. Supabase has renamed its keys: what this project calls the **anon** key (including the variable name) now appears in the dashboard as the **publishable** key, `sb_publishable_…` — that is the one to copy. The **secret** key, `sb_secret_…`, is the renamed `service_role`; it bypasses every policy and must never reach this project. The project URL may sit under **Settings → Data API** rather than on the API keys screen.
 5. Locally: copy `.env.example` to `.env.local` and fill both values.
 6. For the deployed site: **Settings → Secrets and variables → Actions** → add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`, then re-run the deploy workflow.
 
 If the secrets are missing the build still succeeds and the site falls back to browser storage, so a forgotten secret degrades rather than breaks.
 
-### About the anon key
+### About the anon (publishable) key
 
-It is compiled into the client bundle, and that is how Supabase is meant to work — the `anon` key identifies the project, it does not authorise anything. **Row level security in `supabase/schema.sql` is the actual protection**, so the policies there matter:
+It is compiled into the client bundle, and that is how Supabase is meant to work — the key identifies the project, it does not authorise anything. **Row level security in `supabase/schema.sql` is the actual protection**, so the policies there matter:
 
 - `numbers` — readable by anyone, writable only when signed in.
 - `orders` — anyone may **insert** one (a customer checking out), but only a signed-in admin may **read** them. There is deliberately no public read policy, because orders carry customer names and phone numbers. `createOrder` is written not to read its row back for the same reason; asking would fail RLS on every checkout.
@@ -72,3 +72,15 @@ cd /tmp/serve && python3 -m http.server 5180
 GitHub Pages serves `index.html` with `max-age=600`, so a visitor can be holding a ten-minute-old shell at the moment a deploy replaces the site under them. With hashed entry filenames that stale shell requests a bundle the new deploy has already deleted, and the page renders blank until their cache expires — every deploy white-screens returning visitors. `vite.config.ts` therefore pins the entry chunk and CSS to stable names (`assets/index.js`, `assets/index.css`) so a stale shell always resolves. Assets referenced from *inside* the bundle stay content-hashed, because those names always arrive together with the bundle that points at them.
 
 The Open Graph image is the one deliberate exception: `og:image` must be a fully-qualified absolute URL and a PNG, because WhatsApp and Facebook scrapers resolve neither relative URLs nor SVGs — and those are the primary sharing channels for this shop.
+
+## Sales and traffic
+
+The admin dashboard reports both over Today / This month / All time.
+
+**Sales** are computed from the `orders` table. Revenue counts only orders marked **completed**, not every order placed — an order is an intent submitted at checkout, and fulfilment happens later on WhatsApp, so counting them all would inflate takings with abandoned and cancelled ones. Money not yet confirmed appears separately as "awaiting confirmation", so revenue is never mysteriously zero. Marking orders off in the Orders tab is what feeds the revenue figure.
+
+**Traffic** is first-party: page views are recorded into your own Supabase by `usePageViewTracking`, so no third-party analytics service is involved and no data leaves your project. Run `supabase/analytics.sql` to enable it; until then the dashboard says so rather than erroring, and the rest of the page still works.
+
+It stores no IP address, user agent, cookie or anything identifying a person. Sessions are grouped by a random id in `sessionStorage`, which dies with the tab — so the figure is honestly labelled **visits** (browsing sessions), not unique visitors, and it cannot follow anyone between visits. Admin pages are excluded so your own use is not counted as shop traffic. Expect some inflation from bots and link previewers.
+
+Both aggregate in memory from a single query. That is ample at this shop's scale and keeps one code path across both backends; the traffic query is capped at 10,000 rows per period and the dashboard says when it has hit the cap rather than quietly under-reporting.

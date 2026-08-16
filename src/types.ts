@@ -34,6 +34,13 @@ export interface Order {
   createdAt: string
 }
 
+export interface PageView {
+  path: string
+  referrerHost: string | null
+  sessionId: string
+  createdAt: string
+}
+
 export type SortOption = 'price-asc' | 'price-desc' | 'newest'
 
 export interface NumberFilters {

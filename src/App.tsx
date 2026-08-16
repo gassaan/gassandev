@@ -11,12 +11,18 @@ import { AdminLayout } from '@/pages/admin/AdminLayout'
 import { AdminDashboard } from '@/pages/admin/AdminDashboard'
 import { AdminNumbers } from '@/pages/admin/AdminNumbers'
 import { AdminOrders } from '@/pages/admin/AdminOrders'
+import { usePageViewTracking } from '@/hooks/usePageViewTracking'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [pathname])
+  return null
+}
+
+function PageViewTracker() {
+  usePageViewTracking()
   return null
 }
 
@@ -33,6 +39,7 @@ export default function App() {
   return (
     <>
       <ScrollToTop />
+      <PageViewTracker />
       <Routes>
         <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
         <Route path="/browse" element={<PublicLayout><Browse /></PublicLayout>} />

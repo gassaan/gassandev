@@ -1,4 +1,4 @@
-import type { NumberFilters, Order, OrderStatus, PhoneNumber } from '@/types'
+import type { NumberFilters, Order, OrderStatus, PageView, PhoneNumber } from '@/types'
 
 export interface NumberCounts {
   available: number
@@ -58,4 +58,14 @@ export interface DataService {
   createOrder(input: NewOrderInput): Promise<Order>
   listOrders(): Promise<Order[]>
   updateOrderStatus(id: string, status: OrderStatus): Promise<Order>
+
+  /** Fire-and-forget: a failure here must never affect the page. */
+  recordPageView(view: Omit<PageView, 'createdAt'>): Promise<void>
+  /**
+   * Views since an ISO timestamp, newest first and capped, since the caller
+   * aggregates in memory. The cap is what keeps a busy month from pulling
+   * every row over the wire; the dashboard says when it has been hit rather
+   * than quietly reporting a low number.
+   */
+  listPageViews(sinceIso: string, limit?: number): Promise<PageView[]>
 }
