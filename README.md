@@ -50,6 +50,14 @@ Never put the `service_role` key in this project — it bypasses RLS entirely.
 
 `.github/workflows/deploy.yml` builds and publishes `dist/` to GitHub Pages on push to `main` (requires the repo's Pages source set to "GitHub Actions" in Settings → Pages). Routing uses `HashRouter` so it works on static hosting without server-side rewrites.
 
+## The brand mark
+
+`src/assets/brand/` holds the Salhi Numbers mark as SVG, one file per theme, pre-coloured to the palette's ink and cream so only the active theme's file is ever fetched.
+
+It is vector because the landing page draws it large. The mark started as a 320px-wide PNG; at the hero's size that is roughly 205 CSS pixels, which on a 3x phone means 615 device pixels asked of a 320px source — a 2x upscale, and it looked soft. The SVG was traced from that PNG's alpha channel, upsampled first so the anti-aliasing's sub-pixel edge positions survived into the curves. Measured against the original at its native size, the silhouette matches to an IoU of 0.973, and every disagreeing pixel disappears under a single erosion — the differences are a sub-pixel rim along edges, not a missing stroke or a filled-in counter.
+
+It is also smaller over the wire: ~15 kB gzipped against ~34 kB for the PNG, which barely compressed. The original raster remains in git history if it is ever needed. If the designer supplies a true vector original, replacing these two files is the whole job.
+
 ## Provider logos
 
 The Dhiraagu and Ooredoo marks live in `src/assets/logos/`, supplied by the shop owner and processed to transparent RGBA so they composite correctly on both the sand and dark themes. To replace them with higher-resolution or vector originals, swap those two files and push — CI rebuilds. Because they are imported rather than served from `public/`, Vite content-hashes them, so a replacement busts caches automatically.
