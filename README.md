@@ -72,3 +72,15 @@ cd /tmp/serve && python3 -m http.server 5180
 GitHub Pages serves `index.html` with `max-age=600`, so a visitor can be holding a ten-minute-old shell at the moment a deploy replaces the site under them. With hashed entry filenames that stale shell requests a bundle the new deploy has already deleted, and the page renders blank until their cache expires — every deploy white-screens returning visitors. `vite.config.ts` therefore pins the entry chunk and CSS to stable names (`assets/index.js`, `assets/index.css`) so a stale shell always resolves. Assets referenced from *inside* the bundle stay content-hashed, because those names always arrive together with the bundle that points at them.
 
 The Open Graph image is the one deliberate exception: `og:image` must be a fully-qualified absolute URL and a PNG, because WhatsApp and Facebook scrapers resolve neither relative URLs nor SVGs — and those are the primary sharing channels for this shop.
+
+## Sales and traffic
+
+The admin dashboard reports both over Today / This month / All time.
+
+**Sales** are computed from the `orders` table. Revenue counts only orders marked **completed**, not every order placed — an order is an intent submitted at checkout, and fulfilment happens later on WhatsApp, so counting them all would inflate takings with abandoned and cancelled ones. Money not yet confirmed appears separately as "awaiting confirmation", so revenue is never mysteriously zero. Marking orders off in the Orders tab is what feeds the revenue figure.
+
+**Traffic** is first-party: page views are recorded into your own Supabase by `usePageViewTracking`, so no third-party analytics service is involved and no data leaves your project. Run `supabase/analytics.sql` to enable it; until then the dashboard says so rather than erroring, and the rest of the page still works.
+
+It stores no IP address, user agent, cookie or anything identifying a person. Sessions are grouped by a random id in `sessionStorage`, which dies with the tab — so the figure is honestly labelled **visits** (browsing sessions), not unique visitors, and it cannot follow anyone between visits. Admin pages are excluded so your own use is not counted as shop traffic. Expect some inflation from bots and link previewers.
+
+Both aggregate in memory from a single query. That is ample at this shop's scale and keeps one code path across both backends; the traffic query is capped at 10,000 rows per period and the dashboard says when it has hit the cap rather than quietly under-reporting.
