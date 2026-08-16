@@ -95,19 +95,43 @@ body {
   );
 }
 
-/* The landing mark turns like a coin. The perspective lives on the wrapper
-   rather than the rotating element, so the near edge genuinely comes toward
-   the viewer — a rotateY with no perspective is only a horizontal squash. */
-.logo-3d {
-  perspective: 800px;
+/* ── The landing mark: a milled slab that turns slowly ──────────────────────
+   Structure is in HeroLogo.tsx; the geometry lives here. */
+
+.logo3d {
+  display: block;
+  /* Short enough that the foreshortening is pronounced. A long perspective
+     flattens the turn into a horizontal squash and the depth stops reading. */
+  perspective: 520px;
+  /* Tuned against the artwork, not picked for drama. The script strokes are
+     only a few pixels wide, so an extrusion much past this merges the letters
+     into a blob and "NUMBERS" is the first thing to go. Scales with the mark
+     at the breakpoint so the slab stays the same thickness proportionally. */
+  --logo-depth: 5px;
 }
 
-.logo-3d-inner {
+@media (min-width: 640px) {
+  .logo3d {
+    --logo-depth: 7px;
+  }
+}
+
+/* A fixed lean, so the slab is never exactly edge-on: at a quarter turn you
+   still catch its top face. Without this a thin object briefly vanishes
+   mid-turn, and the lean reads as a product shot rather than a diagram. */
+.logo3d-tilt {
+  display: block;
+  transform: rotateX(8deg);
+  transform-style: preserve-3d;
+}
+
+.logo3d-body {
   position: relative;
   display: block;
   transform-style: preserve-3d;
-  /* The only continuous animation on the site, so promoting it to its own
-     compositor layer is worth the memory and keeps it smooth on phones. */
+  /* The only continuous animation on the site, so promoting the whole stack to
+     one compositor layer is worth the memory. Deliberately not set on the
+     slices — that would be two dozen layers instead of one. */
   will-change: transform;
   animation: logo-spin 14s linear infinite;
 }
@@ -123,21 +147,97 @@ body {
   }
 }
 
-/* Two faces. A lone flat image would show its own mirror image through the far
-   half of every turn, spelling the brand name backwards; hiding each face's
-   back means the copy behind is what you read instead. */
-.logo-3d-face {
+/* The one in-flow child, so it sizes the stack every other slice lays over. */
+.logo3d-front {
+  position: relative;
+  display: block;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
 
-/* Sits exactly on top of the front face, which is the element that gives the
-   wrapper its size — same asset at the same height, so the two agree. */
-.logo-3d-face-back {
+.logo3d-slice {
   position: absolute;
-  top: 0;
-  left: 0;
-  transform: rotateY(180deg);
+  inset: 0;
+  background-image: var(--logo);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Sides of a solid object sit in their own shadow. Only worth doing on the
+   cream mark: the ink one is already near-black, so darkening it changes
+   nothing, and stacking alone gives that theme a convincingly solid edge. */
+:root.dark .logo3d-slice {
+  filter: brightness(0.62);
+}
+
+/* A highlight travelling across the face, clipped to the mark's own silhouette
+   so it gleams along the lettering rather than sweeping a rectangle. */
+.logo3d-shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -webkit-mask-image: var(--logo);
+  mask-image: var(--logo);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  /* White, never gold: gold is the signal for premium numbers and spending it
+     on decoration here would dilute it. This is a light reflection, not a
+     colour treatment. */
+  background-image: linear-gradient(
+    102deg,
+    transparent 41%,
+    rgba(255, 255, 255, 0.95) 50%,
+    transparent 59%
+  );
+  background-size: 220% 100%;
+  background-repeat: no-repeat;
+  opacity: 0;
+  animation: logo-sheen 14s linear infinite;
+}
+
+/* Fires over a fifth of the cycle and then parks fully transparent, so the
+   highlight flashes past as the face swings through the light instead of
+   crawling across it for the rest of the turn. */
+@keyframes logo-sheen {
+  0% {
+    opacity: 0;
+    background-position: -50% 0;
+  }
+  6% {
+    opacity: 1;
+  }
+  16% {
+    opacity: 1;
+  }
+  22%,
+  100% {
+    opacity: 0;
+    background-position: 150% 0;
+  }
+}
+
+/* Negative delays phase each sweep onto its own face while that face is turned
+   toward the viewer. A highlight that fires while its face is edge-on or facing
+   away is spent behind the mark and never seen, so these are measured against
+   the rotation rather than guessed: the front sweep runs from roughly -54deg to
+   square on, and the back is the same sweep half a turn later. */
+.logo3d-shine--front {
+  transform: translateZ(calc(var(--logo-depth) * 0.5 + 0.5px));
+  animation-delay: -2.93s;
+}
+
+.logo3d-shine--back {
+  transform: translateZ(calc(var(--logo-depth) * -0.5 - 0.5px)) rotateY(180deg);
+  animation-delay: -9.93s;
 }
 
 /* The number is the product, so it gets the weight of a product photo:

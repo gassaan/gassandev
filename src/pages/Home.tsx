@@ -5,7 +5,7 @@ import { dataService } from '@/data'
 import type { PhoneNumber } from '@/types'
 import { NumberCard } from '@/components/NumberCard'
 import { NumberGridSkeleton } from '@/components/NumberCardSkeleton'
-import { BrandLogo } from '@/components/BrandLogo'
+import { HeroLogo } from '@/components/HeroLogo'
 import { useDocumentMeta } from '@/hooks/useDocumentMeta'
 
 export function Home() {
@@ -46,18 +46,11 @@ export function Home() {
   return (
     <div className="mx-auto max-w-5xl px-4 pb-16">
       <section className="hero-wash hero-screen -mx-4 flex flex-col items-center justify-center gap-6 px-4 py-12 text-center">
-        {/* The mark carries the brand name, so it is the page heading; the
-            front face's alt text supplies the h1's text for assistive tech and
-            search, and the back face is hidden from both. No drop-shadow on
-            either: a flat shadow that does not turn with the mark reads wrong
-            in 3D, and a filter here can defeat backface-visibility. */}
+        {/* The mark carries the brand name, so it is the page heading; only the
+            front slice of the slab is exposed to assistive tech, which keeps
+            the h1's accessible name to the brand said once. */}
         <h1 className="flex justify-center">
-          <span className="logo-3d">
-            <span className="logo-3d-inner">
-              <BrandLogo className="logo-3d-face block h-32 sm:h-44" />
-              <BrandLogo decorative className="logo-3d-face logo-3d-face-back block h-32 sm:h-44" />
-            </span>
-          </span>
+          <HeroLogo />
         </h1>
 
         <p className="max-w-[19rem] text-[0.95rem] leading-relaxed text-muted sm:max-w-md sm:text-base">
