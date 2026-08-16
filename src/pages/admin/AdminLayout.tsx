@@ -10,7 +10,7 @@ const NAV = [
 ]
 
 export function AdminLayout() {
-  const { isAuthenticated, isLoading, signOut } = useAdminAuth()
+  const { isAuthenticated, isLoading, signOut, userEmail } = useAdminAuth()
 
   if (isLoading) return null
   if (!isAuthenticated) return <Navigate to="/admin/login" replace />
@@ -18,15 +18,25 @@ export function AdminLayout() {
   return (
     <div className="min-h-screen bg-sand">
       <header className="sticky top-0 z-40 border-b border-border bg-sand/95 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
-          <span className="flex items-center gap-2.5">
+        <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-3 px-4">
+          {/* min-w-0 lets the email truncate instead of shoving Sign out off
+              the edge on a narrow screen. Stacked under the title so showing
+              who is signed in costs no extra header height. */}
+          <span className="flex min-w-0 items-center gap-2.5">
             <BrandLogo className="h-9" />
-            <span className="font-display text-lg font-semibold text-lagoon">Admin</span>
+            <span className="flex min-w-0 flex-col leading-tight">
+              <span className="font-display text-lg font-semibold text-lagoon">Admin</span>
+              {userEmail && (
+                <span className="truncate text-[11px] text-muted" title={userEmail}>
+                  {userEmail}
+                </span>
+              )}
+            </span>
           </span>
           <button
             type="button"
             onClick={() => signOut()}
-            className="flex h-11 items-center gap-1.5 rounded-full px-3 text-sm font-medium text-muted hover:bg-lagoon-soft hover:text-ink"
+            className="flex h-11 shrink-0 items-center gap-1.5 rounded-full px-3 text-sm font-medium text-muted hover:bg-lagoon-soft hover:text-ink"
           >
             <LogOut size={16} /> Sign out
           </button>
