@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import { Header } from '@/components/Header'
+import { PageTransition } from '@/components/PageTransition'
 import { Home } from '@/pages/Home'
 import { Browse } from '@/pages/Browse'
 import { Cart } from '@/pages/Cart'
@@ -30,7 +31,9 @@ function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-sand">
       <Header />
-      <main>{children}</main>
+      <main>
+        <PageTransition>{children}</PageTransition>
+      </main>
     </div>
   )
 }
