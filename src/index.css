@@ -11,6 +11,12 @@
   --surface: #ffffff;
   --border: #dfe6e2;
   --danger: #b3413a;
+
+  /* Foreground for anything sitting on solid gold. Unlike --ink this is
+     deliberately absent from the dark block: gold stays a light colour in both
+     themes, so a badge on it needs dark text at midnight too. Inheriting --ink
+     put near-white on light gold, which measured 1.65:1 — barely legible. */
+  --on-gold: #0e2a2f;
 }
 
 :root.dark {
@@ -37,6 +43,7 @@
   --color-surface: var(--surface);
   --color-border: var(--border);
   --color-danger: var(--danger);
+  --color-on-gold: var(--on-gold);
 
   --font-display: "Space Grotesk", "Archivo", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
