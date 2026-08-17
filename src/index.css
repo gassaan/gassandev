@@ -40,6 +40,12 @@
 
   --font-display: "Space Grotesk", "Archivo", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  /* The number is the product, so it gets its own face. Archivo over the
+     display font because its digits are sturdier and its 1 carries a flag —
+     Space Grotesk draws a bare vertical stroke, which turns a run like 1111
+     into a picket fence exactly where the repeated digits are the thing being
+     sold. Tabular figures keep those runs in register. */
+  --font-numbers: "Archivo", "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
