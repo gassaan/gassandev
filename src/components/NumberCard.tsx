@@ -49,7 +49,7 @@ export function NumberCard({ number }: { number: PhoneNumber }) {
       <div className="flex items-start justify-between gap-2">
         <div className="flex flex-wrap items-center gap-1.5">
           {isNice && (
-            <span className="rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold tracking-wide text-ink uppercase">
+            <span className="rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold tracking-wide text-on-gold uppercase">
               Premium
             </span>
           )}
