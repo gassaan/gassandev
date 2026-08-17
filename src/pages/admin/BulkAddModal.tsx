@@ -66,7 +66,6 @@ export function BulkAddModal({ onClose, onAdded }: { onClose: () => void; onAdde
             <select value={category} onChange={(e) => setCategory(e.target.value as Category)} className={fieldClass}>
               <option value="silver">Silver</option>
               <option value="gold">Gold</option>
-              <option value="premium">Premium</option>
               <option value="platinum">Platinum</option>
             </select>
           </label>

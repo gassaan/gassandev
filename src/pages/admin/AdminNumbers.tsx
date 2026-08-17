@@ -124,7 +124,6 @@ export function AdminNumbers() {
           <option value="all">All grades</option>
           <option value="silver">Silver</option>
           <option value="gold">Gold</option>
-          <option value="premium">Premium</option>
           <option value="platinum">Platinum</option>
         </select>
         <button
@@ -231,8 +230,7 @@ export function AdminNumbers() {
                     >
                       <option value="silver">Silver</option>
                       <option value="gold">Gold</option>
-                      <option value="premium">Premium</option>
-                      <option value="platinum">Platinum</option>
+                              <option value="platinum">Platinum</option>
                     </select>
                   </td>
                   <td className="p-3">

@@ -93,8 +93,11 @@ export function Home() {
           featured.length > 0 && (
             <section>
               <div className="mb-3 flex items-center justify-between">
-                <h2 className="font-display text-lg font-semibold text-ink">Premium picks</h2>
-                <Link to="/browse?category=nice" className="text-sm font-medium text-lagoon hover:underline">
+                <h2 className="font-display text-lg font-semibold text-ink">Featured picks</h2>
+                {/* Plain /browse, not a category filter: featured is a flag the
+                    admin sets by hand and cuts across all three grades, so
+                    filtering to one of them would hide half of what is above. */}
+                <Link to="/browse" className="text-sm font-medium text-lagoon hover:underline">
                   See all
                 </Link>
               </div>

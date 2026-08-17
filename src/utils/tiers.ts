@@ -1,7 +1,7 @@
 import type { Category } from '@/types'
 
 /** Ascending: Platinum is the most elite. Drives filter order everywhere. */
-export const TIERS: readonly Category[] = ['silver', 'gold', 'premium', 'platinum']
+export const TIERS: readonly Category[] = ['silver', 'gold', 'platinum']
 
 interface Tier {
   label: string
@@ -18,15 +18,19 @@ interface Tier {
 export const TIER: Record<Category, Tier> = {
   silver: { label: 'Silver', card: 'tier-silver', number: 'num-silver', badge: 'badge-silver', price: 'price-silver' },
   gold: { label: 'Gold', card: 'tier-gold', number: 'num-gold', badge: 'badge-gold', price: 'price-gold' },
-  premium: { label: 'Premium', card: 'tier-premium', number: 'num-premium', badge: 'badge-premium', price: 'price-premium' },
   platinum: { label: 'Platinum', card: 'tier-platinum', number: 'num-platinum', badge: 'badge-platinum', price: 'price-platinum' },
 }
 
-// An order stores the grade as it was at the time of purchase, so rows placed
-// before this change still carry the old two-value scheme. Reading one back to
-// render a cart or an order list must not throw, hence every lookup goes
-// through here rather than indexing TIER directly.
-const LEGACY: Record<string, Category> = { nice: 'gold', regular: 'silver' }
+// An order stores the grade as it was at the time of purchase, and the grades
+// have been reworked twice, so an old row can still read `nice`/`regular` from
+// the original two-value scheme or `premium` from the four-grade one. Reading
+// one back to render a cart or an order list must not throw, hence every
+// lookup goes through here rather than indexing TIER directly.
+//
+// `premium` maps down to Gold rather than up to Platinum on purpose: Platinum
+// is meant to be the rare one, and quietly promoting a batch of numbers into
+// it would blunt exactly the signal it exists to send.
+const LEGACY: Record<string, Category> = { nice: 'gold', regular: 'silver', premium: 'gold' }
 
 export function asTier(value: string): Category {
   return value in TIER ? (value as Category) : (LEGACY[value] ?? 'silver')

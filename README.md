@@ -50,40 +50,48 @@ Never put the `service_role` key in this project — it bypasses RLS entirely.
 
 `.github/workflows/deploy.yml` builds and publishes `dist/` to GitHub Pages on push to `main` (requires the repo's Pages source set to "GitHub Actions" in Settings → Pages). Routing uses `HashRouter` so it works on static hosting without server-side rewrites.
 
+## One palette, dark
+
+There is no light mode and no theme switch. The whole design is built for a dark ground — the metal cards below are the shop's centrepiece and they only work as light objects on a dark page — so the palette lives in a single `:root` block in `src/index.css` and there is no `dark:` variant anywhere in the app.
+
+The dark background is also declared inline in `index.html`, because the stylesheet only arrives with the bundle; without it the first paint is a white page that then flips.
+
 ## Number grades
 
-Stock is graded, ascending: **Silver → Gold → Premium → Platinum**. Platinum is the most elite. The grade is always set by hand in the admin Numbers tab — like the provider, it is never inferred, because only you know which of your numbers are worth what.
+Stock is graded, ascending: **Silver → Gold → Platinum**. Platinum is the most elite. The grade is always set by hand in the admin Numbers tab — like the provider, it is never inferred, because only you know which of your numbers are worth what.
 
-The four are defined once in `src/utils/tiers.ts`, and the filter chips, admin selects, cart lines and WhatsApp message all read from there, so a grade cannot appear in one place and be missing from another.
+The three are defined once in `src/utils/tiers.ts`, and the filter chips, admin selects, cart lines and WhatsApp message all read from there, so a grade cannot appear in one place and be missing from another.
 
-Visually the grades escalate in two steps rather than four shades of the same idea. Silver and Gold sit on a light card that follows the theme. Premium and Platinum invert to a dark card in **both** themes — that is the luxury convention for a top grade, it makes them unmistakable at a glance in a scrolling grid, and it is also the easiest place to make a metal legible, since light metal on a dark ground has contrast to spare.
+Each card **is** the metal it is named after, the same idea as a bank's silver, gold and black cards: Silver and Gold are polished light metal, Platinum is black. Against a dark page that reads as a ladder in two directions at once — the metal gets richer, and the top grade is the one that stops being metal altogether.
 
-Because those two cards no longer follow the page, they carry their own `--ink`, `--muted`, `--surface`, `--lagoon` and `--sand` values. Tailwind's `text-ink` and friends resolve through those variables, so everything inside the card adapts without any component knowing which grade it is rendering. `--sand` matters as much as the rest: the solid buttons pair `bg-lagoon` with `text-sand`, so lifting lagoon for a dark card without bringing sand down with it leaves the Add button pale on pale.
+That makes Silver and Gold light islands on a dark page, so each carries its own `--ink`, `--muted`, `--lagoon` and `--sand`. Tailwind's `text-ink` and friends resolve through those variables, so everything inside a card adapts without any component knowing which grade it is rendering. `--sand` matters as much as the rest: the solid buttons pair `bg-lagoon` with `text-sand`, so a card that darkens lagoon has to lift sand with it or the Add button goes dark on dark.
 
-Every metallic ramp was measured against the card it actually sits on before being written — the lightest stop of each clears 4.5:1 in both themes. A metallic sweep is only as legible as its brightest point, which is a mistake this stylesheet made twice before the grades existed.
+Every metallic ramp was measured against the **darkest** stop of the card it sits on — the worst case a diagonal sweep can land its glyphs over — and clears 4.5:1 there. A metallic number is only as legible as its brightest point, which is a mistake this stylesheet made twice before the grades existed. The card gradients themselves were tuned to that constraint rather than the other way round: the gold card is a champagne gold, not a deep one, because a deep gold leaves no room above it for a legible number.
 
 ### Migrating an existing project
 
-`supabase/grades.sql` upgrades a database created before grades existed. It **renames** the two old values rather than rebuilding the type, so nothing is rewritten and no row loses its meaning:
+`supabase/grades.sql` brings a database created before the current grades up to date, whichever of the older shapes it is in. It **renames** the two original values rather than rebuilding the type, so nothing is rewritten and no row loses its meaning:
 
 - `regular` → **Silver** (the entry grade)
 - `nice` → **Gold**
 
-Everything previously marked "nice" therefore lands on Gold, and you promote individual numbers to Premium or Platinum yourself. That is deliberate — guessing which of your live stock deserves the top grades would mislabel real inventory.
+Anything previously marked "nice" therefore lands on Gold, and you promote individual numbers to Platinum yourself. That is deliberate — guessing which of your live stock deserves the top grade would mislabel real inventory.
 
-Historical orders are left alone. `orders.items` holds a JSONB snapshot of what was sold at the time, so older rows still read `nice` or `regular`; an order is a record of a past sale and rewriting it would falsify it. The app maps those legacy values to Gold and Silver when displaying them, so old orders and carts still render correctly.
+There was briefly a fourth grade, Premium, between Gold and Platinum. Any row still on it moves **down** to Gold, not up to Platinum: Platinum is meant to be the rare one, and promoting a batch into it would blunt exactly the signal it exists to send. The unused `premium` label stays in the Postgres type — there is no `ALTER TYPE … DROP VALUE`, and rebuilding the type would mean recreating the column on live stock for a purely cosmetic gain.
+
+Historical orders are left alone. `orders.items` holds a JSONB snapshot of what was sold at the time, so older rows still read `nice`, `regular` or `premium`; an order is a record of a past sale and rewriting it would falsify it. The app maps those legacy values when displaying them, so old orders and carts still render correctly.
 
 ## The brand mark
 
-`src/assets/brand/` holds the Salhi Numbers mark as SVG, one file per theme, pre-coloured to the palette's ink and cream so only the active theme's file is ever fetched.
+`src/assets/brand/` holds the Salhi Numbers mark as a single SVG, pre-coloured to the palette's cream. One file, not two, because the site is dark throughout — there is no light background for an ink version to sit on.
 
 It is vector so it stays sharp wherever it is drawn. The mark started as a 320px-wide PNG, which the hero rendered at roughly 149 CSS pixels — already a 1.4x upscale on a 3x phone, and visibly soft. The SVG was traced from that PNG's alpha channel, upsampled first so the anti-aliasing's sub-pixel edge positions survived into the curves. Measured against the original at its native size, the silhouette matches to an IoU of 0.973, and every disagreeing pixel disappears under a single erosion — the differences are a sub-pixel rim along edges, not a missing stroke or a filled-in counter.
 
-It is also smaller over the wire: ~15 kB gzipped against ~34 kB for the PNG, which barely compressed. The original raster remains in git history if it is ever needed. If the designer supplies a true vector original, replacing these two files is the whole job.
+It is also smaller over the wire: ~15 kB gzipped against ~34 kB for the PNG, which barely compressed. The original raster remains in git history if it is ever needed. If the designer supplies a true vector original, replacing that one file is the whole job.
 
 ## Provider logos
 
-The Dhiraagu and Ooredoo marks live in `src/assets/logos/`, supplied by the shop owner and processed to transparent RGBA so they composite correctly on both the sand and dark themes. To replace them with higher-resolution or vector originals, swap those two files and push — CI rebuilds. Because they are imported rather than served from `public/`, Vite content-hashes them, so a replacement busts caches automatically.
+The Dhiraagu and Ooredoo marks live in `src/assets/logos/`, supplied by the shop owner and processed to transparent RGBA so they composite correctly on the dark page and on the light metal cards alike. To replace them with higher-resolution or vector originals, swap those two files and push — CI rebuilds. Because they are imported rather than served from `public/`, Vite content-hashes them, so a replacement busts caches automatically.
 
 ## Asset paths and the subpath deploy
 
