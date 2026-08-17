@@ -75,9 +75,15 @@ export function NumberCard({ number }: { number: PhoneNumber }) {
       >
         {/* The metallic fill is on this span, not the button: it works by
             clipping a gradient to the text with a transparent colour, which
-            would otherwise swallow the copy icon along with it. */}
+            would otherwise swallow the copy icon along with it.
+
+            The sizes step around the grid rather than simply growing: cards are
+            at their narrowest at sm, where the grid goes to two columns, so the
+            number has less room there than on a phone, not more. Every number
+            is the same width — seven tabular digits — so these were set against
+            a measured worst case rather than guessed. */}
         <span
-          className={`font-display font-numeric text-4xl font-bold tracking-tight sm:text-5xl ${
+          className={`font-numbers font-numeric text-[2.6rem] font-extrabold tracking-tight sm:text-[2.75rem] lg:text-[3.25rem] ${
             isNice ? 'number-gold' : 'number-emboss text-ink'
           }`}
         >
