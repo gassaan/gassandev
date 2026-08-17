@@ -125,28 +125,36 @@ body {
 }
 
 .number-gold {
-  /* Weighted dark against the cream card, with a narrow highlight band. A wider
-     or paler band washes out at these sizes and reads as a bleached stripe
-     through the digits rather than as a shine. */
+  /* Every stop is dark enough to read on the cream card, because the card is
+     nearly white where the number sits and a metallic sweep is only as legible
+     as its brightest point. The previous highlight was #eccb7e at 1.57:1 —
+     invisible, and it ran straight through the middle of every digit where the
+     eye actually reads. The ramp now peaks at 4.71:1 and bottoms at 16.8:1.
+     That is still a wide value range, which is what reads as metal; it simply
+     reads as bronzed gold rather than polished. Dark mode keeps the brighter
+     sweep below, where a near-black card gives it room. */
   background-image: linear-gradient(
     168deg,
-    #5e3d0c 0%,
-    #8a5f14 16%,
-    #b0801d 34%,
-    #d6a83f 46%,
-    #eccb7e 50%,
-    #d6a83f 54%,
-    #b0801d 68%,
-    #8a5f14 86%,
-    #5e3d0c 100%
+    #2b1a03 0%,
+    #402a07 18%,
+    #5c3d0e 36%,
+    #714c12 46%,
+    #8a6119 50%,
+    #714c12 54%,
+    #5c3d0e 64%,
+    #402a07 82%,
+    #2b1a03 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   /* drop-shadow rather than text-shadow: the fill is transparent, so a
      text-shadow would show through the glyphs instead of sitting behind them. */
-  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.55))
-    drop-shadow(0 2px 2px rgba(88, 58, 8, 0.35));
+  /* The white lift is kept light: it sits directly under the strokes and was
+     measurably raising the lightest interior pixels, spending contrast the
+     gradient had just been rebalanced to win. */
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.32))
+    drop-shadow(0 2px 2px rgba(88, 58, 8, 0.3));
 }
 
 :root.dark .number-gold {
