@@ -1,6 +1,6 @@
 export type Provider = 'dhiraagu' | 'ooredoo'
 /** Grades, ascending. Platinum is the most elite. */
-export type Category = 'silver' | 'gold' | 'premium' | 'platinum'
+export type Category = 'silver' | 'gold' | 'platinum'
 export type NumberStatus = 'available' | 'reserved' | 'sold'
 export type OrderStatus = 'new' | 'contacted' | 'completed' | 'cancelled'
 

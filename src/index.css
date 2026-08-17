@@ -1,25 +1,9 @@
 @import "tailwindcss";
 
+/* One palette, dark. The shop sells a luxury object and the whole design —
+   the metal cards below above all — is built for a dark ground, so there is no
+   light theme to fall back to and no `dark:` variant anywhere in the app. */
 :root {
-  --sand: #f7f4ee;
-  --ink: #0e2a2f;
-  --lagoon: #0e7c7b;
-  --lagoon-soft: #d9edec;
-  --gold: #c9962b;
-  --gold-soft: #f3e6c9;
-  --muted: #6b7c7e;
-  --surface: #ffffff;
-  --border: #dfe6e2;
-  --danger: #b3413a;
-
-  /* Foreground for anything sitting on solid gold. Unlike --ink this is
-     deliberately absent from the dark block: gold stays a light colour in both
-     themes, so a badge on it needs dark text at midnight too. Inheriting --ink
-     put near-white on light gold, which measured 1.65:1 — barely legible. */
-  --on-gold: #0e2a2f;
-}
-
-:root.dark {
   --sand: #08171a;
   --ink: #edf2f1;
   --lagoon: #2aa9a6;
@@ -43,7 +27,6 @@
   --color-surface: var(--surface);
   --color-border: var(--border);
   --color-danger: var(--danger);
-  --color-on-gold: var(--on-gold);
 
   --font-display: "Space Grotesk", "Archivo", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
@@ -55,12 +38,7 @@
   --font-numbers: "Archivo", "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
 }
 
-@custom-variant dark (&:where(.dark, .dark *));
-
 html {
-  color-scheme: light;
-}
-html.dark {
   color-scheme: dark;
 }
 
@@ -90,17 +68,9 @@ body {
 
 /* A radial wash behind the hero rather than blurred blobs: the outer stop is
    fully transparent, so it fades into the page instead of being hard-clipped
-   at the section edge and leaving a visible seam. Lagoon only — gold is
-   reserved for premium numbers and decoration would dilute that signal. */
+   at the section edge and leaving a visible seam. Lagoon only — gold belongs
+   to the grades and decoration would dilute that signal. */
 .hero-wash {
-  background-image: radial-gradient(
-    58% 52% at 50% 16%,
-    rgba(14, 124, 123, 0.09),
-    rgba(14, 124, 123, 0) 70%
-  );
-}
-
-:root.dark .hero-wash {
   background-image: radial-gradient(
     58% 52% at 50% 16%,
     rgba(42, 169, 166, 0.13),
@@ -109,62 +79,72 @@ body {
 }
 
 /* ── Number grades ─────────────────────────────────────────────────────────
-   Four grades, escalating: Silver and Gold sit on a light card that follows
-   the theme, then Premium and Platinum invert to a dark card in both themes.
-   Inverting at the top is the luxury convention for an elite grade, and it is
-   also where a metal is easiest to read — light metal on a dark ground has
-   contrast to spare, the exact opposite of the problem gold had on cream.
+   Three grades, escalating, and each card is the metal it is named after —
+   the same idea as a bank's silver, gold and black cards. Silver and Gold are
+   polished light metal, Platinum is black. Against a dark page that reads as a
+   ladder in two directions at once: the metal gets richer, and the top grade
+   is the one that stops being metal and goes black.
 
-   Every ramp was measured against its own card before being written: the
-   lightest stop of each clears 4.5:1 on the surface it actually sits on, in
-   both themes. A metallic sweep is only as legible as its brightest point,
-   which is the mistake this file has already made twice. */
+   That means Silver and Gold are light islands on a dark page, so each carries
+   its own --ink, --muted, --lagoon and --sand. Tailwind's text-ink and friends
+   resolve through those variables, so everything inside a card adapts without
+   any component knowing which grade it is rendering. --sand matters as much as
+   the rest: the solid buttons pair bg-lagoon with text-sand, so a card that
+   darkens lagoon has to lift sand with it or the Add button goes dark on dark.
+
+   Every ramp below was measured against the darkest stop of the card it sits
+   on, which is the worst case a diagonal sweep can land its glyphs over, and
+   clears 4.5:1 there. A metallic number is only as legible as its brightest
+   point, which is the mistake this file has already made twice. */
 
 /* --- card surfaces --- */
 
+/* Both light metals run bright → metal → bright → deep → metal rather than a
+   plain two-stop fade, so the card reads as something rolled and polished
+   with a highlight across it instead of a tinted rectangle. */
+
 .tier-silver {
-  background-image: linear-gradient(150deg, #ffffff 0%, #f3f7f7 100%);
-  border-color: #d5e0e2;
+  background-image: linear-gradient(
+    150deg,
+    #f4f8f9 0%,
+    #d8e1e4 24%,
+    #f0f4f5 44%,
+    #cbd5d8 70%,
+    #e2e9eb 100%
+  );
+  border-color: #aab6ba;
+  --ink: #101a1c;
+  --muted: #3f5054;
+  --surface: #edf2f3;
+  --border: #b5c0c4;
+  --lagoon: #0a6564;
+  --lagoon-soft: #d3e7e6;
+  --sand: #f4f8f8;
 }
 
 .tier-gold {
-  background-image: linear-gradient(150deg, #fdf5e4 0%, #fffdf8 100%);
-  border-color: #e0c98f;
+  background-image: linear-gradient(
+    150deg,
+    #f9eed6 0%,
+    #e9cc8a 22%,
+    #f6e7bb 42%,
+    #d9b463 70%,
+    #edd9a4 100%
+  );
+  border-color: #bd9436;
+  --ink: #221803;
+  --muted: #574112;
+  --surface: #f7ead0;
+  --border: #c9a24a;
+  --lagoon: #0d5f5e;
+  --lagoon-soft: #f3e6c2;
+  --sand: #fbf6e6;
 }
 
-:root.dark .tier-silver {
-  background-image: linear-gradient(150deg, #16252a 0%, #101c1f 100%);
-  border-color: #2b4147;
-}
-
-:root.dark .tier-gold {
-  background-image: linear-gradient(150deg, #221a09 0%, #171207 100%);
-  border-color: #5c4715;
-}
-
-/* Premium and Platinum hold the same dark card in both themes: the grade
-   should look identical to every visitor, and staying dark is what separates
-   them at a glance from the two below. Because the card no longer follows the
-   page, it carries its own ink, muted and surface values — Tailwind's text-ink
-   resolves through these variables, so the card's contents adapt without any
-   component knowing which grade it is rendering. */
-
-.tier-premium {
-  background-image: linear-gradient(150deg, #1b2f33 0%, #101f22 100%);
-  border-color: #8a6a24;
-  --ink: #f8efd9;
-  --muted: #c0aa80;
-  --surface: #24393d;
-  --lagoon-soft: #1d3a3c;
-  --lagoon: #7fd3cf;
-  /* The solid lagoon buttons pair bg-lagoon with text-sand. Lagoon is lifted
-     above for the dark card, so sand has to come down with it or the Add
-     button ends up pale-on-pale — the same pairing failure as the gold badge. */
-  --sand: #10201a;
-}
-
+/* The black card. Nothing about it follows the metals above: it is the one
+   grade that reads as an absence of metal, which is what makes it the top. */
 .tier-platinum {
-  background-image: linear-gradient(150deg, #0e1719 0%, #060a0b 100%);
+  background-image: linear-gradient(150deg, #1a2427 0%, #0e1719 55%, #060a0b 100%);
   border-color: #9fb3b8;
   --ink: #eef4f5;
   --muted: #a9bcc0;
@@ -178,7 +158,6 @@ body {
 
 .num-silver,
 .num-gold,
-.num-premium,
 .num-platinum {
   -webkit-background-clip: text;
   background-clip: text;
@@ -186,56 +165,40 @@ body {
 }
 
 /* drop-shadow rather than text-shadow throughout: the fill is transparent, so
-   a text-shadow would show through the glyphs instead of sitting behind them. */
+   a text-shadow would show through the glyphs instead of sitting behind them.
+   On the two light cards a hairline of white underneath sits the digits into
+   the metal; on the black card that would only fog them, so it is left off. */
 
 .num-silver {
   background-image: linear-gradient(
     168deg,
-    #141b1d 0%,
-    #28353a 18%,
-    #3d5054 36%,
-    #526a6f 46%,
-    #5f797e 50%,
-    #526a6f 54%,
-    #3d5054 64%,
-    #28353a 82%,
-    #141b1d 100%
+    #0f1517 0%,
+    #1e2a2e 18%,
+    #2f4045 36%,
+    #3d5055 46%,
+    #46595e 50%,
+    #3d5055 54%,
+    #2f4045 64%,
+    #1e2a2e 82%,
+    #0f1517 100%
   );
-  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.32)) drop-shadow(0 2px 2px rgba(20, 27, 29, 0.28));
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.45)) drop-shadow(0 2px 2px rgba(16, 26, 28, 0.3));
 }
 
 .num-gold {
   background-image: linear-gradient(
     168deg,
-    #2b1a03 0%,
-    #402a07 18%,
-    #5c3d0e 36%,
-    #714c12 46%,
-    #8a6119 50%,
-    #714c12 54%,
-    #5c3d0e 64%,
-    #402a07 82%,
-    #2b1a03 100%
+    #1a1002 0%,
+    #281a04 18%,
+    #3a2706 36%,
+    #4b3309 46%,
+    #5a3d0c 50%,
+    #4b3309 54%,
+    #3a2706 64%,
+    #281a04 82%,
+    #1a1002 100%
   );
-  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.32)) drop-shadow(0 2px 2px rgba(88, 58, 8, 0.3));
-}
-
-/* On the dark cards the sweep runs the other way — bright metal, and no white
-   lift underneath, which would only fog the glyphs against a dark ground. */
-
-.num-premium {
-  background-image: linear-gradient(
-    168deg,
-    #f3d9a0 0%,
-    #e8c479 20%,
-    #dcae55 42%,
-    #f0d79c 50%,
-    #fbeed0 54%,
-    #dcae55 70%,
-    #e8c479 86%,
-    #f3d9a0 100%
-  );
-  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.55));
+  filter: drop-shadow(0 1px 0 rgba(255, 246, 214, 0.5)) drop-shadow(0 2px 2px rgba(52, 35, 6, 0.3));
 }
 
 .num-platinum {
@@ -253,50 +216,19 @@ body {
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.6));
 }
 
-:root.dark .num-silver {
-  background-image: linear-gradient(
-    168deg,
-    #e6edee 0%,
-    #c6d3d6 20%,
-    #9fb2b6 42%,
-    #d8e3e5 50%,
-    #f4f8f8 54%,
-    #9fb2b6 70%,
-    #c6d3d6 86%,
-    #e6edee 100%
-  );
-  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.55));
-}
-
-:root.dark .num-gold {
-  background-image: linear-gradient(
-    170deg,
-    #a9761c 0%,
-    #e0b34c 20%,
-    #ffdd8e 42%,
-    #fff4cf 50%,
-    #ffdd8e 58%,
-    #e0b34c 78%,
-    #a9761c 100%
-  );
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.55));
-}
-
 /* --- grade chips --- */
 
+/* Each chip inverts its own card: a dark plate stamped into the light metals,
+   a light plate on the black one. */
+
 .badge-silver {
-  background-color: #dbe4e6;
-  color: #1d282b;
+  background-color: #1c282b;
+  color: #e7eef0;
 }
 
 .badge-gold {
-  background-color: var(--gold);
-  color: var(--on-gold);
-}
-
-.badge-premium {
-  background-color: #e5c47f;
-  color: #241902;
+  background-color: #2a1d04;
+  color: #f6e3ab;
 }
 
 .badge-platinum {
@@ -304,40 +236,20 @@ body {
   color: #0c1416;
 }
 
-/* The pattern pill sits on a tinted lagoon background, not on white, so it
-   cannot reuse the plain lagoon text colour — that pairing measures 4.13:1 on
-   its own pill. A step darker clears the bar without changing the hue. On the
-   two dark cards the pill inherits their lifted lagoon instead. */
+/* The pattern pill sits on the card's own tinted lagoon rather than the page's,
+   so both colours come from the card. */
 .tag-pattern {
-  color: #0c6f6e;
-}
-
-:root.dark .tag-pattern,
-.tier-premium .tag-pattern,
-.tier-platinum .tag-pattern {
   color: var(--lagoon);
 }
 
 /* --- price accents, matched to each metal --- */
 
 .price-silver {
-  color: #3c5054;
-}
-
-:root.dark .price-silver {
-  color: #c2d1d4;
+  color: #253337;
 }
 
 .price-gold {
-  color: #7a5214;
-}
-
-:root.dark .price-gold {
-  color: #e6bc5e;
-}
-
-.price-premium {
-  color: #eecb8b;
+  color: #2e2005;
 }
 
 .price-platinum {
@@ -360,7 +272,7 @@ body {
 }
 
 /* Pages fade in as you move between them.
-   
+
    Opacity only, and deliberately so. A transform would look nicer — a few
    pixels of lift as the page arrives — but any transform makes this wrapper a
    containing block for position:fixed descendants, and it stays one for as long

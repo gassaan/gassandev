@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Moon, ShoppingCart, Sun } from 'lucide-react'
-import { useTheme } from '@/contexts/ThemeContext'
+import { ShoppingCart } from 'lucide-react'
 import { useCart } from '@/contexts/CartContext'
 import { BrandLogo } from '@/components/BrandLogo'
 
@@ -11,7 +10,6 @@ import { BrandLogo } from '@/components/BrandLogo'
 const HERO_LOGO_CLEARED = 120
 
 export function Header() {
-  const { theme, toggleTheme } = useTheme()
   const { count } = useCart()
   const { pathname } = useLocation()
 
@@ -49,15 +47,6 @@ export function Header() {
         </Link>
 
         <div className="flex items-center gap-1.5">
-          <button
-            type="button"
-            onClick={toggleTheme}
-            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-            className="flex h-11 w-11 items-center justify-center rounded-full text-ink transition-colors hover:bg-lagoon-soft"
-          >
-            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-          </button>
-
           <Link
             to="/cart"
             aria-label={`Cart, ${count} item${count === 1 ? '' : 's'}`}

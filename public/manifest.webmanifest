@@ -1,12 +1,12 @@
 {
   "name": "Salhi Numbers",
   "short_name": "Salhi Numbers",
-  "description": "Nice and regular mobile numbers for Dhiraagu and Ooredoo in the Maldives.",
+  "description": "Graded mobile numbers for Dhiraagu and Ooredoo in the Maldives.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#F7F4EE",
-  "theme_color": "#0E7C7B",
+  "background_color": "#08171A",
+  "theme_color": "#08171A",
   "icons": [
     { "src": "./app-icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
     { "src": "./favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }

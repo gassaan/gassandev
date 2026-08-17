@@ -18,7 +18,7 @@ exception when duplicate_object then null; end $$;
 do $$ begin
   -- Grades, ascending: Platinum is the most elite. Existing projects get
   -- these via supabase/grades.sql instead.
-  create type category as enum ('silver', 'gold', 'premium', 'platinum');
+  create type category as enum ('silver', 'gold', 'platinum');
 exception when duplicate_object then null; end $$;
 
 do $$ begin

@@ -50,8 +50,12 @@ export function NumberCard({ number }: { number: PhoneNumber }) {
           >
             {tier.label}
           </span>
+          {/* ink at 10%, not muted at 20%: a tint mixed from the same colour as
+              its own label rises and falls with it, so the chip can never get
+              clear of its background. Ink is the card's opposite pole, which
+              holds on the light metals and on the black card alike. */}
           {isReserved && (
-            <span className="rounded-full bg-muted/20 px-2 py-0.5 text-[10px] font-bold tracking-wide text-muted uppercase">
+            <span className="rounded-full bg-ink/10 px-2 py-0.5 text-[10px] font-bold tracking-wide text-ink uppercase">
               Reserved
             </span>
           )}
