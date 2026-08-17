@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { SlidersHorizontal } from 'lucide-react'
 import type { Category, NumberFilters, Provider, SortOption } from '@/types'
 import { ProviderLogo } from '@/components/ProviderLogo'
+import { TIER, TIERS } from '@/utils/tiers'
 
 const SORT_LABELS: Record<SortOption, string> = {
   'price-asc': 'Price: low to high',
@@ -114,17 +115,18 @@ export function FilterBar({
       {open && (
         <div id={PANEL_ID} className="mt-4 flex flex-col gap-4">
           <fieldset>
-            <legend className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted">Type</legend>
+            <legend className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted">Grade</legend>
             <div className="flex flex-wrap gap-2">
               <Chip active={!filters.category || filters.category === 'all'} onClick={() => setCategory('all')}>
-                All types
+                All grades
               </Chip>
-              <Chip active={filters.category === 'nice'} onClick={() => setCategory('nice')}>
-                Nice
-              </Chip>
-              <Chip active={filters.category === 'regular'} onClick={() => setCategory('regular')}>
-                Regular
-              </Chip>
+              {/* Generated from the shared list, so the grades and their order
+                  can never drift from the model. */}
+              {TIERS.map((t) => (
+                <Chip key={t} active={filters.category === t} onClick={() => setCategory(t)}>
+                  {TIER[t].label}
+                </Chip>
+              ))}
             </div>
           </fieldset>
 

@@ -1,6 +1,6 @@
 # Salhi Numbers
 
-A mobile-first shop for nice and regular Dhiraagu / Ooredoo mobile numbers in the Maldives. Customers browse, build a cart, and complete their order over WhatsApp — no payment gateway.
+A mobile-first shop for graded Dhiraagu / Ooredoo mobile numbers in the Maldives. Customers browse, build a cart, and complete their order over WhatsApp — no payment gateway.
 
 ## Stack
 
@@ -49,6 +49,29 @@ Never put the `service_role` key in this project — it bypasses RLS entirely.
 ## Deployment
 
 `.github/workflows/deploy.yml` builds and publishes `dist/` to GitHub Pages on push to `main` (requires the repo's Pages source set to "GitHub Actions" in Settings → Pages). Routing uses `HashRouter` so it works on static hosting without server-side rewrites.
+
+## Number grades
+
+Stock is graded, ascending: **Silver → Gold → Premium → Platinum**. Platinum is the most elite. The grade is always set by hand in the admin Numbers tab — like the provider, it is never inferred, because only you know which of your numbers are worth what.
+
+The four are defined once in `src/utils/tiers.ts`, and the filter chips, admin selects, cart lines and WhatsApp message all read from there, so a grade cannot appear in one place and be missing from another.
+
+Visually the grades escalate in two steps rather than four shades of the same idea. Silver and Gold sit on a light card that follows the theme. Premium and Platinum invert to a dark card in **both** themes — that is the luxury convention for a top grade, it makes them unmistakable at a glance in a scrolling grid, and it is also the easiest place to make a metal legible, since light metal on a dark ground has contrast to spare.
+
+Because those two cards no longer follow the page, they carry their own `--ink`, `--muted`, `--surface`, `--lagoon` and `--sand` values. Tailwind's `text-ink` and friends resolve through those variables, so everything inside the card adapts without any component knowing which grade it is rendering. `--sand` matters as much as the rest: the solid buttons pair `bg-lagoon` with `text-sand`, so lifting lagoon for a dark card without bringing sand down with it leaves the Add button pale on pale.
+
+Every metallic ramp was measured against the card it actually sits on before being written — the lightest stop of each clears 4.5:1 in both themes. A metallic sweep is only as legible as its brightest point, which is a mistake this stylesheet made twice before the grades existed.
+
+### Migrating an existing project
+
+`supabase/grades.sql` upgrades a database created before grades existed. It **renames** the two old values rather than rebuilding the type, so nothing is rewritten and no row loses its meaning:
+
+- `regular` → **Silver** (the entry grade)
+- `nice` → **Gold**
+
+Everything previously marked "nice" therefore lands on Gold, and you promote individual numbers to Premium or Platinum yourself. That is deliberate — guessing which of your live stock deserves the top grades would mislabel real inventory.
+
+Historical orders are left alone. `orders.items` holds a JSONB snapshot of what was sold at the time, so older rows still read `nice` or `regular`; an order is a record of a past sale and rewriting it would falsify it. The app maps those legacy values to Gold and Silver when displaying them, so old orders and carts still render correctly.
 
 ## The brand mark
 

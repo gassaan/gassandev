@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { ArrowRight, ShoppingBag, Trash2 } from 'lucide-react'
+import { tierLabel } from '@/utils/tiers'
 import { useCart } from '@/contexts/CartContext'
 import { ProviderLogo } from '@/components/ProviderLogo'
 import { EmptyState } from '@/components/EmptyState'
@@ -46,7 +47,7 @@ export function Cart() {
             <div className="flex-1">
               <p className="font-numeric text-lg font-semibold text-ink">{formatMsisdn(item.msisdn)}</p>
               <p className="text-xs capitalize text-muted">
-                {item.provider} · {item.category}
+                {item.provider} · {tierLabel(item.category)}
               </p>
             </div>
             <p className="font-numeric font-semibold text-ink">MVR {formatCurrency(item.price)}</p>

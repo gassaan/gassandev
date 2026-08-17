@@ -16,7 +16,9 @@ do $$ begin
 exception when duplicate_object then null; end $$;
 
 do $$ begin
-  create type category as enum ('nice', 'regular');
+  -- Grades, ascending: Platinum is the most elite. Existing projects get
+  -- these via supabase/grades.sql instead.
+  create type category as enum ('silver', 'gold', 'premium', 'platinum');
 exception when duplicate_object then null; end $$;
 
 do $$ begin
@@ -37,7 +39,7 @@ create table if not exists public.numbers (
   -- Never inferred from the prefix: number portability makes 7xx/9xx
   -- unreliable, so the admin always sets this explicitly.
   provider provider not null,
-  category category not null default 'regular',
+  category category not null default 'silver',
   pattern_tags text[] not null default '{}',
   price numeric(10, 2) not null check (price >= 0),
   promo_price numeric(10, 2) check (promo_price >= 0),

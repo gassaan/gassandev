@@ -9,7 +9,7 @@ const fieldClass =
 export function AddNumberModal({ onClose, onAdded }: { onClose: () => void; onAdded: (n: PhoneNumber) => void }) {
   const [msisdn, setMsisdn] = useState('')
   const [provider, setProvider] = useState<Provider>('dhiraagu')
-  const [category, setCategory] = useState<Category>('regular')
+  const [category, setCategory] = useState<Category>('silver')
   const [patternTags, setPatternTags] = useState('')
   const [price, setPrice] = useState('')
   const [promoPrice, setPromoPrice] = useState('')
@@ -80,10 +80,12 @@ export function AddNumberModal({ onClose, onAdded }: { onClose: () => void; onAd
             </select>
           </label>
           <label className="flex flex-col gap-1 text-sm text-ink">
-            Category
+            Grade
             <select value={category} onChange={(e) => setCategory(e.target.value as Category)} className={fieldClass}>
-              <option value="regular">Regular</option>
-              <option value="nice">Nice</option>
+              <option value="silver">Silver</option>
+              <option value="gold">Gold</option>
+              <option value="premium">Premium</option>
+              <option value="platinum">Platinum</option>
             </select>
           </label>
         </div>
