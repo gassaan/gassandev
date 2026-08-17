@@ -56,6 +56,16 @@ There is no light mode and no theme switch. The whole design is built for a dark
 
 The dark background is also declared inline in `index.html`, because the stylesheet only arrives with the bundle; without it the first paint is a white page that then flips.
 
+## The landing page
+
+Minimal on purpose. A shop that sells individual objects should lead with its best one rather than describe the category, so the hero is the brand mark, one serif line, and **the showpiece** — the dearest number that can actually be bought today, set large in its own grade's metal.
+
+The showpiece is not pinned to Platinum. It is the highest-priced number whose status is `available`, so a shop with nothing graded Platinum yet still leads with its best piece instead of an empty space, and a number that sells stops being advertised on the front page the moment its status changes.
+
+Below it the three grades are doorways into the catalogue, kept to a hairline row rather than three filled cards — the cards belong to the numbers, and repeating them here would make the grades compete with the merchandise they exist to sort.
+
+Headlines are set in Cormorant Garamond. It is the one addition to the font stack, and it does most of the work that reads as "premium"; the rest is whitespace and letter-spaced small caps rather than ornament.
+
 ## Number grades
 
 Stock is graded, ascending: **Silver → Gold → Platinum**. Platinum is the most elite. The grade is always set by hand in the admin Numbers tab — like the provider, it is never inferred, because only you know which of your numbers are worth what.

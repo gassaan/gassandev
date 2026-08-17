@@ -36,6 +36,7 @@
      into a picket fence exactly where the repeated digits are the thing being
      sold. Tabular figures keep those runs in register. */
   --font-numbers: "Archivo", "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Cormorant Garamond", ui-serif, Georgia, serif;
 }
 
 html {
