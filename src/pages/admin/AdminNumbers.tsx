@@ -121,9 +121,11 @@ export function AdminNumbers() {
           onChange={(e) => setCategoryFilter(e.target.value as Category | 'all')}
           className="h-10 rounded-full border border-border bg-surface px-3 text-sm text-ink capitalize"
         >
-          <option value="all">All types</option>
-          <option value="nice">Nice</option>
-          <option value="regular">Regular</option>
+          <option value="all">All grades</option>
+          <option value="silver">Silver</option>
+          <option value="gold">Gold</option>
+          <option value="premium">Premium</option>
+          <option value="platinum">Platinum</option>
         </select>
         <button
           type="button"
@@ -227,8 +229,10 @@ export function AdminNumbers() {
                       onChange={(e) => handleUpdate(n.id, { category: e.target.value as Category })}
                       className={cellSelect}
                     >
-                      <option value="regular">Regular</option>
-                      <option value="nice">Nice</option>
+                      <option value="silver">Silver</option>
+                      <option value="gold">Gold</option>
+                      <option value="premium">Premium</option>
+                      <option value="platinum">Platinum</option>
                     </select>
                   </td>
                   <td className="p-3">

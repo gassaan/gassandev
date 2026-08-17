@@ -1,5 +1,6 @@
 import type { CartItem } from '@/types'
 import { formatCurrency, formatMsisdn } from '@/utils/format'
+import { tierLabel } from '@/utils/tiers'
 
 export const WHATSAPP_NUMBER = '9607669999'
 
@@ -19,7 +20,7 @@ export function buildOrderMessage(params: {
   const lines = items
     .map(
       (n, i) =>
-        `${i + 1}. ${formatMsisdn(n.msisdn)} — ${capitalize(n.provider)} — ${capitalize(n.category)} — MVR ${formatCurrency(n.price)}`,
+        `${i + 1}. ${formatMsisdn(n.msisdn)} — ${capitalize(n.provider)} — ${tierLabel(n.category)} — MVR ${formatCurrency(n.price)}`,
     )
     .join('\n')
 
