@@ -62,11 +62,22 @@ Stock is graded, ascending: **Silver → Gold → Platinum**. Platinum is the mo
 
 The three are defined once in `src/utils/tiers.ts`, and the filter chips, admin selects, cart lines and WhatsApp message all read from there, so a grade cannot appear in one place and be missing from another.
 
-Each card **is** the metal it is named after, the same idea as a bank's silver, gold and black cards: Silver and Gold are polished light metal, Platinum is black. Against a dark page that reads as a ladder in two directions at once — the metal gets richer, and the top grade is the one that stops being metal altogether.
+The metal is on the **number**, not the card. An earlier pass made each card the metal it was named after — a bright silver card, a bright gold one — which was legible but far too loud: several of them in a scrolling grid pulled the eye away from the numbers, which are the thing being sold.
 
-That makes Silver and Gold light islands on a dark page, so each carries its own `--ink`, `--muted`, `--lagoon` and `--sand`. Tailwind's `text-ink` and friends resolve through those variables, so everything inside a card adapts without any component knowing which grade it is rendering. `--sand` matters as much as the rest: the solid buttons pair `bg-lagoon` with `text-sand`, so a card that darkens lagoon has to lift sand with it or the Add button goes dark on dark.
+Every card is dark now, and four quieter signals separate the grades — no single one can carry it, because on an all-dark scheme the card surfaces sit only 1.15–1.35:1 apart in luminance, which is a shade rather than a distinction:
 
-Every metallic ramp was measured against the **darkest** stop of the card it sits on — the worst case a diagonal sweep can land its glyphs over — and clears 4.5:1 there. A metallic number is only as legible as its brightest point, which is a mistake this stylesheet made twice before the grades existed. The card gradients themselves were tuned to that constraint rather than the other way round: the gold card is a champagne gold, not a deep one, because a deep gold leaves no room above it for a legible number.
+| | Silver | Gold | Platinum |
+|---|---|---|---|
+| hue | cool slate | warm brown | neutral black |
+| rim | dim | dim warm | **bright** (4.07:1 above Silver's) |
+| badge | dark plate | dark plate | **light plate** |
+| number | silver, peaks below white | gold | platinum, peaks at white |
+
+Platinum is the darkest of the three and wears the bright rim and the light badge, so the top grade still reads as different *in kind* rather than merely more. Silver had to be lifted slightly off it for the same reason: two near-black cards separated only by the tint of their digits left the badge doing all the work.
+
+Each card carries its own `--ink`, `--muted`, `--lagoon` and `--sand`. Tailwind's `text-ink` and friends resolve through those variables, so everything inside a card adapts without any component knowing which grade it is rendering.
+
+Every ramp was measured against the **lightest** stop of the card it sits on — the worst case for light type on a dark ground, and the mirror of the check this stylesheet needed back when the cards were pale. Everything clears 4.5:1 there. A metallic number is only as legible as its dimmest point once the ground is dark, and only as legible as its brightest point when the ground is light; getting that backwards is a mistake this file has made more than once.
 
 ### Migrating an existing project
 
