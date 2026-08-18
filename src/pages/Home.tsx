@@ -44,7 +44,11 @@ export function Home() {
       {/* Two even lines on a phone, one line from sm up. text-balance keeps a
           replacement phrase from stranding a single word on its own line — the
           measure is set by the longest sensible headline, not this one. */}
-      <p className="max-w-[20ch] text-balance font-serif text-[1.65rem] leading-[1.15] font-light text-ink sm:max-w-[34ch] sm:text-[2.4rem]">
+      {/* rtl:leading-[1.5] loosens the Dhivehi headline specifically: MV MAG
+          Round's taller, rounder glyphs crowd each other at the 1.15 tuned
+          for the Latin serif, so the English headline keeps its tight
+          leading and only the Thaana one gets the looser value. */}
+      <p className="max-w-[20ch] text-balance font-serif text-[1.65rem] leading-[1.15] rtl:leading-[1.5] font-light text-ink sm:max-w-[34ch] sm:text-[2.4rem]">
         {t.home.headline}
       </p>
 
