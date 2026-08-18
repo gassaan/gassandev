@@ -1,4 +1,5 @@
 import type { Category } from '@/types'
+import type { Translations } from '@/i18n/types'
 
 /** Ascending: Platinum is the most elite. Drives filter order everywhere. */
 export const TIERS: readonly Category[] = ['silver', 'gold', 'platinum']
@@ -36,6 +37,7 @@ export function asTier(value: string): Category {
   return value in TIER ? (value as Category) : (LEGACY[value] ?? 'silver')
 }
 
-export function tierLabel(value: string): string {
-  return TIER[asTier(value)].label
+export function tierLabel(value: string, t?: Translations): string {
+  const tier = asTier(value)
+  return t ? t.tiers[tier] : TIER[tier].label
 }

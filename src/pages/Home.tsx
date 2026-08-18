@@ -4,6 +4,7 @@ import { ArrowRight } from 'lucide-react'
 import { dataService } from '@/data'
 import { BrandLogo } from '@/components/BrandLogo'
 import { useDocumentMeta } from '@/hooks/useDocumentMeta'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 /**
  * Four things and nothing else: the mark, a line, the way in, and the count.
@@ -19,6 +20,7 @@ export function Home() {
     'Graded Dhiraagu and Ooredoo mobile numbers in the Maldives. Browse Silver, Gold and Platinum, and order over WhatsApp.',
   )
 
+  const { t } = useLanguage()
   const [availableCount, setAvailableCount] = useState<number | null>(null)
 
   useEffect(() => {
@@ -43,7 +45,7 @@ export function Home() {
           replacement phrase from stranding a single word on its own line — the
           measure is set by the longest sensible headline, not this one. */}
       <p className="max-w-[20ch] text-balance font-serif text-[1.65rem] leading-[1.15] font-light text-ink sm:max-w-[34ch] sm:text-[2.4rem]">
-        Some numbers are worth having.
+        {t.home.headline}
       </p>
 
       {/* One hairline, fading out at both ends rather than ruling across the
@@ -57,11 +59,11 @@ export function Home() {
         to="/browse"
         className="group inline-flex h-13 items-center gap-2.5 rounded-full bg-lagoon px-9 text-base font-semibold text-sand transition-colors hover:bg-lagoon/90 active:bg-lagoon/80"
       >
-        Browse numbers
+        {t.home.browseButton}
         <ArrowRight
           size={18}
           aria-hidden="true"
-          className="transition-transform group-hover:translate-x-0.5"
+          className="rtl:rotate-180 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5"
         />
       </Link>
 

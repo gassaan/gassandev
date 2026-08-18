@@ -8,11 +8,13 @@ import { SearchBar } from '@/components/SearchBar'
 import { FilterBar } from '@/components/FilterBar'
 import { EmptyState } from '@/components/EmptyState'
 import { useDocumentMeta } from '@/hooks/useDocumentMeta'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 const PAGE_SIZE = 12
 
 export function Browse() {
   useDocumentMeta('Browse numbers — Salhi Numbers', 'Search and filter Dhiraagu and Ooredoo mobile numbers by price, type and pattern.')
+  const { t } = useLanguage()
 
   const [searchParams] = useSearchParams()
   const [filters, setFilters] = useState<NumberFilters>(() => ({
@@ -58,21 +60,21 @@ export function Browse() {
           <NumberGridSkeleton count={6} />
         ) : results && results.length === 0 ? (
           <EmptyState
-            title="No numbers match that search"
-            description="Try fewer digits, or clear the filters."
+            title={t.browse.emptyTitle}
+            description={t.browse.emptyDescription}
             action={
               <button
                 type="button"
                 onClick={clearFilters}
                 className="mt-1 flex h-11 items-center rounded-full bg-lagoon px-5 text-sm font-semibold text-sand hover:bg-lagoon/90"
               >
-                Clear filters
+                {t.browse.clearFilters}
               </button>
             }
           />
         ) : (
           <>
-            <p className="mb-3 text-sm text-muted">{results?.length} number{results?.length === 1 ? '' : 's'} found</p>
+            <p className="mb-3 text-sm text-muted">{t.browse.resultsCount(results?.length ?? 0)}</p>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               {visible.map((n) => (
                 <NumberCard key={n.id} number={n} />
@@ -85,7 +87,7 @@ export function Browse() {
                   onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
                   className="flex h-11 items-center rounded-full border border-border bg-surface px-6 text-sm font-semibold text-ink hover:bg-lagoon-soft"
                 >
-                  Load more
+                  {t.browse.loadMore}
                 </button>
               </div>
             )}

@@ -3,13 +3,15 @@ import { Check, Copy, ShoppingCart } from 'lucide-react'
 import type { PhoneNumber } from '@/types'
 import { ProviderLogo } from '@/components/ProviderLogo'
 import { formatCurrency, formatMsisdn, getSavePercent, getSellingPrice } from '@/utils/format'
-import { TIER, asTier } from '@/utils/tiers'
+import { TIER, asTier, tierLabel } from '@/utils/tiers'
 import { useCart } from '@/contexts/CartContext'
 import { useToast } from '@/contexts/ToastContext'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 export function NumberCard({ number }: { number: PhoneNumber }) {
   const { isInCart, addItem } = useCart()
   const { showToast } = useToast()
+  const { t } = useLanguage()
   const [copied, setCopied] = useState(false)
 
   const tier = TIER[asTier(number.category)]
@@ -36,7 +38,7 @@ export function NumberCard({ number }: { number: PhoneNumber }) {
       category: number.category,
       price: sellingPrice,
     })
-    showToast(`${formatMsisdn(number.msisdn)} added to cart`)
+    showToast(t.numberCard.addedToast(formatMsisdn(number.msisdn)))
   }
 
   return (
@@ -48,7 +50,7 @@ export function NumberCard({ number }: { number: PhoneNumber }) {
           <span
             className={`rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wide uppercase ${tier.badge}`}
           >
-            {tier.label}
+            {tierLabel(number.category, t)}
           </span>
           {/* ink at 10%, not muted at 20%: a tint mixed from the same colour as
               its own label rises and falls with it, so the chip can never get
@@ -56,12 +58,12 @@ export function NumberCard({ number }: { number: PhoneNumber }) {
               holds on the light metals and on the black card alike. */}
           {isReserved && (
             <span className="rounded-full bg-ink/10 px-2 py-0.5 text-[10px] font-bold tracking-wide text-ink uppercase">
-              Reserved
+              {t.numberCard.reserved}
             </span>
           )}
           {savePercent > 0 && (
             <span className="rounded-full bg-lagoon px-2 py-0.5 text-[10px] font-bold tracking-wide text-sand uppercase">
-              Save {savePercent}%
+              {t.numberCard.save(savePercent)}
             </span>
           )}
         </div>
@@ -71,7 +73,7 @@ export function NumberCard({ number }: { number: PhoneNumber }) {
       <button
         type="button"
         onClick={handleCopy}
-        aria-label={`Copy number ${formatMsisdn(number.msisdn)}`}
+        aria-label={t.numberCard.copyAria(formatMsisdn(number.msisdn))}
         className="group flex items-center gap-2 self-start"
       >
         {/* The metallic fill is on this span, not the button: every grade
@@ -100,7 +102,7 @@ export function NumberCard({ number }: { number: PhoneNumber }) {
           {copied ? <Check size={18} className="text-lagoon" /> : <Copy size={18} />}
         </span>
       </button>
-      {copied && <span className="-mt-2 text-xs font-medium text-lagoon">Copied</span>}
+      {copied && <span className="-mt-2 text-xs font-medium text-lagoon">{t.numberCard.copied}</span>}
 
       {number.patternTags.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
@@ -129,7 +131,7 @@ export function NumberCard({ number }: { number: PhoneNumber }) {
           type="button"
           onClick={handleAdd}
           disabled={isReserved || inCart}
-          aria-label={inCart ? 'In cart' : `Add ${formatMsisdn(number.msisdn)} to cart`}
+          aria-label={inCart ? t.numberCard.inCart : t.numberCard.addAria(formatMsisdn(number.msisdn))}
           className={`flex h-11 min-w-[44px] items-center gap-1.5 rounded-full px-4 text-sm font-semibold transition-colors ${
             isReserved
               ? 'cursor-not-allowed bg-muted/15 text-muted'
@@ -140,11 +142,11 @@ export function NumberCard({ number }: { number: PhoneNumber }) {
         >
           {inCart ? (
             <>
-              <Check size={16} /> In cart
+              <Check size={16} /> {t.numberCard.inCart}
             </>
           ) : (
             <>
-              <ShoppingCart size={16} /> Add
+              <ShoppingCart size={16} /> {t.numberCard.add}
             </>
           )}
         </button>

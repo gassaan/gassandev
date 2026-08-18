@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { ShoppingCart } from 'lucide-react'
+import { Languages, ShoppingCart } from 'lucide-react'
 import { useCart } from '@/contexts/CartContext'
+import { useLanguage } from '@/contexts/LanguageContext'
 import { BrandLogo } from '@/components/BrandLogo'
 
 // Roughly where the landing hero's logo has slid under the sticky header.
@@ -12,6 +13,7 @@ const HERO_LOGO_CLEARED = 120
 export function Header() {
   const { count } = useCart()
   const { pathname } = useLocation()
+  const { t, toggleLanguage, language } = useLanguage()
 
   // The landing page already shows the logo at full size in the hero, so the
   // header copy stays out of the way until that one has scrolled off. Every
@@ -41,15 +43,24 @@ export function Header() {
           className={`flex items-center transition-[opacity,visibility] duration-300 ${
             logoShown ? 'visible opacity-100' : 'invisible opacity-0'
           }`}
-          aria-label="Salhi Numbers — home"
+          aria-label={t.header.homeAria}
         >
           <BrandLogo className="h-11" />
         </Link>
 
         <div className="flex items-center gap-1.5">
+          <button
+            type="button"
+            onClick={toggleLanguage}
+            aria-label={t.languageToggleLabel}
+            className="flex h-11 items-center gap-1.5 rounded-full px-3 text-sm font-semibold text-ink transition-colors hover:bg-lagoon-soft"
+          >
+            <Languages size={18} aria-hidden="true" />
+            {language === 'en' ? 'ދިވެހި' : 'EN'}
+          </button>
           <Link
             to="/cart"
-            aria-label={`Cart, ${count} item${count === 1 ? '' : 's'}`}
+            aria-label={t.header.cartAria(count)}
             className="relative flex h-11 w-11 items-center justify-center rounded-full text-ink transition-colors hover:bg-lagoon-soft"
           >
             <ShoppingCart size={20} />

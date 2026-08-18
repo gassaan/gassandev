@@ -37,19 +37,31 @@
   --color-border: var(--border);
   --color-danger: var(--danger);
 
-  --font-display: "Space Grotesk", "Archivo", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  /* "Noto Sans Thaana" trails every stack rather than gating on a dir/lang
+     selector: none of the Latin faces above carry Thaana glyphs, so the
+     browser already falls through to it per-glyph whenever Dhivehi text
+     appears, in either language mode, with no conditional CSS needed. */
+  --font-display: "Space Grotesk", "Archivo", "Noto Sans Thaana", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", "Noto Sans Thaana", ui-sans-serif, system-ui, sans-serif;
   /* The number is the product, so it gets its own face. Archivo over the
      display font because its digits are sturdier and its 1 carries a flag —
      Space Grotesk draws a bare vertical stroke, which turns a run like 1111
      into a picket fence exactly where the repeated digits are the thing being
      sold. Tabular figures keep those runs in register. */
   --font-numbers: "Archivo", "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Cormorant Garamond", ui-serif, Georgia, serif;
+  --font-serif: "Cormorant Garamond", "Noto Sans Thaana", ui-serif, Georgia, serif;
 }
 
 html {
   color-scheme: dark;
+}
+
+/* Thaana runs noticeably small next to Latin type at the same font-size, so
+   Dhivehi copy gets a size bump to read at the same visual weight. Scoped to
+   the html[dir="rtl"] page state rather than a lang selector, since dir is
+   what LanguageContext keeps in sync with the active language. */
+html[dir="rtl"] body {
+  font-size: 1.0625em;
 }
 
 body {
