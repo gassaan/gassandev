@@ -135,17 +135,23 @@ body {
   --sand: #101010;
 }
 
-/* Rough as the surface, Gold as the rim. Gold at its given value cannot carry
-   type — Pale on it measures 4.44:1 and the page colour 3.12:1 — but as a rim
-   it has no legibility burden, which is the one place it works undiluted. */
+/* Rough as the surface, and bone as everything on it. The rim, the digits, the
+   badge and the price were all gold, which stacked into a card that read as
+   yellow before it read as a grade. The colour now comes from the surface
+   alone and everything on top is a warm off-white — the same move the other
+   two cards make: the card is the colour, the number is the light on it.
+
+   The grade is still called Gold and no longer looks it. That is a real cost,
+   taken deliberately — the badge says which grade it is, and an oxblood card
+   with bone type is the more expensive-looking object. */
 .tier-gold {
   background-image: linear-gradient(150deg, #3a150b 0%, #2a0f07 55%, #1e0a04 100%);
-  border-color: #785d32;
-  --ink: #f2e4ce;
-  --muted: #c0a88a;
+  border-color: #9a8f7e;
+  --ink: #f3ece0;
+  --muted: #bcb2a3;
   --surface: #3a150b;
-  --border: #6b4a20;
-  --lagoon: #e0be84;
+  --border: #6b5c48;
+  --lagoon: #dcd3c3;
   --lagoon-soft: #24100a;
   --sand: #1e0a04;
 }
@@ -201,14 +207,14 @@ body {
 .num-gold {
   background-image: linear-gradient(
     168deg,
-    #f0d9a8 0%,
-    #dcbc7e 20%,
-    #b8935a 42%,
-    #ecd5a2 50%,
-    #fdf3dd 54%,
-    #b8935a 70%,
-    #dcbc7e 86%,
-    #f0d9a8 100%
+    #f5f0e6 0%,
+    #ebe4d8 20%,
+    #cfc7b8 42%,
+    #efe9dd 50%,
+    #ffffff 54%,
+    #cfc7b8 70%,
+    #ebe4d8 86%,
+    #f5f0e6 100%
   );
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.55));
 }
@@ -236,8 +242,8 @@ body {
 }
 
 .badge-gold {
-  background-color: #24100a;
-  color: #f0d9a8;
+  background-color: #221a12;
+  color: #efe8da;
 }
 
 .badge-platinum {
@@ -258,7 +264,7 @@ body {
 }
 
 .price-gold {
-  color: #e6c88e;
+  color: #e6decf;
 }
 
 .price-platinum {
