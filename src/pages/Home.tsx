@@ -39,7 +39,10 @@ export function Home() {
         <BrandLogo className="h-28 sm:h-40" />
       </h1>
 
-      <p className="max-w-[15ch] font-serif text-[2.3rem] leading-[1.08] font-light text-ink sm:max-w-[20ch] sm:text-[3.4rem]">
+      {/* Two even lines on a phone, one line from sm up. text-balance keeps a
+          replacement phrase from stranding a single word on its own line — the
+          measure is set by the longest sensible headline, not this one. */}
+      <p className="max-w-[20ch] text-balance font-serif text-[1.65rem] leading-[1.15] font-light text-ink sm:max-w-[34ch] sm:text-[2.4rem]">
         Some numbers are worth having.
       </p>
 
