@@ -224,16 +224,25 @@ body {
    The first shadow on each is a halo in the number's own hue, which is what
    makes it read as lit rather than painted.
 
-   All three ramps are cool while every label on every card is warm bone. That
-   is the point: the number stopped leading when the palette went monochrome,
-   because it had become the same colour family as the text beside it. Hue
-   separates them now, not just brightness — the number reads as a different
-   material from the type around it. The prices step back a shade for the same
-   reason; a hierarchy is a gap, and it is made at both ends.
+   Each number is its grade's own metal, and that is what separates it from the
+   card. The labels are all warm bone; Silver and Platinum answer with cool
+   steel, Gold with a saturated gold. Either way the split is by hue, which is
+   what the number lost when the palette went monochrome and it became the same
+   colour family as the text beside it. The prices step back a shade for the
+   same reason; a hierarchy is a gap, and it is made at both ends.
+
+   HOW DEEP THE GOLD CAN GO. The card is dark, so the ramp's *darkest* stop is
+   what decides legibility, and on this card anything below about #b8891f drops
+   under 4.5:1. #c2922e is therefore about as deep as gold gets here — richer
+   than that stops being moody and starts being unreadable. A properly antique
+   gold (#a9761c) measured 4.17 even with the card darkened, because the glass
+   fill lets the page through and the surface lands lighter than the declared
+   gradient suggests; it would need the card taken to near-black, which throws
+   away the oxblood that distinguishes the grade.
 
    Each ramp was measured against the brightest surface its card actually
-   reaches on the built site, not the declared gradient stops: worst case 7.16,
-   and the dimmed prices clear 5.45 / 6.99 / 7.82. */
+   reaches on the built site, not the declared gradient stops: Silver 6.96,
+   Gold 5.05, Platinum 8.53, and the dimmed prices clear 5.30 / 6.81 / 7.63. */
 
 .num-silver {
   background-image: linear-gradient(
@@ -253,16 +262,16 @@ body {
 .num-gold {
   background-image: linear-gradient(
     168deg,
-    #ffffff 0%,
-    #e2ecf6 18%,
-    #b4c6d8 40%,
-    #eef4fb 49%,
-    #ffffff 53%,
-    #b4c6d8 68%,
-    #e2ecf6 86%,
-    #ffffff 100%
+    #ffeec4 0%,
+    #eccf82 18%,
+    #c2922e 40%,
+    #f7e6b8 49%,
+    #fffdf5 53%,
+    #c2922e 68%,
+    #eccf82 86%,
+    #ffeec4 100%
   );
-  filter: drop-shadow(0 0 14px rgba(200, 220, 245, 0.26)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.6));
+  filter: drop-shadow(0 0 15px rgba(255, 205, 110, 0.32)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.6));
 }
 
 .num-platinum {
@@ -310,7 +319,7 @@ body {
 }
 
 .price-gold {
-  color: #bcb2a3;
+  color: #d6b171;
 }
 
 .price-platinum {
