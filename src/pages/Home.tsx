@@ -1,139 +1,79 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, ChevronDown, MessageCircle, PhoneCall, Search as SearchIcon } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { dataService } from '@/data'
-import type { PhoneNumber } from '@/types'
-import { NumberCard } from '@/components/NumberCard'
-import { NumberGridSkeleton } from '@/components/NumberCardSkeleton'
 import { BrandLogo } from '@/components/BrandLogo'
 import { useDocumentMeta } from '@/hooks/useDocumentMeta'
 
+/**
+ * Four things and nothing else: the mark, a line, the way in, and the count.
+ *
+ * With so little on the page, the design has to come from the space between
+ * the four rather than from anything added around them — hence the single
+ * full-height column, the one hairline, and no card, panel or border anywhere.
+ * Anything more would read as decoration, which is the opposite of the effect.
+ */
 export function Home() {
   useDocumentMeta(
-    'Salhi Numbers — Nice mobile numbers in the Maldives',
-    'Buy nice and regular mobile phone numbers for Dhiraagu and Ooredoo in the Maldives. Browse, pick your number, and order over WhatsApp.',
+    'Salhi Numbers — Premium mobile numbers in the Maldives',
+    'Graded Dhiraagu and Ooredoo mobile numbers in the Maldives. Browse Silver, Gold and Platinum, and order over WhatsApp.',
   )
 
-  const [featured, setFeatured] = useState<PhoneNumber[]>([])
   const [availableCount, setAvailableCount] = useState<number | null>(null)
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     let active = true
-    Promise.all([dataService.getFeaturedNumbers(4), dataService.getAvailableCount()]).then(([f, c]) => {
-      if (!active) return
-      setFeatured(f)
-      setAvailableCount(c)
-      setLoading(false)
+    dataService.getAvailableCount().then((c) => {
+      if (active) setAvailableCount(c)
     })
     return () => {
       active = false
     }
   }, [])
 
-  const howItWorksRef = useRef<HTMLElement>(null)
-
-  function scrollToHowItWorks() {
-    // scrollIntoView's smooth behaviour is a script option, so the global
-    // reduced-motion CSS rule does not reach it — it has to be asked for here.
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    howItWorksRef.current?.scrollIntoView({
-      behavior: reduced ? 'auto' : 'smooth',
-      block: 'start',
-    })
-  }
-
   return (
-    <div className="mx-auto max-w-5xl px-4 pb-16">
-      <section className="hero-wash hero-screen -mx-4 flex flex-col items-center justify-center gap-6 px-4 py-12 text-center">
-        {/* The mark carries the brand name, so it is the page heading, and its
-            alt text is what supplies the h1's text to assistive tech and search. */}
-        <h1 className="flex justify-center">
-          <BrandLogo className="h-32 sm:h-44" />
-        </h1>
+    <div className="hero-wash hero-screen flex flex-col items-center justify-center gap-9 px-6 py-16 text-center">
+      {/* The mark carries the brand name, so it is the page heading and its alt
+          text is what supplies the h1's text to assistive tech and search. */}
+      <h1 className="flex justify-center">
+        <BrandLogo className="h-28 sm:h-40" />
+      </h1>
 
-        <p className="max-w-[19rem] text-[0.95rem] leading-relaxed text-muted sm:max-w-md sm:text-base">
-          Easy-to-remember numbers for Dhiraagu and Ooredoo, ready to reserve today.
-        </p>
+      {/* Two even lines on a phone, one line from sm up. text-balance keeps a
+          replacement phrase from stranding a single word on its own line — the
+          measure is set by the longest sensible headline, not this one. */}
+      <p className="max-w-[20ch] text-balance font-serif text-[1.65rem] leading-[1.15] font-light text-ink sm:max-w-[34ch] sm:text-[2.4rem]">
+        Some numbers are worth having.
+      </p>
 
-        {availableCount != null && (
-          <p className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3.5 py-1.5 text-sm text-ink shadow-sm">
-            <span className="h-1.5 w-1.5 rounded-full bg-lagoon" aria-hidden="true" />
-            <span className="font-numeric font-semibold">{availableCount}</span>
-            number{availableCount === 1 ? '' : 's'} available
-          </p>
-        )}
+      {/* One hairline, fading out at both ends rather than ruling across the
+          column: it marks the turn from brand to action without drawing a box. */}
+      <span
+        className="h-px w-20 bg-gradient-to-r from-transparent via-gold to-transparent"
+        aria-hidden="true"
+      />
 
-        {/* Sits with the content rather than pinned to the bottom edge: it is
-            now the page's primary action, not a hint that there is more below. */}
-        <Link
-          to="/browse"
-          className="mt-1 inline-flex h-12 items-center gap-2 rounded-full bg-lagoon px-7 text-base font-semibold text-sand shadow-sm transition-colors hover:bg-lagoon/90 active:bg-lagoon/80"
-        >
-          Browse numbers
-          <ArrowRight size={18} aria-hidden="true" />
-        </Link>
-
-        {/* Quiet next to the primary action on purpose: this is the secondary
-            path for someone who wants reassurance before they start shopping. */}
-        <button
-          type="button"
-          onClick={scrollToHowItWorks}
-          className="inline-flex min-h-11 items-center gap-1.5 rounded-full px-4 text-sm font-medium text-muted transition-colors hover:text-lagoon"
-        >
-          How it works
-          <ChevronDown size={16} aria-hidden="true" />
-        </button>
-      </section>
-
-      <div className="pt-8">
-        {loading ? (
-          <NumberGridSkeleton count={4} />
-        ) : (
-          featured.length > 0 && (
-            <section>
-              <div className="mb-3 flex items-center justify-between">
-                <h2 className="font-display text-lg font-semibold text-ink">Featured picks</h2>
-                {/* Plain /browse, not a category filter: featured is a flag the
-                    admin sets by hand and cuts across all three grades, so
-                    filtering to one of them would hide half of what is above. */}
-                <Link to="/browse" className="text-sm font-medium text-lagoon hover:underline">
-                  See all
-                </Link>
-              </div>
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {featured.map((n) => (
-                  <NumberCard key={n.id} number={n} />
-                ))}
-              </div>
-            </section>
-          )
-        )}
-      </div>
-
-      {/* scroll-mt clears the sticky header so the heading is not tucked
-          under it when the cue scrolls here. */}
-      <section
-        ref={howItWorksRef}
-        className="mt-12 scroll-mt-20 rounded-2xl border border-border bg-surface p-5"
+      <Link
+        to="/browse"
+        className="group inline-flex h-13 items-center gap-2.5 rounded-full bg-lagoon px-9 text-base font-semibold text-sand transition-colors hover:bg-lagoon/90 active:bg-lagoon/80"
       >
-        <h2 className="mb-4 text-center font-display text-lg font-semibold text-ink">How it works</h2>
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
-          <Step icon={<SearchIcon size={20} />} title="Pick your number" text="Search and add it to your cart." />
-          <Step icon={<PhoneCall size={20} />} title="Send your details" text="Name and contact number, nothing else." />
-          <Step icon={<MessageCircle size={20} />} title="We confirm on WhatsApp" text="Your order opens as a WhatsApp message." />
-        </div>
-      </section>
-    </div>
-  )
-}
+        Browse numbers
+        <ArrowRight
+          size={18}
+          aria-hidden="true"
+          className="transition-transform group-hover:translate-x-0.5"
+        />
+      </Link>
 
-function Step({ icon, title, text }: { icon: React.ReactNode; title: string; text: string }) {
-  return (
-    <div className="flex flex-col items-center gap-2 text-center">
-      <div className="flex h-11 w-11 items-center justify-center rounded-full bg-lagoon-soft text-lagoon">{icon}</div>
-      <p className="text-sm font-semibold text-ink">{title}</p>
-      <p className="text-xs text-muted">{text}</p>
+      {/* Reserves its line before the count arrives, so the button does not
+          jump upward on a slow connection. */}
+      <p className="min-h-[1.25rem] text-[0.68rem] font-semibold tracking-[0.28em] text-muted uppercase">
+        {availableCount != null && (
+          <>
+            <span className="font-numeric text-ink">{availableCount}</span> numbers available
+          </>
+        )}
+      </p>
     </div>
   )
 }

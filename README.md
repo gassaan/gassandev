@@ -52,9 +52,19 @@ Never put the `service_role` key in this project — it bypasses RLS entirely.
 
 ## One palette, dark
 
-There is no light mode and no theme switch. The whole design is built for a dark ground — the metal cards below are the shop's centrepiece and they only work as light objects on a dark page — so the palette lives in a single `:root` block in `src/index.css` and there is no `dark:` variant anywhere in the app.
+There is no light mode and no theme switch. The whole design is built for a dark ground — the metallic numbers are the shop's centrepiece and only read as metal against one — so the palette lives in a single `:root` block in `src/index.css` and there is no `dark:` variant anywhere in the app.
 
 The dark background is also declared inline in `index.html`, because the stylesheet only arrives with the bundle; without it the first paint is a white page that then flips.
+
+## The landing page
+
+Four things, on one screen, and nothing else: the mark, a line, the way in, and the count of what is in stock. It does not scroll.
+
+With that little on the page the design has to come from the space between the four rather than from anything added around them, so there is a single full-height column, one hairline, and no card, panel or border anywhere. Anything more would read as decoration, which is the opposite of the intended effect.
+
+The count is the only live thing on it, and it reserves its line before the number arrives so the button does not jump upward on a slow connection.
+
+Headlines are set in Cormorant Garamond, the one addition to the font stack. It does most of the work that reads as "premium"; the rest is whitespace and letter-spaced small caps rather than ornament.
 
 ## Number grades
 
