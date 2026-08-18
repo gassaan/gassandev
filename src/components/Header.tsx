@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Languages, ShoppingCart } from 'lucide-react'
+import { ShoppingCart } from 'lucide-react'
 import { useCart } from '@/contexts/CartContext'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { BrandLogo } from '@/components/BrandLogo'
@@ -53,9 +53,8 @@ export function Header() {
             type="button"
             onClick={toggleLanguage}
             aria-label={t.languageToggleLabel}
-            className="flex h-11 items-center gap-1.5 rounded-full px-3 text-sm font-semibold text-ink transition-colors hover:bg-lagoon-soft"
+            className="flex h-11 items-center rounded-full px-3 text-sm font-semibold text-ink transition-colors hover:bg-lagoon-soft"
           >
-            <Languages size={18} aria-hidden="true" />
             {language === 'en' ? 'ދިވެހި' : 'EN'}
           </button>
           <Link
