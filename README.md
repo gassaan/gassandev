@@ -52,9 +52,26 @@ Never put the `service_role` key in this project — it bypasses RLS entirely.
 
 ## One palette, dark
 
-There is no light mode and no theme switch. The whole design is built for a dark ground — the metallic numbers are the shop's centrepiece and only read as metal against one — so the palette lives in a single `:root` block in `src/index.css` and there is no `dark:` variant anywhere in the app.
+Black page, Pale type, a gilt accent, and a warm dark for chrome. There is no light mode and no theme switch — the whole design is built for a dark ground — so the palette lives in a single `:root` block in `src/index.css` and there is no `dark:` variant anywhere in the app.
 
-The dark background is also declared inline in `index.html`, because the stylesheet only arrives with the bundle; without it the first paint is a white page that then flips.
+Four colours were supplied for it, and two of them could not be used the way they look on a swatch:
+
+| Supplied | Where it lands |
+|---|---|
+| Black `#0A0A0A` | the page; the Platinum card goes on to true `#000` |
+| Pale `#E8D9C4` | all type, the Platinum rim, the Platinum badge |
+| Rough `#3E160C` | the Gold tier's card surface |
+| Gold `#785D32` | the Gold card's **rim** |
+
+**Gold cannot carry type.** Pale on it measures 4.44:1 and the page colour 3.12:1 — both fail. Buttons and links therefore use a lightened `#C6A268`, and the given value is kept for the one job with no legibility burden: a rim. **Rough is 1.21:1 against the page**, so it cannot be a surface laid directly on it either; it works as a card, slightly lifted.
+
+Four colours also cannot dress a whole UI, so the muted type, the panel colour and the border are derived. Everything was measured: the worst pairing anywhere is 5.70:1, most sit between 7 and 15:1.
+
+The page colour is also declared inline in `index.html`, because the stylesheet only arrives with the bundle; without it the first paint is a white page that then flips.
+
+### A note on two token names
+
+`--sand` is the page, which is now black rather than sand, and `--lagoon` is the accent, which is now gold rather than teal. Both names are historical. They appear in 141 places across 21 files, so renaming them is a mechanical change of its own rather than something to bury in a palette swap — read them as "the page colour" and "the accent colour" until that happens.
 
 ## The landing page
 

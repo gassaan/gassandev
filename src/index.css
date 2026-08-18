@@ -1,19 +1,28 @@
 @import "tailwindcss";
 
-/* One palette, dark. The shop sells a luxury object and the whole design —
-   the metal cards below above all — is built for a dark ground, so there is no
-   light theme to fall back to and no `dark:` variant anywhere in the app. */
+/* One palette, dark. The shop sells a luxury object and the whole design is
+   built for a dark ground, so there is no light theme to fall back to and no
+   `dark:` variant anywhere in the app.
+
+   Black page, Pale type, a gilt accent, and a warm dark for chrome.
+
+   NAMING. Two token names are historical and no longer describe their value:
+   `--sand` is the page, which is now black rather than sand, and `--lagoon` is
+   the accent, which is now gold rather than teal. They are used in 141 places
+   across 21 files, so renaming them is a mechanical change of its own rather
+   than something to bury in a palette swap. Read them as "the page colour" and
+   "the accent colour" until then. */
 :root {
-  --sand: #08171a;
-  --ink: #edf2f1;
-  --lagoon: #2aa9a6;
-  --lagoon-soft: #143633;
-  --gold: #e4b851;
-  --gold-soft: #2c2312;
-  --muted: #8aa3a5;
-  --surface: #102a2e;
-  --border: #1c3a3d;
-  --danger: #e28079;
+  --sand: #0a0a0a;        /* the page */
+  --ink: #e8d9c4;         /* Pale */
+  --lagoon: #c6a268;      /* the accent: Gold, lightened until it carries type */
+  --lagoon-soft: #241a12;
+  --gold: #c6a268;
+  --gold-soft: #2a1e10;
+  --muted: #9c8f7c;
+  --surface: #1a1510;     /* warm dark, so chrome belongs to the same page */
+  --border: #2b241b;
+  --danger: #e2837a;
 }
 
 @theme inline {
@@ -74,8 +83,8 @@ body {
 .hero-wash {
   background-image: radial-gradient(
     58% 52% at 50% 16%,
-    rgba(42, 169, 166, 0.13),
-    rgba(42, 169, 166, 0) 70%
+    rgba(198, 162, 104, 0.09),
+    rgba(198, 162, 104, 0) 70%
   );
 }
 
@@ -112,42 +121,48 @@ body {
 
 /* --- card surfaces --- */
 
+/* Silver is neutral graphite rather than tinted: on a black page a cool cast
+   reads as "a blue card", which is a different thing from silver. */
 .tier-silver {
-  background-image: linear-gradient(150deg, #22333a 0%, #16252a 55%, #101c20 100%);
-  border-color: #3c545c;
-  --ink: #e9f0f1;
-  --muted: #93a8ac;
-  --surface: #22343a;
-  --border: #33484f;
-  --lagoon: #5cc9c5;
-  --lagoon-soft: #173330;
-  --sand: #08171a;
+  background-image: linear-gradient(150deg, #212121 0%, #171717 55%, #101010 100%);
+  border-color: #3e3e3e;
+  --ink: #edeae4;
+  --muted: #a8a29a;
+  --surface: #242424;
+  --border: #3a3a3a;
+  --lagoon: #c6a268;
+  --lagoon-soft: #221a12;
+  --sand: #101010;
 }
 
+/* Rough as the surface, Gold as the rim. Gold at its given value cannot carry
+   type — Pale on it measures 4.44:1 and the page colour 3.12:1 — but as a rim
+   it has no legibility burden, which is the one place it works undiluted. */
 .tier-gold {
-  background-image: linear-gradient(150deg, #2a2411 0%, #1c1709 55%, #130f05 100%);
-  border-color: #6d5722;
-  --ink: #f6ecd8;
-  --muted: #bda87f;
-  --surface: #2c2513;
-  --border: #4f3f18;
-  --lagoon: #5cc9c5;
-  --lagoon-soft: #1a3230;
-  --sand: #08171a;
+  background-image: linear-gradient(150deg, #3a150b 0%, #2a0f07 55%, #1e0a04 100%);
+  border-color: #785d32;
+  --ink: #f2e4ce;
+  --muted: #c0a88a;
+  --surface: #3a150b;
+  --border: #6b4a20;
+  --lagoon: #e0be84;
+  --lagoon-soft: #24100a;
+  --sand: #1e0a04;
 }
 
-/* The blackest of the three, and the only one with a bright rim and a light
-   badge. Being darker than the others is what makes it read as the top grade
-   rather than simply another shade. */
+/* The only card that goes to true black, and the only one wearing a Pale rim
+   and a Pale badge. On a page this dark the surfaces sit ~1.1:1 apart, so the
+   rim and the badge are what separate the top grade, not the fill. */
 .tier-platinum {
-  background-image: linear-gradient(150deg, #101a1c 0%, #080f11 55%, #030607 100%);
-  border-color: #a9bcc1;
-  --ink: #eef4f5;
-  --muted: #a9bcc0;
-  --surface: #141f22;
-  --lagoon: #86dbd7;
-  --lagoon-soft: #17302f;
-  --sand: #06100f;
+  background-image: linear-gradient(150deg, #0b0b0b 0%, #050505 55%, #000000 100%);
+  border-color: #d8cdb8;
+  --ink: #f3eadb;
+  --muted: #bfb3a0;
+  --surface: #161616;
+  --border: #333333;
+  --lagoon: #e8dfcc;
+  --lagoon-soft: #1c1a16;
+  --sand: #000000;
 }
 
 /* --- the number itself --- */
@@ -162,24 +177,23 @@ body {
 
 /* drop-shadow rather than text-shadow: the fill is transparent, so a
    text-shadow would show through the glyphs instead of sitting behind them.
-   No white lift under any of them now that every card is dark — on a dark
-   ground that only fogs the glyphs.
 
-   The three sweeps are deliberately not equally bright. Silver peaks below
-   white and Platinum peaks at it, so that where they sit next to each other
-   in a grid the top grade is the one that flashes. */
+   Each ramp was measured against the lightest stop of its own card — the worst
+   case for light type on a dark ground — and clears 4.5:1 there. Silver peaks
+   below white and Platinum peaks at it, so where the two sit together in the
+   grid the top grade is the one that flashes. */
 
 .num-silver {
   background-image: linear-gradient(
     168deg,
-    #dfe8ea 0%,
-    #b9c8cd 20%,
-    #93a8ae 42%,
-    #cbd8db 50%,
-    #eef4f5 54%,
-    #93a8ae 70%,
-    #b9c8cd 86%,
-    #dfe8ea 100%
+    #eceae6 0%,
+    #cbc8c2 20%,
+    #a9a9a9 42%,
+    #dedbd5 50%,
+    #ffffff 54%,
+    #a9a9a9 70%,
+    #cbc8c2 86%,
+    #eceae6 100%
   );
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.55));
 }
@@ -187,14 +201,14 @@ body {
 .num-gold {
   background-image: linear-gradient(
     168deg,
-    #f7e3b2 0%,
-    #eacf90 20%,
-    #dcb968 42%,
-    #f5e4b6 50%,
-    #fffaf0 54%,
-    #dcb968 70%,
-    #eacf90 86%,
-    #f7e3b2 100%
+    #f0d9a8 0%,
+    #dcbc7e 20%,
+    #b8935a 42%,
+    #ecd5a2 50%,
+    #fdf3dd 54%,
+    #b8935a 70%,
+    #dcbc7e 86%,
+    #f0d9a8 100%
   );
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.55));
 }
@@ -202,40 +216,36 @@ body {
 .num-platinum {
   background-image: linear-gradient(
     168deg,
-    #e8eef0 0%,
-    #cfdade 18%,
-    #b3c4c9 38%,
-    #dfe9eb 48%,
-    #ffffff 52%,
-    #b3c4c9 68%,
-    #cfdade 86%,
-    #e8eef0 100%
+    #f3eadb 0%,
+    #ded7c9 18%,
+    #c9c4ba 38%,
+    #ece6d9 48%,
+    #fffdf8 52%,
+    #c9c4ba 68%,
+    #ded7c9 86%,
+    #f3eadb 100%
   );
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.6));
 }
 
 /* --- grade chips --- */
 
-/* Silver and Gold wear a plate cut from their own card, a shade up from it.
-   Platinum inverts to a light one — the same trick as the rim, and the reason
-   the top grade still reads as different in kind rather than in degree. */
-
 .badge-silver {
-  background-color: #2e424a;
-  color: #dce6e8;
+  background-color: #2c2c2c;
+  color: #e8e4dc;
 }
 
 .badge-gold {
-  background-color: #3b2d0f;
-  color: #f0d79b;
+  background-color: #24100a;
+  color: #f0d9a8;
 }
 
 .badge-platinum {
-  background-color: #e4ecee;
-  color: #0c1416;
+  background-color: #e8dfcc;
+  color: #121212;
 }
 
-/* The pattern pill sits on the card's own tinted lagoon rather than the
+/* The pattern pill sits on the card's own tinted accent rather than the
    page's, so both colours come from the card. */
 .tag-pattern {
   color: var(--lagoon);
@@ -244,15 +254,15 @@ body {
 /* --- price accents, matched to each metal --- */
 
 .price-silver {
-  color: #c6d4d8;
+  color: #d6d2ca;
 }
 
 .price-gold {
-  color: #e8c574;
+  color: #e6c88e;
 }
 
 .price-platinum {
-  color: #e2ebed;
+  color: #f0e7d7;
 }
 
 @media (prefers-reduced-motion: reduce) {
