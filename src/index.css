@@ -1,5 +1,20 @@
 @import "tailwindcss";
 
+/* Self-hosted: MV MAG Round has no Google Fonts distribution, so the .otf
+   lives in the repo rather than being linked. Declared with a family name
+   distinct from the file's own ("MV MAG Round Bold") so it can sit in the
+   font stacks below unambiguously. It ships as a single bold cut — there is
+   no matching regular weight — so every stack that lists it renders Thaana
+   glyphs at that one weight regardless of the surrounding Latin text's
+   declared weight; there is no lighter face to fall back to for this family. */
+@font-face {
+  font-family: "MV MAG Round Bold";
+  src: url("./assets/fonts/mv-mag-round-bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* One palette, dark. The shop sells a luxury object and the whole design is
    built for a dark ground, so there is no light theme to fall back to and no
    `dark:` variant anywhere in the app.
@@ -37,19 +52,22 @@
   --color-border: var(--border);
   --color-danger: var(--danger);
 
-  /* "Noto Sans Thaana" trails every stack rather than gating on a dir/lang
+  /* "MV MAG Round Bold" trails every stack rather than gating on a dir/lang
      selector: none of the Latin faces above carry Thaana glyphs, so the
      browser already falls through to it per-glyph whenever Dhivehi text
-     appears, in either language mode, with no conditional CSS needed. */
-  --font-display: "Space Grotesk", "Archivo", "Noto Sans Thaana", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Inter", "Noto Sans Thaana", ui-sans-serif, system-ui, sans-serif;
+     appears, in either language mode, with no conditional CSS needed.
+     "Noto Sans Thaana" sits after it as a second-line fallback — MV MAG
+     Round covers the current Thaana block (U+0780-U+07B1), but Noto is kept
+     in case a future string needs a Thaana codepoint MV MAG lacks. */
+  --font-display: "Space Grotesk", "Archivo", "MV MAG Round Bold", "Noto Sans Thaana", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", "MV MAG Round Bold", "Noto Sans Thaana", ui-sans-serif, system-ui, sans-serif;
   /* The number is the product, so it gets its own face. Archivo over the
      display font because its digits are sturdier and its 1 carries a flag —
      Space Grotesk draws a bare vertical stroke, which turns a run like 1111
      into a picket fence exactly where the repeated digits are the thing being
      sold. Tabular figures keep those runs in register. */
   --font-numbers: "Archivo", "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Cormorant Garamond", "Noto Sans Thaana", ui-serif, Georgia, serif;
+  --font-serif: "Cormorant Garamond", "MV MAG Round Bold", "Noto Sans Thaana", ui-serif, Georgia, serif;
 }
 
 html {
