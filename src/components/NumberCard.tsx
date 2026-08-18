@@ -41,7 +41,7 @@ export function NumberCard({ number }: { number: PhoneNumber }) {
 
   return (
     <div
-      className={`animate-fade-in relative flex flex-col gap-3 rounded-2xl border p-4 shadow-sm transition-shadow hover:shadow-md ${tier.card}`}
+      className={`animate-fade-in relative flex flex-col gap-2 rounded-2xl border p-3 shadow-sm transition-shadow hover:shadow-md ${tier.card}`}
     >
       <div className="flex items-start justify-between gap-2">
         <div className="flex flex-wrap items-center gap-1.5">
@@ -82,9 +82,17 @@ export function NumberCard({ number }: { number: PhoneNumber }) {
             at their narrowest at sm, where the grid goes to two columns, so the
             number has less room there than on a phone, not more. Every number
             is the same width — seven tabular digits — so these were set against
-            a measured worst case rather than guessed. */}
+            a measured worst case rather than guessed.
+
+            All three are the previous sizes scaled by 0.75, which takes the
+            card from 192px to 161px on a phone. The ratio is applied evenly so
+            the step around the grid survives the change. It does not go
+            further: the Add button holds at 44px — the touch-target floor —
+            and with padding that already sets a ~68px floor before the number
+            is drawn, so shrinking the type alone stops buying much below
+            this. Denser than this wants a row layout, not a smaller card. */}
         <span
-          className={`font-numbers font-numeric text-[2.6rem] font-extrabold tracking-tight sm:text-[2.75rem] lg:text-[3.25rem] ${tier.number}`}
+          className={`font-numbers font-numeric text-[1.95rem] font-extrabold tracking-tight sm:text-[2.05rem] lg:text-[2.45rem] ${tier.number}`}
         >
           {formatMsisdn(number.msisdn)}
         </span>
