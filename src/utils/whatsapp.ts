@@ -1,4 +1,5 @@
 import type { CartItem } from '@/types'
+import type { Translations } from '@/i18n/types'
 import { formatCurrency, formatMsisdn } from '@/utils/format'
 import { tierLabel } from '@/utils/tiers'
 
@@ -15,16 +16,17 @@ export function buildOrderMessage(params: {
   items: CartItem[]
   total: number
   orderRef: string
+  t: Translations
 }): string {
-  const { name, contact, items, total, orderRef } = params
+  const { name, contact, items, total, orderRef, t } = params
   const lines = items
     .map(
       (n, i) =>
-        `${i + 1}. ${formatMsisdn(n.msisdn)} — ${capitalize(n.provider)} — ${tierLabel(n.category)} — MVR ${formatCurrency(n.price)}`,
+        `${i + 1}. ${formatMsisdn(n.msisdn)} — ${capitalize(n.provider)} — ${tierLabel(n.category, t)} — MVR ${formatCurrency(n.price)}`,
     )
     .join('\n')
 
-  return `*New Order — Salhi Numbers*\n\n*Name:* ${name}\n*Contact:* +960 ${contact}\n\n*Numbers:*\n${lines}\n\n*Total:* MVR ${formatCurrency(total)}\n*Order ref:* ${orderRef}`
+  return `*${t.whatsapp.heading} — Salhi Numbers*\n\n*${t.whatsapp.name}:* ${name}\n*${t.whatsapp.contact}:* +960 ${contact}\n\n*${t.whatsapp.numbers}:*\n${lines}\n\n*${t.whatsapp.total}:* MVR ${formatCurrency(total)}\n*${t.whatsapp.orderRef}:* ${orderRef}`
 }
 
 export function buildWhatsAppUrl(message: string): string {

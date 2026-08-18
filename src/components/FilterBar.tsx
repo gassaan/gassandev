@@ -2,13 +2,8 @@ import { useState } from 'react'
 import { SlidersHorizontal } from 'lucide-react'
 import type { Category, NumberFilters, Provider, SortOption } from '@/types'
 import { ProviderLogo } from '@/components/ProviderLogo'
-import { TIER, TIERS } from '@/utils/tiers'
-
-const SORT_LABELS: Record<SortOption, string> = {
-  'price-asc': 'Price: low to high',
-  'price-desc': 'Price: high to low',
-  newest: 'Newest',
-}
+import { TIERS, tierLabel } from '@/utils/tiers'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 const PANEL_ID = 'browse-filters'
 
@@ -43,7 +38,13 @@ export function FilterBar({
   filters: NumberFilters
   onChange: (filters: NumberFilters) => void
 }) {
+  const { t } = useLanguage()
   const [open, setOpen] = useState(false)
+  const sortLabels: Record<SortOption, string> = {
+    'price-asc': t.filters.sortPriceAsc,
+    'price-desc': t.filters.sortPriceDesc,
+    newest: t.filters.sortNewest,
+  }
 
   function setProvider(provider: Provider | 'all') {
     onChange({ ...filters, provider })
@@ -75,7 +76,7 @@ export function FilterBar({
       <div className="flex items-center gap-2">
         <div className="flex flex-1 items-center gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <Chip active={!filters.provider || filters.provider === 'all'} onClick={() => setProvider('all')}>
-            All
+            {t.filters.all}
           </Chip>
           <Chip active={filters.provider === 'dhiraagu'} onClick={() => setProvider('dhiraagu')}>
             <ProviderLogo provider="dhiraagu" size="sm" showLabel />
@@ -92,11 +93,7 @@ export function FilterBar({
           onClick={() => setOpen((o) => !o)}
           aria-expanded={open}
           aria-controls={PANEL_ID}
-          aria-label={
-            activeCount > 0
-              ? `Filters and sort, ${activeCount} filter${activeCount === 1 ? '' : 's'} applied`
-              : 'Filters and sort'
-          }
+          aria-label={activeCount > 0 ? t.filters.filtersAndSortActive(activeCount) : t.filters.filtersAndSort}
           className={`relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full border transition-colors ${
             open || activeCount > 0
               ? 'border-lagoon bg-lagoon text-sand'
@@ -115,16 +112,16 @@ export function FilterBar({
       {open && (
         <div id={PANEL_ID} className="mt-4 flex flex-col gap-4">
           <fieldset>
-            <legend className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted">Grade</legend>
+            <legend className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted">{t.filters.grade}</legend>
             <div className="flex flex-wrap gap-2">
               <Chip active={!filters.category || filters.category === 'all'} onClick={() => setCategory('all')}>
-                All grades
+                {t.filters.allGrades}
               </Chip>
               {/* Generated from the shared list, so the grades and their order
                   can never drift from the model. */}
-              {TIERS.map((t) => (
-                <Chip key={t} active={filters.category === t} onClick={() => setCategory(t)}>
-                  {TIER[t].label}
+              {TIERS.map((tier) => (
+                <Chip key={tier} active={filters.category === tier} onClick={() => setCategory(tier)}>
+                  {tierLabel(tier, t)}
                 </Chip>
               ))}
             </div>
@@ -132,11 +129,11 @@ export function FilterBar({
 
           <fieldset>
             <legend className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted">
-              Price range
+              {t.filters.priceRange}
             </legend>
             <div className="flex items-center gap-3">
               <label className="flex-1 text-xs text-muted">
-                Min (MVR)
+                {t.filters.min}
                 <input
                   type="number"
                   inputMode="numeric"
@@ -149,7 +146,7 @@ export function FilterBar({
                 />
               </label>
               <label className="flex-1 text-xs text-muted">
-                Max (MVR)
+                {t.filters.max}
                 <input
                   type="number"
                   inputMode="numeric"
@@ -169,7 +166,7 @@ export function FilterBar({
               htmlFor="browse-sort"
               className="mb-2 block text-xs font-semibold uppercase tracking-wide text-muted"
             >
-              Sort
+              {t.filters.sort}
             </label>
             <select
               id="browse-sort"
@@ -177,7 +174,7 @@ export function FilterBar({
               onChange={(e) => onChange({ ...filters, sort: e.target.value as SortOption })}
               className="h-11 w-full rounded-xl border border-border bg-surface px-3 text-sm font-medium text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lagoon"
             >
-              {Object.entries(SORT_LABELS).map(([value, label]) => (
+              {Object.entries(sortLabels).map(([value, label]) => (
                 <option key={value} value={value}>
                   {label}
                 </option>
@@ -191,7 +188,7 @@ export function FilterBar({
               onClick={resetPanel}
               className="h-11 self-start rounded-full border border-border bg-surface px-4 text-sm font-semibold text-ink hover:bg-lagoon-soft"
             >
-              Reset filters
+              {t.filters.resetFilters}
             </button>
           )}
         </div>

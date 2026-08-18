@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCart } from '@/contexts/CartContext'
+import { useLanguage } from '@/contexts/LanguageContext'
 import { dataService } from '@/data'
 import { formatCurrency } from '@/utils/format'
 import { buildOrderMessage, buildWhatsAppUrl, generateOrderRef } from '@/utils/whatsapp'
@@ -8,6 +9,7 @@ import { useDocumentMeta } from '@/hooks/useDocumentMeta'
 
 export function Checkout() {
   useDocumentMeta('Checkout — Salhi Numbers')
+  const { t } = useLanguage()
   const { items, total, clearCart } = useCart()
   const navigate = useNavigate()
 
@@ -18,8 +20,8 @@ export function Checkout() {
 
   function validate(): boolean {
     const next: { name?: string; contact?: string } = {}
-    if (!name.trim()) next.name = 'Enter your name.'
-    if (!/^\d{7}$/.test(contact.trim())) next.contact = 'Enter a 7-digit contact number.'
+    if (!name.trim()) next.name = t.checkout.nameError
+    if (!/^\d{7}$/.test(contact.trim())) next.contact = t.checkout.contactError
     setErrors(next)
     return Object.keys(next).length === 0
   }
@@ -38,7 +40,7 @@ export function Checkout() {
         /* order log write is best-effort; the WhatsApp handoff below is the source of truth */
       })
 
-    const message = buildOrderMessage({ name: name.trim(), contact: contact.trim(), items: orderItems, total, orderRef })
+    const message = buildOrderMessage({ name: name.trim(), contact: contact.trim(), items: orderItems, total, orderRef, t })
     const whatsappUrl = buildWhatsAppUrl(message)
     window.open(whatsappUrl, '_blank')
 
@@ -48,14 +50,12 @@ export function Checkout() {
 
   return (
     <div className="mx-auto max-w-md px-4 pb-16 pt-6">
-      <h1 className="mb-1 font-display text-2xl font-semibold text-ink">Checkout</h1>
-      <p className="mb-6 text-sm text-muted">
-        {items.length} number{items.length === 1 ? '' : 's'} · MVR {formatCurrency(total)}
-      </p>
+      <h1 className="mb-1 font-display text-2xl font-semibold text-ink">{t.checkout.title}</h1>
+      <p className="mb-6 text-sm text-muted">{t.checkout.summary(items.length, formatCurrency(total))}</p>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
         <label className="flex flex-col gap-1.5">
-          <span className="text-sm font-medium text-ink">Name</span>
+          <span className="text-sm font-medium text-ink">{t.checkout.nameLabel}</span>
           <input
             type="text"
             value={name}
@@ -68,7 +68,7 @@ export function Checkout() {
         </label>
 
         <label className="flex flex-col gap-1.5">
-          <span className="text-sm font-medium text-ink">Contact number</span>
+          <span className="text-sm font-medium text-ink">{t.checkout.contactLabel}</span>
           <div className="flex items-center gap-2">
             <span className="flex h-12 items-center rounded-xl border border-border bg-surface px-3 font-numeric text-base text-muted">
               +960
@@ -80,7 +80,7 @@ export function Checkout() {
               value={contact}
               onChange={(e) => setContact(e.target.value.replace(/\D/g, '').slice(0, 7))}
               autoComplete="tel-national"
-              placeholder="7771234"
+              placeholder={t.checkout.contactPlaceholder}
               aria-invalid={Boolean(errors.contact)}
               className="h-12 flex-1 rounded-xl border border-border bg-surface px-4 font-numeric text-base text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lagoon"
             />
@@ -93,7 +93,7 @@ export function Checkout() {
           disabled={submitting || items.length === 0}
           className="mt-2 flex h-12 items-center justify-center gap-2 rounded-full bg-lagoon text-sm font-semibold text-sand hover:bg-lagoon/90 disabled:opacity-60"
         >
-          Send order on WhatsApp
+          {t.checkout.submit}
         </button>
       </form>
     </div>

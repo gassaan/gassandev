@@ -1,6 +1,7 @@
 import { Link, Navigate, useLocation } from 'react-router-dom'
 import { CheckCircle2, MessageCircle } from 'lucide-react'
 import { useDocumentMeta } from '@/hooks/useDocumentMeta'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 interface ConfirmationState {
   orderRef: string
@@ -9,6 +10,7 @@ interface ConfirmationState {
 
 export function OrderConfirmation() {
   useDocumentMeta('Order sent — Salhi Numbers')
+  const { t } = useLanguage()
   const { state } = useLocation()
   const data = state as ConfirmationState | null
 
@@ -21,13 +23,11 @@ export function OrderConfirmation() {
       <div className="flex h-16 w-16 items-center justify-center rounded-full bg-lagoon-soft text-lagoon">
         <CheckCircle2 size={32} />
       </div>
-      <h1 className="font-display text-2xl font-semibold text-ink">Order sent</h1>
-      <p className="text-muted">
-        We opened WhatsApp with your order details. If it didn't open, use the button below.
-      </p>
+      <h1 className="font-display text-2xl font-semibold text-ink">{t.confirmation.title}</h1>
+      <p className="text-muted">{t.confirmation.description}</p>
 
       <div className="rounded-xl border border-border bg-surface px-5 py-3">
-        <p className="text-xs text-muted">Order ref</p>
+        <p className="text-xs text-muted">{t.confirmation.orderRef}</p>
         <p className="font-numeric text-lg font-semibold text-ink">{data.orderRef}</p>
       </div>
 
@@ -38,11 +38,11 @@ export function OrderConfirmation() {
         className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-lagoon text-sm font-semibold text-sand hover:bg-lagoon/90"
       >
         <MessageCircle size={18} />
-        Open WhatsApp
+        {t.confirmation.openWhatsApp}
       </a>
 
       <Link to="/browse" className="text-sm font-medium text-lagoon hover:underline">
-        Continue browsing
+        {t.confirmation.continueBrowsing}
       </Link>
     </div>
   )
