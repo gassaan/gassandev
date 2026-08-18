@@ -221,55 +221,63 @@ body {
 
 /* drop-shadow rather than text-shadow: the fill is transparent, so a
    text-shadow would show through the glyphs instead of sitting behind them.
+   The first shadow on each is a halo in the number's own hue, which is what
+   makes it read as lit rather than painted.
 
-   Each ramp was measured against the lightest stop of its own card — the worst
-   case for light type on a dark ground — and clears 4.5:1 there. Silver peaks
-   below white and Platinum peaks at it, so where the two sit together in the
-   grid the top grade is the one that flashes. */
+   All three ramps are cool while every label on every card is warm bone. That
+   is the point: the number stopped leading when the palette went monochrome,
+   because it had become the same colour family as the text beside it. Hue
+   separates them now, not just brightness — the number reads as a different
+   material from the type around it. The prices step back a shade for the same
+   reason; a hierarchy is a gap, and it is made at both ends.
+
+   Each ramp was measured against the brightest surface its card actually
+   reaches on the built site, not the declared gradient stops: worst case 7.16,
+   and the dimmed prices clear 5.45 / 6.99 / 7.82. */
 
 .num-silver {
   background-image: linear-gradient(
     168deg,
-    #eceae6 0%,
-    #cbc8c2 20%,
-    #a9a9a9 42%,
-    #dedbd5 50%,
-    #ffffff 54%,
-    #a9a9a9 70%,
-    #cbc8c2 86%,
-    #eceae6 100%
+    #ffffff 0%,
+    #dbe6f2 18%,
+    #a8bdd4 40%,
+    #eaf2fb 49%,
+    #ffffff 53%,
+    #a8bdd4 68%,
+    #dbe6f2 86%,
+    #ffffff 100%
   );
-  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.55));
+  filter: drop-shadow(0 0 14px rgba(190, 215, 245, 0.28)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.6));
 }
 
 .num-gold {
   background-image: linear-gradient(
     168deg,
-    #f5f0e6 0%,
-    #ebe4d8 20%,
-    #cfc7b8 42%,
-    #efe9dd 50%,
-    #ffffff 54%,
-    #cfc7b8 70%,
-    #ebe4d8 86%,
-    #f5f0e6 100%
+    #ffffff 0%,
+    #e2ecf6 18%,
+    #b4c6d8 40%,
+    #eef4fb 49%,
+    #ffffff 53%,
+    #b4c6d8 68%,
+    #e2ecf6 86%,
+    #ffffff 100%
   );
-  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.55));
+  filter: drop-shadow(0 0 14px rgba(200, 220, 245, 0.26)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.6));
 }
 
 .num-platinum {
   background-image: linear-gradient(
     168deg,
-    #f3eadb 0%,
-    #ded7c9 18%,
-    #c9c4ba 38%,
-    #ece6d9 48%,
-    #fffdf8 52%,
-    #c9c4ba 68%,
-    #ded7c9 86%,
-    #f3eadb 100%
+    #ffffff 0%,
+    #dfe9f4 18%,
+    #adc0d4 40%,
+    #eef5fc 49%,
+    #ffffff 53%,
+    #adc0d4 68%,
+    #dfe9f4 86%,
+    #ffffff 100%
   );
-  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.6));
+  filter: drop-shadow(0 0 16px rgba(200, 222, 250, 0.3)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.65));
 }
 
 /* --- grade chips --- */
@@ -298,15 +306,15 @@ body {
 /* --- price accents, matched to each metal --- */
 
 .price-silver {
-  color: #d6d2ca;
+  color: #a8a29a;
 }
 
 .price-gold {
-  color: #e6decf;
+  color: #bcb2a3;
 }
 
 .price-platinum {
-  color: #f0e7d7;
+  color: #b9b3a8;
 }
 
 @media (prefers-reduced-motion: reduce) {
