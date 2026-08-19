@@ -24,13 +24,17 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>(readLanguage)
   const dir: 'ltr' | 'rtl' = language === 'dv' ? 'rtl' : 'ltr'
 
-  // Kept in sync with <html> so :dir()-sensitive CSS and assistive tech agree
-  // with the page, not just the components that read this context.
+  // Deliberately does NOT sync <html lang>/<html dir> here — this provider is
+  // mounted outside the router (main.tsx), so it has no route information,
+  // and Tailwind's rtl: variant matches any descendant of html[dir=rtl]
+  // regardless of a nearer dir="ltr" override in between. Forcing English/LTR
+  // on an admin subtree would not stop rtl: utilities from still applying
+  // there. <DirectionSync> in App.tsx owns the DOM sync instead, since it can
+  // see both this language state and the current route, and keeps admin
+  // pinned to English/LTR no matter what the customer-facing toggle is set to.
   useEffect(() => {
-    document.documentElement.lang = language
-    document.documentElement.dir = dir
     localStorage.setItem(STORAGE_KEY, language)
-  }, [language, dir])
+  }, [language])
 
   const value = useMemo(
     () => ({
