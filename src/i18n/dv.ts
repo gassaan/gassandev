@@ -21,7 +21,7 @@ export const dv: Translations = {
     cartAria: (count) => `ކާޓް، ${count} އައިޓަމް`,
   },
   search: {
-    placeholder: 'ނަންބަރެއް ހޯއްދަވާ… މިސާލު: 7777',
+    placeholder: 'ނަންބަރެއް ހޯއްދަވާ…',
     ariaLabel: 'ފޯނު ނަންބަރު ހޯދާ',
     clearAria: 'ހޯދުން ސާފުކުރޭ',
   },
