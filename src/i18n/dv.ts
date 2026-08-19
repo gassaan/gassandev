@@ -14,7 +14,7 @@ export const dv: Translations = {
   home: {
     headline: 'ބައެއް ނަންބަރުތަކަކީ ހާއްސަ ނަންބަރުތަކެކެވެ.',
     browseButton: 'ނަންބަރުތައް ބައްލަވާ',
-    availableCount: (count) => `${count} ނަންބަރު ލިބެން އެބަހުރި`,
+    availableCountSuffix: (_count) => ` ނަންބަރު އެބަހުރި`,
   },
   header: {
     homeAria: 'Salhi Numbers — މައި ސަފުހާ',

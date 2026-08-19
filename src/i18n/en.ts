@@ -10,7 +10,7 @@ export const en: Translations = {
   home: {
     headline: 'Some numbers are worth having.',
     browseButton: 'Browse numbers',
-    availableCount: (count) => `${count} number${count === 1 ? '' : 's'} available`,
+    availableCountSuffix: (count) => ` number${count === 1 ? '' : 's'} available`,
   },
   header: {
     homeAria: 'Salhi Numbers — home',
