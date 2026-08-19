@@ -8,10 +8,15 @@ import { ToastProvider } from '@/contexts/ToastContext'
 import { AdminAuthProvider } from '@/contexts/AdminAuthContext'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 
-// Applied synchronously, before the first paint: LanguageProvider sets these
-// too, but only once React has mounted and its effect has run. Without this,
-// a returning Dhivehi visitor sees a flash of the English ltr layout first.
-if (localStorage.getItem('salhi.lang.v1') === 'dv') {
+// Applied synchronously, before the first paint: <DirectionSync> in App.tsx
+// sets these too, but only once React has mounted, the router has resolved
+// a route, and its effect has run. Without this, a returning Dhivehi visitor
+// sees a flash of the English ltr layout first. Checks the hash route the
+// same way <DirectionSync> checks pathname, so a bookmarked admin URL
+// doesn't flash rtl either — admin stays English/LTR regardless of the
+// stored language.
+const isAdminRoute = location.hash.startsWith('#/admin')
+if (!isAdminRoute && localStorage.getItem('salhi.lang.v1') === 'dv') {
   document.documentElement.lang = 'dv'
   document.documentElement.dir = 'rtl'
 }

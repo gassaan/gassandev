@@ -13,12 +13,33 @@ import { AdminDashboard } from '@/pages/admin/AdminDashboard'
 import { AdminNumbers } from '@/pages/admin/AdminNumbers'
 import { AdminOrders } from '@/pages/admin/AdminOrders'
 import { usePageViewTracking } from '@/hooks/usePageViewTracking'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [pathname])
+  return null
+}
+
+// Owns <html lang>/<html dir>, unlike LanguageContext itself: this component
+// sits inside the router, so it can see the current route alongside the
+// language toggle. Admin is pinned to English/LTR regardless of the
+// customer-facing toggle — Tailwind's rtl: variant matches any descendant of
+// html[dir=rtl] no matter what a nearer element's own dir is set to, so the
+// only way to keep admin unaffected is to never set dir="rtl" while an admin
+// route is active in the first place.
+function DirectionSync() {
+  const { pathname } = useLocation()
+  const { language } = useLanguage()
+  const isAdmin = pathname.startsWith('/admin')
+
+  useEffect(() => {
+    document.documentElement.lang = isAdmin ? 'en' : language
+    document.documentElement.dir = !isAdmin && language === 'dv' ? 'rtl' : 'ltr'
+  }, [isAdmin, language])
+
   return null
 }
 
@@ -42,6 +63,7 @@ export default function App() {
   return (
     <>
       <ScrollToTop />
+      <DirectionSync />
       <PageViewTracker />
       <Routes>
         <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
