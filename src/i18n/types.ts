@@ -12,7 +12,11 @@ export interface Translations {
   home: {
     headline: string
     browseButton: string
-    availableCount: (count: number) => string
+    /** The text following the count, which is rendered separately (in its
+     * own styled span) ahead of this — e.g. " numbers available" in
+     * English, " ނަންބަރު އެބަހުރި" in Dhivehi. Takes count because English
+     * needs it for the number/numbers split; Dhivehi doesn't pluralize. */
+    availableCountSuffix: (count: number) => string
   }
   header: {
     homeAria: string

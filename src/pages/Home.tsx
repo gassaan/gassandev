@@ -59,15 +59,22 @@ export function Home() {
         aria-hidden="true"
       />
 
+      {/* dir="ltr": keeps the arrow on the right, pointing right, in both
+          languages — the button's flex order and the icon's rotation would
+          otherwise mirror under the page's RTL default in Dhivehi. The
+          Dhivehi label inside still renders correctly: bidi embeds it as an
+          RTL run within this LTR container, which affects its position, not
+          how its own characters shape or connect. */}
       <Link
         to="/browse"
+        dir="ltr"
         className="group inline-flex h-13 items-center gap-2.5 rounded-full bg-lagoon px-9 text-base font-semibold text-sand transition-colors hover:bg-lagoon/90 active:bg-lagoon/80"
       >
         {t.home.browseButton}
         <ArrowRight
           size={18}
           aria-hidden="true"
-          className="rtl:rotate-180 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5"
+          className="transition-transform group-hover:translate-x-0.5"
         />
       </Link>
 
@@ -76,7 +83,8 @@ export function Home() {
       <p className="min-h-[1.25rem] text-[0.68rem] font-semibold tracking-[0.28em] text-muted uppercase">
         {availableCount != null && (
           <>
-            <span className="font-numeric text-ink">{availableCount}</span> numbers available
+            <span className="font-numeric text-ink">{availableCount}</span>
+            {t.home.availableCountSuffix(availableCount)}
           </>
         )}
       </p>
