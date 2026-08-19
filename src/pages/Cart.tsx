@@ -53,8 +53,8 @@ export function Cart() {
               <p dir="ltr" className="text-right font-numeric text-lg font-semibold text-ink">
                 {formatMsisdn(item.msisdn)}
               </p>
-              <p className="text-xs capitalize text-muted">
-                {item.provider} · {tierLabel(item.category, t)}
+              <p className="text-xs text-muted">
+                {t.providers[item.provider]} · {tierLabel(item.category, t)}
               </p>
             </div>
             <p className="font-numeric font-semibold text-ink">MVR {formatCurrency(item.price)}</p>

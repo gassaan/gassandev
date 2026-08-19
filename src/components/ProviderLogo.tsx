@@ -1,16 +1,12 @@
 import { useState } from 'react'
 import type { Provider } from '@/types'
+import { useLanguage } from '@/contexts/LanguageContext'
 // Imported rather than referenced from /public: the site is served from a
 // subpath (…github.io/gassandev/), where a root-absolute "/logos/x.png" would
 // resolve against the domain root and 404. Importing lets Vite emit a
 // base-aware, content-hashed URL, so swapping the artwork also busts caches.
 import dhiraaguLogo from '@/assets/logos/dhiraagu.png'
 import ooredooLogo from '@/assets/logos/ooredoo.png'
-
-const LABELS: Record<Provider, string> = {
-  dhiraagu: 'Dhiraagu',
-  ooredoo: 'Ooredoo',
-}
 
 const SRC: Record<Provider, string> = {
   dhiraagu: dhiraaguLogo,
@@ -35,8 +31,9 @@ export function ProviderLogo({
   className?: string
   showLabel?: boolean
 }) {
+  const { t } = useLanguage()
   const [failed, setFailed] = useState(false)
-  const label = LABELS[provider]
+  const label = t.providers[provider]
 
   const mark = failed ? null : (
     <img

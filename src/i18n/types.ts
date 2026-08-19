@@ -1,6 +1,10 @@
 export interface Translations {
   /** Label for the *other* language, shown on the toggle button. */
   languageToggleLabel: string
+  providers: {
+    dhiraagu: string
+    ooredoo: string
+  }
   home: {
     headline: string
     browseButton: string
