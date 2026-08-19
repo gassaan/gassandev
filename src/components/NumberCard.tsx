@@ -3,7 +3,7 @@ import { Check, Copy, ShoppingCart } from 'lucide-react'
 import type { PhoneNumber } from '@/types'
 import { ProviderLogo } from '@/components/ProviderLogo'
 import { formatCurrency, formatMsisdn, getSavePercent, getSellingPrice } from '@/utils/format'
-import { TIER, asTier, tierLabel } from '@/utils/tiers'
+import { tierLabel } from '@/utils/tiers'
 import { useCart } from '@/contexts/CartContext'
 import { useToast } from '@/contexts/ToastContext'
 import { useLanguage } from '@/contexts/LanguageContext'
@@ -14,7 +14,6 @@ export function NumberCard({ number }: { number: PhoneNumber }) {
   const { t } = useLanguage()
   const [copied, setCopied] = useState(false)
 
-  const tier = TIER[asTier(number.category)]
   const isReserved = number.status === 'reserved'
   const inCart = isInCart(number.msisdn)
   const sellingPrice = getSellingPrice(number)
@@ -42,20 +41,12 @@ export function NumberCard({ number }: { number: PhoneNumber }) {
   }
 
   return (
-    <div
-      className={`animate-fade-in relative flex flex-col gap-2 rounded-2xl border p-3 shadow-sm transition-shadow hover:shadow-md ${tier.card}`}
-    >
+    <div className="animate-fade-in relative flex flex-col gap-2 rounded-2xl border border-border bg-surface p-3 transition-colors hover:bg-lagoon-soft">
       <div className="flex items-start justify-between gap-2">
         <div className="flex flex-wrap items-center gap-1.5">
-          <span
-            className={`rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wide uppercase ${tier.badge}`}
-          >
+          <span className="rounded-full bg-lagoon-soft px-2 py-0.5 text-[10px] font-bold tracking-wide text-lagoon uppercase">
             {tierLabel(number.category, t)}
           </span>
-          {/* ink at 10%, not muted at 20%: a tint mixed from the same colour as
-              its own label rises and falls with it, so the chip can never get
-              clear of its background. Ink is the card's opposite pole, which
-              holds on the light metals and on the black card alike. */}
           {isReserved && (
             <span className="rounded-full bg-ink/10 px-2 py-0.5 text-[10px] font-bold tracking-wide text-ink uppercase">
               {t.numberCard.reserved}
@@ -76,11 +67,7 @@ export function NumberCard({ number }: { number: PhoneNumber }) {
         aria-label={t.numberCard.copyAria(formatMsisdn(number.msisdn))}
         className="group flex items-center gap-2 self-start"
       >
-        {/* The metallic fill is on this span, not the button: every grade
-            clips a gradient to the text with a transparent colour, which would
-            otherwise swallow the copy icon along with it.
-
-            The sizes step around the grid rather than simply growing: cards are
+        {/* The sizes step around the grid rather than simply growing: cards are
             at their narrowest at sm, where the grid goes to two columns, so the
             number has less room there than on a phone, not more. Every number
             is the same width — seven tabular digits — so these were set against
@@ -100,7 +87,7 @@ export function NumberCard({ number }: { number: PhoneNumber }) {
             digits in source order regardless of the page's direction. */}
         <span
           dir="ltr"
-          className={`font-numbers font-numeric text-[1.95rem] font-extrabold tracking-tight sm:text-[2.05rem] lg:text-[2.45rem] ${tier.number}`}
+          className="font-numbers font-numeric text-[1.95rem] font-extrabold tracking-tight text-ink sm:text-[2.05rem] lg:text-[2.45rem]"
         >
           {formatMsisdn(number.msisdn)}
         </span>
@@ -128,7 +115,7 @@ export function NumberCard({ number }: { number: PhoneNumber }) {
           {number.promoPrice != null && (
             <span className="text-xs text-muted line-through">MVR {formatCurrency(number.price)}</span>
           )}
-          <span className={`font-numeric text-lg font-semibold ${tier.price}`}>
+          <span className="font-numeric text-lg font-semibold text-lagoon">
             MVR {formatCurrency(sellingPrice)}
           </span>
         </div>
