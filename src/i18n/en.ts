@@ -17,7 +17,7 @@ export const en: Translations = {
     cartAria: (count) => `Cart, ${count} item${count === 1 ? '' : 's'}`,
   },
   search: {
-    placeholder: 'Search a number… try 7777',
+    placeholder: 'Search a number…',
     ariaLabel: 'Search phone numbers',
     clearAria: 'Clear search',
   },
