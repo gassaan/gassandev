@@ -6,6 +6,7 @@ import type { Translations } from '@/i18n/types'
 // uses it.
 export const dv: Translations = {
   languageToggleLabel: 'English',
+  formatPrice: (amount) => `${amount} ރުފިޔާ`,
   providers: {
     dhiraagu: 'ދިރާގު',
     ooredoo: 'އުރީދޫ',
@@ -31,8 +32,8 @@ export const dv: Translations = {
     grade: 'ފެންވަރު',
     allGrades: 'ހުރިހާ ފެންވަރެއް',
     priceRange: 'އަގުގެ ރޭންޖު',
-    min: 'އެންމެ ކުޑަ (MVR)',
-    max: 'އެންމެ ބޮޑު (MVR)',
+    min: 'އެންމެ ކުޑަ (ރުފިޔާ)',
+    max: 'އެންމެ ބޮޑު (ރުފިޔާ)',
     sort: 'ތަރުތީބުކުރޭ',
     sortPriceAsc: 'އަގު: ދަށުން މައްޗަށް',
     sortPriceDesc: 'އަގު: މަތިން ދަށަށް',
@@ -67,7 +68,7 @@ export const dv: Translations = {
   },
   checkout: {
     title: 'އޯޑަރު ފުރިހަމަކުރުން',
-    summary: (count, total) => `${count} ނަންބަރު · MVR ${total}`,
+    summary: (count, total) => `${count} ނަންބަރު · ${total} ރުފިޔާ`,
     nameLabel: 'ނަން',
     nameError: 'ތިޔަބޭފުޅާގެ ނަން ޖައްސަވާ.',
     contactLabel: 'ގުޅޭނެ ނަންބަރު',

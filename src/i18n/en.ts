@@ -2,6 +2,7 @@ import type { Translations } from '@/i18n/types'
 
 export const en: Translations = {
   languageToggleLabel: 'ދިވެހި',
+  formatPrice: (amount) => `MVR ${amount}`,
   providers: {
     dhiraagu: 'Dhiraagu',
     ooredoo: 'Ooredoo',

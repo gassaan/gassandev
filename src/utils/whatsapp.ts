@@ -22,11 +22,11 @@ export function buildOrderMessage(params: {
   const lines = items
     .map(
       (n, i) =>
-        `${i + 1}. ${formatMsisdn(n.msisdn)} — ${t.providers[n.provider]} — ${tierLabel(n.category, t)} — MVR ${formatCurrency(n.price)}`,
+        `${i + 1}. ${formatMsisdn(n.msisdn)} — ${t.providers[n.provider]} — ${tierLabel(n.category, t)} — ${t.formatPrice(formatCurrency(n.price))}`,
     )
     .join('\n')
 
-  return `*${t.whatsapp.heading} — Salhi Numbers*\n\n*${t.whatsapp.name}:* ${name}\n*${t.whatsapp.contact}:* +960 ${contact}\n\n*${t.whatsapp.numbers}:*\n${lines}\n\n*${t.whatsapp.total}:* MVR ${formatCurrency(total)}\n*${t.whatsapp.orderRef}:* ${orderRef}`
+  return `*${t.whatsapp.heading} — Salhi Numbers*\n\n*${t.whatsapp.name}:* ${name}\n*${t.whatsapp.contact}:* +960 ${contact}\n\n*${t.whatsapp.numbers}:*\n${lines}\n\n*${t.whatsapp.total}:* ${t.formatPrice(formatCurrency(total))}\n*${t.whatsapp.orderRef}:* ${orderRef}`
 }
 
 export function buildWhatsAppUrl(message: string): string {
