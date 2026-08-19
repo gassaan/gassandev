@@ -11,10 +11,17 @@ import { useLanguage } from '@/contexts/LanguageContext'
 export function NumberCard({ number }: { number: PhoneNumber }) {
   const { isInCart, addItem } = useCart()
   const { showToast } = useToast()
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const [copied, setCopied] = useState(false)
 
   const isReserved = number.status === 'reserved'
+  // Falls back to the English tags when a number has no Dhivehi ones yet
+  // (older stock, or the admin just hasn't filled them in) — better to show
+  // something than an empty row of tags.
+  const patternTags =
+    language === 'dv' && number.patternTagsDv && number.patternTagsDv.length > 0
+      ? number.patternTagsDv
+      : number.patternTags
   const inCart = isInCart(number.msisdn)
   const sellingPrice = getSellingPrice(number)
   const savePercent = getSavePercent(number)
@@ -95,9 +102,9 @@ export function NumberCard({ number }: { number: PhoneNumber }) {
       </button>
       {copied && <span className="-mt-2 text-xs font-medium text-lagoon">{t.numberCard.copied}</span>}
 
-      {number.patternTags.length > 0 && (
+      {patternTags.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
-          {number.patternTags.map((tag) => (
+          {patternTags.map((tag) => (
             <span
               key={tag}
               className="tag-pattern rounded-full bg-lagoon-soft px-2.5 py-1 text-[11px] font-medium"

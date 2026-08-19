@@ -163,6 +163,7 @@ export class LocalDataService implements DataService {
         provider: shared.provider,
         category: shared.category,
         patternTags: [],
+        patternTagsDv: [],
         price: line.price ?? shared.price,
         promoPrice: null,
         status: 'available',

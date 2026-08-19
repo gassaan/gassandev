@@ -23,6 +23,7 @@ interface NumberRow {
   provider: Provider
   category: Category
   pattern_tags: string[]
+  pattern_tags_dv: string[] | null
   price: number | string
   promo_price: number | string | null
   status: NumberStatus
@@ -59,6 +60,7 @@ function toNumber(row: NumberRow): PhoneNumber {
     provider: row.provider,
     category: row.category,
     patternTags: row.pattern_tags ?? [],
+    patternTagsDv: row.pattern_tags_dv ?? [],
     price: num(row.price),
     promoPrice: row.promo_price == null ? null : num(row.promo_price),
     status: row.status,
@@ -86,6 +88,7 @@ function toNumberPatch(patch: Partial<NewNumberInput>) {
   if (patch.provider !== undefined) row.provider = patch.provider
   if (patch.category !== undefined) row.category = patch.category
   if (patch.patternTags !== undefined) row.pattern_tags = patch.patternTags
+  if (patch.patternTagsDv !== undefined) row.pattern_tags_dv = patch.patternTagsDv
   if (patch.price !== undefined) row.price = patch.price
   if (patch.promoPrice !== undefined) row.promo_price = patch.promoPrice
   if (patch.status !== undefined) row.status = patch.status
@@ -217,6 +220,7 @@ export class SupabaseDataService implements DataService {
         provider: shared.provider,
         category: shared.category,
         pattern_tags: [],
+        pattern_tags_dv: [],
         price: line.price ?? shared.price,
         promo_price: null,
         status: 'available',
