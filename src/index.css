@@ -179,16 +179,34 @@ body {
   color: #f3eadb;
 }
 
+/* Embossed plate: a light rim above the glyph, a dark one below, faking a
+   raised/engraved edge on flat-coloured type — the same lettering effect as
+   a struck medal, without needing an actual gradient fill. Kept as
+   text-shadow rather than a gradient-clipped background so the colour stays
+   a plain, accessible foreground colour; the shadows are decoration on top
+   of it, not the thing carrying the contrast. */
 .num-silver {
   color: #c7ccd1;
+  text-shadow:
+    0 1.5px 0 rgba(255, 255, 255, 0.6),
+    0 -1.5px 1px rgba(0, 0, 0, 0.75),
+    0 3px 4px rgba(0, 0, 0, 0.55);
 }
 
 .num-gold {
   color: #e8b96a;
+  text-shadow:
+    0 1.5px 0 rgba(255, 235, 180, 0.55),
+    0 -1.5px 1px rgba(60, 30, 0, 0.75),
+    0 3px 4px rgba(0, 0, 0, 0.55);
 }
 
 .num-platinum {
   color: #f3eadb;
+  text-shadow:
+    0 1.5px 0 rgba(255, 255, 255, 0.7),
+    0 -1.5px 1px rgba(0, 0, 0, 0.7),
+    0 3px 4px rgba(0, 0, 0, 0.55);
 }
 
 .tag-pattern {
