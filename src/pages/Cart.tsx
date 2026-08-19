@@ -57,7 +57,7 @@ export function Cart() {
                 {t.providers[item.provider]} · {tierLabel(item.category, t)}
               </p>
             </div>
-            <p className="font-numeric font-semibold text-ink">MVR {formatCurrency(item.price)}</p>
+            <p className="font-numeric font-semibold text-ink">{t.formatPrice(formatCurrency(item.price))}</p>
             <button
               type="button"
               onClick={() => removeItem(item.msisdn)}
@@ -74,7 +74,7 @@ export function Cart() {
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3">
           <div>
             <p className="text-xs text-muted">{t.cart.total}</p>
-            <p className="font-numeric text-xl font-semibold text-ink">MVR {formatCurrency(total)}</p>
+            <p className="font-numeric text-xl font-semibold text-ink">{t.formatPrice(formatCurrency(total))}</p>
           </div>
           <button
             type="button"

@@ -113,10 +113,10 @@ export function NumberCard({ number }: { number: PhoneNumber }) {
       <div className="mt-auto flex items-end justify-between gap-2 pt-1">
         <div className="flex flex-col">
           {number.promoPrice != null && (
-            <span className="text-xs text-muted line-through">MVR {formatCurrency(number.price)}</span>
+            <span className="text-xs text-muted line-through">{t.formatPrice(formatCurrency(number.price))}</span>
           )}
           <span className="font-numeric text-lg font-semibold text-lagoon">
-            MVR {formatCurrency(sellingPrice)}
+            {t.formatPrice(formatCurrency(sellingPrice))}
           </span>
         </div>
 

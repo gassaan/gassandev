@@ -1,6 +1,10 @@
 export interface Translations {
   /** Label for the *other* language, shown on the toggle button. */
   languageToggleLabel: string
+  /** Wraps an already-formatted number (e.g. "200,000") with the currency —
+   * a function rather than a bare word, because English puts it before the
+   * number ("MVR 200,000") while Dhivehi puts it after ("200,000 ރުފިޔާ"). */
+  formatPrice: (amount: string) => string
   providers: {
     dhiraagu: string
     ooredoo: string
