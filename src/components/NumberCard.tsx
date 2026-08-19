@@ -3,7 +3,7 @@ import { Check, Copy, ShoppingCart } from 'lucide-react'
 import type { PhoneNumber } from '@/types'
 import { ProviderLogo } from '@/components/ProviderLogo'
 import { formatCurrency, formatMsisdn, getSavePercent, getSellingPrice } from '@/utils/format'
-import { tierLabel } from '@/utils/tiers'
+import { TIER, asTier, tierLabel } from '@/utils/tiers'
 import { useCart } from '@/contexts/CartContext'
 import { useToast } from '@/contexts/ToastContext'
 import { useLanguage } from '@/contexts/LanguageContext'
@@ -14,6 +14,7 @@ export function NumberCard({ number }: { number: PhoneNumber }) {
   const { t, language } = useLanguage()
   const [copied, setCopied] = useState(false)
 
+  const tier = TIER[asTier(number.category)]
   const isReserved = number.status === 'reserved'
   // Falls back to the English tags when a number has no Dhivehi ones yet
   // (older stock, or the admin just hasn't filled them in) — better to show
@@ -51,7 +52,7 @@ export function NumberCard({ number }: { number: PhoneNumber }) {
     <div className="animate-fade-in relative flex flex-col gap-2 rounded-2xl border border-border bg-surface p-3 transition-colors hover:bg-lagoon-soft">
       <div className="flex items-start justify-between gap-2">
         <div className="flex flex-wrap items-center gap-1.5">
-          <span className="rounded-full bg-lagoon-soft px-2 py-0.5 text-[10px] font-bold tracking-wide text-lagoon uppercase">
+          <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wide uppercase ${tier.badge}`}>
             {tierLabel(number.category, t)}
           </span>
           {isReserved && (
@@ -92,7 +93,7 @@ export function NumberCard({ number }: { number: PhoneNumber }) {
             than left to inherit the RTL default in Dhivehi. */}
         <span
           dir="ltr"
-          className="font-numbers font-numeric text-[1.95rem] font-extrabold tracking-tight text-ink sm:text-[2.05rem] lg:text-[2.45rem]"
+          className={`font-numbers font-numeric text-[1.95rem] font-extrabold tracking-tight sm:text-[2.05rem] lg:text-[2.45rem] ${tier.number}`}
         >
           {formatMsisdn(number.msisdn)}
         </span>
