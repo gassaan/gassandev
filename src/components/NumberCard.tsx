@@ -80,11 +80,9 @@ export function NumberCard({ number }: { number: PhoneNumber }) {
             and with padding that already sets a ~68px floor before the number
             is drawn, so shrinking the type alone stops buying much below
             this. Denser than this wants a row layout, not a smaller card. */}
-        {/* dir="ltr": the formatted number is two digit groups separated by a
-            space with no letters to anchor direction, so in an RTL paragraph
-            the bidi algorithm reorders the groups instead of just laying the
-            text out right-to-left. Forcing an LTR isolate here keeps the
-            digits in source order regardless of the page's direction. */}
+        {/* dir="ltr": a phone number is read left-to-right regardless of the
+            surrounding page direction, so this is pinned explicitly rather
+            than left to inherit the RTL default in Dhivehi. */}
         <span
           dir="ltr"
           className="font-numbers font-numeric text-[1.95rem] font-extrabold tracking-tight text-ink sm:text-[2.05rem] lg:text-[2.45rem]"

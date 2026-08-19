@@ -45,11 +45,11 @@ export function Cart() {
           >
             <ProviderLogo provider={item.provider} />
             <div className="flex-1">
-              {/* dir="ltr" isolates the digit groups from the surrounding RTL
-                  paragraph so they stay in source order (see NumberCard for
-                  the full explanation); text-right pins its own alignment
-                  back to match the provider/tier line below it, which is
-                  still right-aligned by inheriting the page's RTL default. */}
+              {/* dir="ltr": a phone number reads left-to-right regardless of
+                  page direction (see NumberCard); text-right pins this
+                  paragraph's own alignment back to match the provider/tier
+                  line below it, which is still right-aligned by inheriting
+                  the page's RTL default. */}
               <p dir="ltr" className="text-right font-numeric text-lg font-semibold text-ink">
                 {formatMsisdn(item.msisdn)}
               </p>
