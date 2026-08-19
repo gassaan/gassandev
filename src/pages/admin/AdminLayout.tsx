@@ -17,7 +17,7 @@ export function AdminLayout() {
   if (!isAuthenticated) return <Navigate to="/admin/login" replace />
 
   return (
-    <div className="min-h-screen bg-sand">
+    <div className="theme-admin min-h-screen bg-sand">
       <header className="sticky top-0 z-40 border-b border-border bg-sand/95 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-3 px-4">
           {/* min-w-0 lets the email truncate instead of shoving Sign out off

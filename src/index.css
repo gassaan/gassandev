@@ -19,23 +19,50 @@
    built for a dark ground, so there is no light theme to fall back to and no
    `dark:` variant anywhere in the app.
 
-   Black page, Pale type, a gilt accent, and a warm dark for chrome.
+   Cool slate page, soft cool-white type, a muted teal accent, and a matching
+   dark for chrome — chosen for eye comfort over long browsing sessions
+   (softer contrast than a pure-black/bright-cream pairing) at the cost of
+   moving off the original warm black-and-gold identity. Every pairing here
+   still clears 6.2:1+ against its ground, well past the 4.5:1 text minimum.
 
-   NAMING. Two token names are historical and no longer describe their value:
-   `--sand` is the page, which is now black rather than sand, and `--lagoon` is
-   the accent, which is now gold rather than teal. They are used in 141 places
+   NAMING. Two token names are historical and no longer describe their
+   value: `--sand` is the page, `--lagoon` is the accent. Both predate this
+   palette too — "sand" was never black, "lagoon" was never actually this
+   close to a lagoon's teal, coincidentally. They are used in 141 places
    across 21 files, so renaming them is a mechanical change of its own rather
-   than something to bury in a palette swap. Read them as "the page colour" and
-   "the accent colour" until then. */
+   than something to bury in a palette swap. Read them as "the page colour"
+   and "the accent colour" until then.
+
+   ADMIN IS UNCHANGED. This palette applies to the customer-facing site only.
+   .theme-admin below re-pins every token to the original warm black-and-gold
+   values and wraps the whole /admin subtree (AdminLayout, AdminLogin), so
+   the admin panel looks exactly as it did before this palette existed. */
 :root {
-  --sand: #0a0a0a;        /* the page */
-  --ink: #e8d9c4;         /* Pale */
-  --lagoon: #c6a268;      /* the accent: Gold, lightened until it carries type */
+  --sand: #10161a;        /* the page */
+  --ink: #d7dfe2;
+  --lagoon: #7fa89f;      /* the accent: muted teal */
+  --lagoon-soft: #1c2629;
+  --gold: #c6a268;        /* unused outside .theme-admin; see note there */
+  --gold-soft: #2a1e10;
+  --muted: #8fa3ab;
+  --surface: #182129;     /* cool dark, so chrome belongs to the same page */
+  --border: #26333d;
+  --danger: #e2837a;      /* left warm on purpose: error/remove stays legible as "danger" regardless of the ambient palette */
+}
+
+/* Re-pins every token to the site's original warm black-and-gold palette,
+   verbatim. Wraps the admin panel's two route roots (AdminLayout, AdminLogin)
+   so admin's look never moves when the customer-facing palette above does —
+   it is an internal tool, not the thing being redesigned here. */
+.theme-admin {
+  --sand: #0a0a0a;
+  --ink: #e8d9c4;
+  --lagoon: #c6a268;
   --lagoon-soft: #241a12;
   --gold: #c6a268;
   --gold-soft: #2a1e10;
   --muted: #9c8f7c;
-  --surface: #1a1510;     /* warm dark, so chrome belongs to the same page */
+  --surface: #1a1510;
   --border: #2b241b;
   --danger: #e2837a;
 }

@@ -21,6 +21,15 @@ if (!isAdminRoute && localStorage.getItem('salhi.lang.v1') === 'dv') {
   document.documentElement.dir = 'rtl'
 }
 
+// index.html's inline pre-paint background is the customer-facing page
+// colour (see the note there), since that's the overwhelming majority of
+// visits. A direct visit to an admin URL needs correcting back to admin's
+// own black before the stylesheet arrives, or it flashes the customer
+// palette first — same race index.html's own comment describes.
+if (isAdminRoute) {
+  document.documentElement.style.backgroundColor = '#0a0a0a'
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <LanguageProvider>
