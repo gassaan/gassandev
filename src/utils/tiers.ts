@@ -6,20 +6,15 @@ export const TIERS: readonly Category[] = ['silver', 'gold', 'platinum']
 
 interface Tier {
   label: string
-  /** Card surface, border, and — on the dark grades — local ink and muted values. */
-  card: string
-  /** The metallic treatment on the number itself. */
-  number: string
-  /** The grade chip in the card corner. */
-  badge: string
-  /** Accent for the price, matched to the grade's metal. */
-  price: string
 }
 
+// Every grade now shares one flat card style (see NumberCard), so this map
+// carries only the English fallback label — asTier() and tierLabel() below
+// are still how every lookup goes through, unchanged.
 export const TIER: Record<Category, Tier> = {
-  silver: { label: 'Silver', card: 'tier-silver', number: 'num-silver', badge: 'badge-silver', price: 'price-silver' },
-  gold: { label: 'Gold', card: 'tier-gold', number: 'num-gold', badge: 'badge-gold', price: 'price-gold' },
-  platinum: { label: 'Platinum', card: 'tier-platinum', number: 'num-platinum', badge: 'badge-platinum', price: 'price-platinum' },
+  silver: { label: 'Silver' },
+  gold: { label: 'Gold' },
+  platinum: { label: 'Platinum' },
 }
 
 // An order stores the grade as it was at the time of purchase, and the grades
