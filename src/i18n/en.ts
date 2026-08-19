@@ -2,6 +2,10 @@ import type { Translations } from '@/i18n/types'
 
 export const en: Translations = {
   languageToggleLabel: 'ދިވެހި',
+  providers: {
+    dhiraagu: 'Dhiraagu',
+    ooredoo: 'Ooredoo',
+  },
   home: {
     headline: 'Some numbers are worth having.',
     browseButton: 'Browse numbers',

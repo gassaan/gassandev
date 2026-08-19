@@ -22,7 +22,7 @@ export function buildOrderMessage(params: {
   const lines = items
     .map(
       (n, i) =>
-        `${i + 1}. ${formatMsisdn(n.msisdn)} — ${capitalize(n.provider)} — ${tierLabel(n.category, t)} — MVR ${formatCurrency(n.price)}`,
+        `${i + 1}. ${formatMsisdn(n.msisdn)} — ${t.providers[n.provider]} — ${tierLabel(n.category, t)} — MVR ${formatCurrency(n.price)}`,
     )
     .join('\n')
 
@@ -31,8 +31,4 @@ export function buildOrderMessage(params: {
 
 export function buildWhatsAppUrl(message: string): string {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
-}
-
-function capitalize(s: string): string {
-  return s.charAt(0).toUpperCase() + s.slice(1)
 }

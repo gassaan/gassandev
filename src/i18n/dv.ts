@@ -6,6 +6,10 @@ import type { Translations } from '@/i18n/types'
 // uses it.
 export const dv: Translations = {
   languageToggleLabel: 'English',
+  providers: {
+    dhiraagu: 'ދިރާގު',
+    ooredoo: 'އުރީދޫ',
+  },
   home: {
     headline: 'ބައެއް ނަންބަރުތަކަކީ ހާއްސަ ނަންބަރުތަކެކެވެ.',
     browseButton: 'ނަންބަރުތައް ބައްލަވާ',
