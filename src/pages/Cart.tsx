@@ -46,11 +46,14 @@ export function Cart() {
             <ProviderLogo provider={item.provider} />
             <div className="flex-1">
               {/* dir="ltr": a phone number reads left-to-right regardless of
-                  page direction (see NumberCard); text-right pins this
-                  paragraph's own alignment back to match the provider/tier
-                  line below it, which is still right-aligned by inheriting
-                  the page's RTL default. */}
-              <p dir="ltr" className="text-right font-numeric text-lg font-semibold text-ink">
+                  page direction (see NumberCard). text-left rtl:text-right
+                  pins this paragraph's own alignment to match the
+                  provider/tier line below it — dir="ltr" makes this
+                  element's own CSS "start" resolve to left, so a bare
+                  text-left/text-right pair (not the logical start/end
+                  utilities) is what's needed to track the *page's*
+                  direction instead of this element's own. */}
+              <p dir="ltr" className="text-left rtl:text-right font-numeric text-lg font-semibold text-ink">
                 {formatMsisdn(item.msisdn)}
               </p>
               <p className="text-xs text-muted">
