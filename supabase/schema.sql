@@ -41,6 +41,9 @@ create table if not exists public.numbers (
   provider provider not null,
   category category not null default 'silver',
   pattern_tags text[] not null default '{}',
+  -- Dhivehi versions of pattern_tags, same order. Existing projects get this
+  -- column via supabase/pattern-tags-dv.sql instead.
+  pattern_tags_dv text[] not null default '{}',
   price numeric(10, 2) not null check (price >= 0),
   promo_price numeric(10, 2) check (promo_price >= 0),
   status number_status not null default 'available',

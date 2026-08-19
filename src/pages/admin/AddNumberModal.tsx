@@ -11,6 +11,7 @@ export function AddNumberModal({ onClose, onAdded }: { onClose: () => void; onAd
   const [provider, setProvider] = useState<Provider>('dhiraagu')
   const [category, setCategory] = useState<Category>('silver')
   const [patternTags, setPatternTags] = useState('')
+  const [patternTagsDv, setPatternTagsDv] = useState('')
   const [price, setPrice] = useState('')
   const [promoPrice, setPromoPrice] = useState('')
   const [status, setStatus] = useState<NumberStatus>('available')
@@ -40,6 +41,10 @@ export function AddNumberModal({ onClose, onAdded }: { onClose: () => void; onAd
         provider,
         category,
         patternTags: patternTags
+          .split(',')
+          .map((t) => t.trim())
+          .filter(Boolean),
+        patternTagsDv: patternTagsDv
           .split(',')
           .map((t) => t.trim())
           .filter(Boolean),
@@ -95,6 +100,20 @@ export function AddNumberModal({ onClose, onAdded }: { onClose: () => void; onAd
             value={patternTags}
             onChange={(e) => setPatternTags(e.target.value)}
             placeholder="Triple 7, Mirror"
+            className={fieldClass}
+          />
+        </label>
+
+        {/* Same order as the English tags above — the customer-facing card
+            pairs them by position, not by matching text, so "Triple 7,
+            Mirror" here needs its Dhivehi equivalents in that same order. */}
+        <label className="flex flex-col gap-1 text-sm text-ink">
+          Pattern tags — Dhivehi (comma separated, same order as above)
+          <input
+            dir="rtl"
+            value={patternTagsDv}
+            onChange={(e) => setPatternTagsDv(e.target.value)}
+            placeholder="ތިން ހަތެއް, ލޯގަނޑު"
             className={fieldClass}
           />
         </label>

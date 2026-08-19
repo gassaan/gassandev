@@ -10,6 +10,11 @@ export interface PhoneNumber {
   provider: Provider
   category: Category
   patternTags: string[]
+  /** Dhivehi versions of patternTags, same order. Optional: numbers created
+   * before this field existed (including the seed data) simply lack it, and
+   * the customer-facing display falls back to patternTags when it's absent
+   * or empty. */
+  patternTagsDv?: string[]
   price: number
   promoPrice: number | null
   status: NumberStatus

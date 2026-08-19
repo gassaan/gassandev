@@ -11,6 +11,7 @@ export interface NewNumberInput {
   provider: PhoneNumber['provider']
   category: PhoneNumber['category']
   patternTags: string[]
+  patternTagsDv: string[]
   price: number
   promoPrice: number | null
   status: PhoneNumber['status']
