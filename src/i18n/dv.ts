@@ -52,7 +52,7 @@ export const dv: Translations = {
     copyAria: (number) => `ނަންބަރު ކޮޕީކުރޭ ${number}`,
     copied: 'ކޮޕީވެއްޖެ',
     inCart: 'ކާޓުގައި',
-    add: 'އިތުރުކުރޭ',
+    add: 'ކާޓަށްލާ',
     addAria: (number) => `${number} ކާޓަށް އިތުރުކުރޭ`,
     addedToast: (number) => `${number} ކާޓަށް އިތުރުކުރެވިއްޖެ`,
   },
