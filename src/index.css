@@ -174,9 +174,14 @@ body {
   color: #e8b96a;
 }
 
+/* Periwinkle-violet, sampled from a reference medal image (its flat medal
+   face averaged to #6b6b99) and brightened to #9696c4 — the raw sampled
+   tone only cleared 3.25:1 against the card surface, under the 4.5:1 text
+   minimum; this brightened version clears 5.08:1 here and 5.79:1 on the
+   number below. */
 .badge-platinum {
-  background-color: #2a2a2a;
-  color: #f3eadb;
+  background-color: #28283f;
+  color: #9696c4;
 }
 
 /* Flat colour, no shadow. An embossed-plate text-shadow treatment was tried
@@ -192,7 +197,7 @@ body {
 }
 
 .num-platinum {
-  color: #f3eadb;
+  color: #9696c4;
 }
 
 .tag-pattern {
