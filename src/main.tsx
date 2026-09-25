@@ -24,10 +24,13 @@ if (!isAdminRoute && localStorage.getItem('salhi.lang.v1') === 'dv') {
 // index.html's inline pre-paint background is the customer-facing page
 // colour (see the note there), since that's the overwhelming majority of
 // visits. A direct visit to an admin URL needs correcting back to admin's
-// own black before the stylesheet arrives, or it flashes the customer
-// palette first — same race index.html's own comment describes.
+// own background before the stylesheet arrives, or it flashes the wrong
+// value if the two ever diverge again — same race index.html's own comment
+// describes. Currently the same purple as the customer palette (see
+// .theme-admin in index.css), kept as an explicit value rather than assumed
+// to always match.
 if (isAdminRoute) {
-  document.documentElement.style.backgroundColor = '#0a0a0a'
+  document.documentElement.style.backgroundColor = '#150f1c'
 }
 
 createRoot(document.getElementById('root')!).render(

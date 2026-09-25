@@ -50,20 +50,23 @@
   --danger: #e2837a;      /* left warm on purpose: error/remove stays legible as "danger" regardless of the ambient palette */
 }
 
-/* Re-pins every token to the site's original warm black-and-gold palette,
-   verbatim. Wraps the admin panel's two route roots (AdminLayout, AdminLogin)
-   so admin's look never moves when the customer-facing palette above does —
-   it is an internal tool, not the thing being redesigned here. */
+/* Explicitly pins the admin panel's palette rather than leaving it to
+   inherit :root, so admin's look is a deliberate choice made here, not a
+   side effect of whatever the customer-facing palette above happens to be
+   at any given time. Wraps admin's two route roots (AdminLayout,
+   AdminLogin). Currently matches the customer-facing purple/violet palette
+   by request; kept as its own block so admin and customer can diverge again
+   without touching :root. */
 .theme-admin {
-  --sand: #0a0a0a;
-  --ink: #e8d9c4;
-  --lagoon: #c6a268;
-  --lagoon-soft: #241a12;
+  --sand: #150f1c;
+  --ink: #e6def2;
+  --lagoon: #a684e8;
+  --lagoon-soft: #241a33;
   --gold: #c6a268;
   --gold-soft: #2a1e10;
-  --muted: #9c8f7c;
-  --surface: #1a1510;
-  --border: #2b241b;
+  --muted: #9d8fae;
+  --surface: #1f1729;
+  --border: #322640;
   --danger: #e2837a;
 }
 
