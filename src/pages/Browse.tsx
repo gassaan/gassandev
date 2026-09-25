@@ -26,20 +26,43 @@ export function Browse() {
   const [results, setResults] = useState<PhoneNumber[] | null>(null)
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
   const [initialLoading, setInitialLoading] = useState(true)
+  const [loadError, setLoadError] = useState(false)
+  const [retryKey, setRetryKey] = useState(0)
 
   useEffect(() => {
     let active = true
-    dataService.listNumbers(filters).then((numbers) => {
-      if (!active) return
-      setResults(numbers)
-      setVisibleCount(PAGE_SIZE)
-      setInitialLoading(false)
-    })
+    setInitialLoading(true)
+    setLoadError(false)
+    dataService
+      .listNumbers(filters)
+      .then((numbers) => {
+        if (!active) return
+        setResults(numbers)
+        setVisibleCount(PAGE_SIZE)
+        setInitialLoading(false)
+      })
+      .catch((error) => {
+        if (!active) return
+        // Surfaces a retry state instead of leaving the skeleton spinning
+        // forever, e.g. if the backend is briefly unreachable.
+        console.error('Failed to load numbers', error)
+        setLoadError(true)
+        setInitialLoading(false)
+      })
     return () => {
       active = false
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters.query, filters.matchMode, filters.provider, filters.category, filters.minPrice, filters.maxPrice, filters.sort])
+  }, [
+    filters.query,
+    filters.matchMode,
+    filters.provider,
+    filters.category,
+    filters.minPrice,
+    filters.maxPrice,
+    filters.sort,
+    retryKey,
+  ])
 
   const visible = useMemo(() => (results ?? []).slice(0, visibleCount), [results, visibleCount])
   const hasMore = (results?.length ?? 0) > visibleCount
@@ -58,6 +81,20 @@ export function Browse() {
       <div className="mt-4">
         {initialLoading ? (
           <NumberGridSkeleton count={6} />
+        ) : loadError ? (
+          <EmptyState
+            title={t.browse.errorTitle}
+            description={t.browse.errorDescription}
+            action={
+              <button
+                type="button"
+                onClick={() => setRetryKey((k) => k + 1)}
+                className="mt-1 flex h-11 items-center rounded-full bg-lagoon px-5 text-sm font-semibold text-sand hover:bg-lagoon/90"
+              >
+                {t.browse.retry}
+              </button>
+            }
+          />
         ) : results && results.length === 0 ? (
           <EmptyState
             title={t.browse.emptyTitle}

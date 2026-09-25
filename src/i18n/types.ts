@@ -48,6 +48,9 @@ export interface Translations {
     clearFilters: string
     resultsCount: (count: number) => string
     loadMore: string
+    errorTitle: string
+    errorDescription: string
+    retry: string
   }
   numberCard: {
     reserved: string

@@ -25,9 +25,14 @@ export function Home() {
 
   useEffect(() => {
     let active = true
-    dataService.getAvailableCount().then((c) => {
-      if (active) setAvailableCount(c)
-    })
+    dataService
+      .getAvailableCount()
+      .then((c) => {
+        if (active) setAvailableCount(c)
+      })
+      .catch((error) => {
+        console.error('Failed to load available count', error)
+      })
     return () => {
       active = false
     }

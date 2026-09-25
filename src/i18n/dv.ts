@@ -46,6 +46,9 @@ export const dv: Translations = {
     clearFilters: 'ފިލްޓަރުތައް ސާފުކުރައްވާ',
     resultsCount: (count) => `${count} ނަންބަރު ފެނިއްޖެ`,
     loadMore: 'އިތުރަށް ދައްކާ',
+    errorTitle: 'ނަންބަރުތައް ލޯޑް ނުވި',
+    errorDescription: 'އިންޓަނެޓް ކަނެކްޝަން ޗެކްކުރައްވާފައި، އަލުން މަސައްކަތްކުރައްވާ.',
+    retry: 'އަލުން މަސައްކަތްކުރޭ',
   },
   numberCard: {
     reserved: 'ރިޒަރވްކޮށްފައި',
