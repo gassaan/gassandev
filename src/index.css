@@ -38,15 +38,15 @@
    values and wraps the whole /admin subtree (AdminLayout, AdminLogin), so
    the admin panel looks exactly as it did before this palette existed. */
 :root {
-  --sand: #10161a;        /* the page */
-  --ink: #d7dfe2;
-  --lagoon: #7fa89f;      /* the accent: muted teal */
-  --lagoon-soft: #1c2629;
+  --sand: #150f1c;        /* the page */
+  --ink: #e6def2;
+  --lagoon: #a684e8;      /* the accent: violet */
+  --lagoon-soft: #241a33;
   --gold: #c6a268;        /* unused outside .theme-admin; see note there */
   --gold-soft: #2a1e10;
-  --muted: #8fa3ab;
-  --surface: #182129;     /* cool dark, so chrome belongs to the same page */
-  --border: #26333d;
+  --muted: #9d8fae;
+  --surface: #1f1729;     /* cool dark, so chrome belongs to the same page */
+  --border: #322640;
   --danger: #e2837a;      /* left warm on purpose: error/remove stays legible as "danger" regardless of the ambient palette */
 }
 
