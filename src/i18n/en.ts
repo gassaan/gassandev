@@ -8,7 +8,7 @@ export const en: Translations = {
     ooredoo: 'Ooredoo',
   },
   home: {
-    headline: 'Easy to remember, difficult to forget.',
+    headline: 'Easy to remember, hard to forget.',
     browseButton: 'Browse numbers',
     availableCountSuffix: (count) => ` number${count === 1 ? '' : 's'} available`,
   },
