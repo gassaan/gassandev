@@ -47,7 +47,7 @@ export interface PageView {
   createdAt: string
 }
 
-export type SortOption = 'price-asc' | 'price-desc' | 'newest'
+export type SortOption = 'number-asc' | 'price-asc' | 'price-desc' | 'newest'
 
 export interface NumberFilters {
   query?: string

@@ -21,7 +21,7 @@ export function Browse() {
     query: searchParams.get('q') ?? '',
     provider: (searchParams.get('provider') as NumberFilters['provider']) ?? 'all',
     category: (searchParams.get('category') as NumberFilters['category']) ?? 'all',
-    sort: 'newest',
+    sort: 'number-asc',
   }))
   const [results, setResults] = useState<PhoneNumber[] | null>(null)
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
@@ -68,7 +68,7 @@ export function Browse() {
   const hasMore = (results?.length ?? 0) > visibleCount
 
   function clearFilters() {
-    setFilters({ query: '', provider: 'all', category: 'all', sort: 'newest' })
+    setFilters({ query: '', provider: 'all', category: 'all', sort: 'number-asc' })
   }
 
   return (

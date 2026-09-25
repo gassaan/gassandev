@@ -41,6 +41,7 @@ export function FilterBar({
   const { t } = useLanguage()
   const [open, setOpen] = useState(false)
   const sortLabels: Record<SortOption, string> = {
+    'number-asc': t.filters.sortNumberAsc,
     'price-asc': t.filters.sortPriceAsc,
     'price-desc': t.filters.sortPriceDesc,
     newest: t.filters.sortNewest,
@@ -59,7 +60,7 @@ export function FilterBar({
   const hasCategory = Boolean(filters.category && filters.category !== 'all')
   const hasPrice = filters.minPrice != null || filters.maxPrice != null
   const activeCount = (hasCategory ? 1 : 0) + (hasPrice ? 1 : 0)
-  const isSorted = Boolean(filters.sort && filters.sort !== 'newest')
+  const isSorted = Boolean(filters.sort && filters.sort !== 'number-asc')
 
   function resetPanel() {
     onChange({
@@ -67,7 +68,7 @@ export function FilterBar({
       category: 'all',
       minPrice: undefined,
       maxPrice: undefined,
-      sort: 'newest',
+      sort: 'number-asc',
     })
   }
 
@@ -170,7 +171,7 @@ export function FilterBar({
             </label>
             <select
               id="browse-sort"
-              value={filters.sort ?? 'newest'}
+              value={filters.sort ?? 'number-asc'}
               onChange={(e) => onChange({ ...filters, sort: e.target.value as SortOption })}
               className="h-11 w-full rounded-xl border border-border bg-surface px-3 text-sm font-medium text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lagoon"
             >

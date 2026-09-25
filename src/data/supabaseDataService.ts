@@ -139,8 +139,9 @@ export class SupabaseDataService implements DataService {
     if (filters.minPrice != null) q = q.gte('selling_price', filters.minPrice)
     if (filters.maxPrice != null) q = q.lte('selling_price', filters.maxPrice)
 
-    const sort = filters.sort ?? 'newest'
-    if (sort === 'price-asc') q = q.order('selling_price', { ascending: true })
+    const sort = filters.sort ?? 'number-asc'
+    if (sort === 'number-asc') q = q.order('msisdn', { ascending: true })
+    else if (sort === 'price-asc') q = q.order('selling_price', { ascending: true })
     else if (sort === 'price-desc') q = q.order('selling_price', { ascending: false })
     else q = q.order('created_at', { ascending: false })
 

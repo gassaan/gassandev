@@ -31,6 +31,7 @@ export const en: Translations = {
     min: 'Min (MVR)',
     max: 'Max (MVR)',
     sort: 'Sort',
+    sortNumberAsc: 'Number: ascending',
     sortPriceAsc: 'Price: low to high',
     sortPriceDesc: 'Price: high to low',
     sortNewest: 'Newest',

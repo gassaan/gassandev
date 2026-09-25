@@ -77,8 +77,9 @@ function applyFilters(numbers: PhoneNumber[], filters: NumberFilters = {}): Phon
     result = result.filter((n) => getSellingPrice(n) <= filters.maxPrice!)
   }
 
-  const sort = filters.sort ?? 'newest'
+  const sort = filters.sort ?? 'number-asc'
   result = [...result].sort((a, b) => {
+    if (sort === 'number-asc') return Number(a.msisdn) - Number(b.msisdn)
     if (sort === 'price-asc') return getSellingPrice(a) - getSellingPrice(b)
     if (sort === 'price-desc') return getSellingPrice(b) - getSellingPrice(a)
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
