@@ -3,7 +3,7 @@ import type { Translations } from '@/i18n/types'
 import { formatCurrency, formatMsisdn } from '@/utils/format'
 import { tierLabel } from '@/utils/tiers'
 
-export const WHATSAPP_NUMBER = '9607669999'
+export const WHATSAPP_NUMBER = '9609998992'
 
 export function generateOrderRef(): string {
   const n = Math.floor(1000 + Math.random() * 9000)
