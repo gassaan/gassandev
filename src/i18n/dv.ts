@@ -12,7 +12,7 @@ export const dv: Translations = {
     ooredoo: 'އުރީދޫ',
   },
   home: {
-    headline: 'ބައެއް ނަންބަރުތަކަކީ ހާއްސަ ނަންބަރުތަކެކެވެ.',
+    headline: 'ހަނދާންކުރަން ފަސޭހަ، ހަނދާން ނެތެން ދަތި.',
     browseButton: 'ނަންބަރުތައް ބައްލަވާ',
     availableCountSuffix: (_count) => ` ނަންބަރު އެބަހުރި`,
   },
