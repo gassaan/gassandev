@@ -12,6 +12,8 @@ const cellSelect =
   'h-9 rounded-lg border border-border bg-surface px-2 text-xs font-medium text-ink capitalize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lagoon'
 const cellInput =
   'h-9 w-20 rounded-lg border border-border bg-surface px-2 text-xs font-numeric text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lagoon'
+const cellTagInput =
+  'h-9 w-36 rounded-lg border border-border bg-surface px-2 text-xs text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lagoon'
 
 export function AdminNumbers() {
   useDocumentMeta('Manage numbers — Salhi Admin')
@@ -25,6 +27,11 @@ export function AdminNumbers() {
   const [showBulkAdd, setShowBulkAdd] = useState(false)
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null)
   const [confirmBulkDelete, setConfirmBulkDelete] = useState(false)
+  // Buffers the tag inputs while typing so a comma-separated list mid-edit
+  // (e.g. "Triple 7, Mir") isn't clobbered by re-deriving from the array on
+  // every keystroke; committed to the number — and cleared — on blur.
+  const [tagsDraft, setTagsDraft] = useState<Record<string, string>>({})
+  const [tagsDvDraft, setTagsDvDraft] = useState<Record<string, string>>({})
 
   function refresh() {
     dataService.listAllNumbersForAdmin().then((n) => {
@@ -61,6 +68,31 @@ export function AdminNumbers() {
   async function handleUpdate(id: string, patch: Partial<PhoneNumber>) {
     setNumbers((prev) => prev.map((n) => (n.id === id ? { ...n, ...patch } : n)))
     await dataService.updateNumber(id, patch)
+  }
+
+  function parseTags(raw: string): string[] {
+    return raw
+      .split(',')
+      .map((t) => t.trim())
+      .filter(Boolean)
+  }
+
+  function commitTags(id: string, raw: string) {
+    handleUpdate(id, { patternTags: parseTags(raw) })
+    setTagsDraft((prev) => {
+      const next = { ...prev }
+      delete next[id]
+      return next
+    })
+  }
+
+  function commitTagsDv(id: string, raw: string) {
+    handleUpdate(id, { patternTagsDv: parseTags(raw) })
+    setTagsDvDraft((prev) => {
+      const next = { ...prev }
+      delete next[id]
+      return next
+    })
   }
 
   async function handleDelete(id: string) {
@@ -164,7 +196,7 @@ export function AdminNumbers() {
       )}
 
       <div className="overflow-x-auto rounded-xl border border-border">
-        <table className="w-full min-w-[720px] border-collapse text-sm">
+        <table className="w-full min-w-[960px] border-collapse text-sm">
           <thead>
             <tr className="border-b border-border bg-surface text-left text-xs uppercase text-muted">
               <th className="p-3">
@@ -179,6 +211,8 @@ export function AdminNumbers() {
               <th className="p-3">Number</th>
               <th className="p-3">Provider</th>
               <th className="p-3">Category</th>
+              <th className="p-3">Tags</th>
+              <th className="p-3">Tags (Dhivehi)</th>
               <th className="p-3">Price</th>
               <th className="p-3">Promo</th>
               <th className="p-3">Status</th>
@@ -189,13 +223,13 @@ export function AdminNumbers() {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={9} className="p-6 text-center text-muted">
+                <td colSpan={11} className="p-6 text-center text-muted">
                   Loading…
                 </td>
               </tr>
             ) : filtered.length === 0 ? (
               <tr>
-                <td colSpan={9} className="p-6 text-center text-muted">
+                <td colSpan={11} className="p-6 text-center text-muted">
                   No numbers match.
                 </td>
               </tr>
@@ -232,6 +266,25 @@ export function AdminNumbers() {
                       <option value="gold">Gold</option>
                               <option value="platinum">Platinum</option>
                     </select>
+                  </td>
+                  <td className="p-3">
+                    <input
+                      value={tagsDraft[n.id] ?? n.patternTags.join(', ')}
+                      onChange={(e) => setTagsDraft((prev) => ({ ...prev, [n.id]: e.target.value }))}
+                      onBlur={(e) => commitTags(n.id, e.target.value)}
+                      placeholder="Triple 7, Mirror"
+                      className={cellTagInput}
+                    />
+                  </td>
+                  <td className="p-3">
+                    <input
+                      dir="rtl"
+                      value={tagsDvDraft[n.id] ?? (n.patternTagsDv ?? []).join(', ')}
+                      onChange={(e) => setTagsDvDraft((prev) => ({ ...prev, [n.id]: e.target.value }))}
+                      onBlur={(e) => commitTagsDv(n.id, e.target.value)}
+                      placeholder="ތިން ހަތެއް, ލޯގަނޑު"
+                      className={cellTagInput}
+                    />
                   </td>
                   <td className="p-3">
                     <input
