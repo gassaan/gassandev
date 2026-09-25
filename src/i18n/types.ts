@@ -37,6 +37,7 @@ export interface Translations {
     min: string
     max: string
     sort: string
+    sortNumberAsc: string
     sortPriceAsc: string
     sortPriceDesc: string
     sortNewest: string

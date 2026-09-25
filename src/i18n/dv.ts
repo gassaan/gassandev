@@ -35,6 +35,7 @@ export const dv: Translations = {
     min: 'އެންމެ ކުޑަ (ރުފިޔާ)',
     max: 'އެންމެ ބޮޑު (ރުފިޔާ)',
     sort: 'ތަރުތީބުކުރޭ',
+    sortNumberAsc: 'ނަންބަރު: ކުޑައިން ބޮޑަށް',
     sortPriceAsc: 'އަގު: ދަށުން މައްޗަށް',
     sortPriceDesc: 'އަގު: މަތިން ދަށަށް',
     sortNewest: 'އެންމެ އަލަށް',
