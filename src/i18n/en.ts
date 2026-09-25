@@ -42,6 +42,9 @@ export const en: Translations = {
     clearFilters: 'Clear filters',
     resultsCount: (count) => `${count} number${count === 1 ? '' : 's'} found`,
     loadMore: 'Load more',
+    errorTitle: "Couldn't load numbers",
+    errorDescription: 'Check your connection and try again.',
+    retry: 'Try again',
   },
   numberCard: {
     reserved: 'Reserved',
