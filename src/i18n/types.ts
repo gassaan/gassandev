@@ -67,7 +67,8 @@ export interface Translations {
     emptyTitle: string
     emptyDescription: string
     browseNumbers: string
-    heading: (count: number) => string
+    title: string
+    countAria: (count: number) => string
     removeAria: (number: string) => string
     total: string
     continueToOrder: string
