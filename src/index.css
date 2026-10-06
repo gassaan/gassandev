@@ -54,14 +54,18 @@
 
    A second family rather than size-adjust on the first, because headings do
    not have this problem and should not inherit the correction. Same URL, so
-   the browser fetches one file. */
+   the browser fetches one file.
+
+   125% after rendering the ladder from 100 to 150 on a real button. 150 was
+   tried first and read as too heavy in use; 125 is the step that still lifts
+   the label clearly off the untouched face without crowding the icon. */
 @font-face {
   font-family: "Mv MAG Round Button";
   src: url("./assets/fonts/mv-mag-round.otf") format("opentype");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
-  size-adjust: 150%;
+  size-adjust: 125%;
 }
 
 /* One palette, dark. The shop sells a luxury object and the whole design is
