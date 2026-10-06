@@ -43,6 +43,27 @@
   font-display: swap;
 }
 
+/* The same file again, scaled up, for buttons only.
+
+   Thaana glyph bodies sit small inside the em — at the 14px the Add button
+   asks for, "ކާޓަށްލާ" renders visibly smaller than "Add" does at the same
+   size, and the icon beside it ends up looking oversized. size-adjust scales
+   the face's outlines *and* its metrics, so the fix lands in one place and
+   every relative size survives: a text-xs chip stays smaller than a text-base
+   CTA, and vertical centring stays proportional.
+
+   A second family rather than size-adjust on the first, because headings do
+   not have this problem and should not inherit the correction. Same URL, so
+   the browser fetches one file. */
+@font-face {
+  font-family: "Mv MAG Round Button";
+  src: url("./assets/fonts/mv-mag-round.otf") format("opentype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  size-adjust: 150%;
+}
+
 /* One palette, dark. The shop sells a luxury object and the whole design is
    built for a dark ground, so there is no light theme to fall back to and no
    `dark:` variant anywhere in the app.
@@ -156,6 +177,15 @@ html {
    the button this rule targets. */
 html[dir="rtl"] :is(h1, h2, h3, h4, h5, h6, button, [data-button]) {
   font-family: "Mv MAG Round", "Democrats Akuru", "Noto Sans Thaana", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Buttons take the scaled cut, and a little more room between the label and
+   whatever sits next to it: at the old 6px the bigger label crowded the icon,
+   which is the spacing that reads as uneven once the two are closer in size.
+   Padding is already symmetric and stays untouched. */
+html[dir="rtl"] :is(button, [data-button]) {
+  font-family: "Mv MAG Round Button", "Democrats Akuru", "Noto Sans Thaana", ui-sans-serif, system-ui, sans-serif;
+  gap: 0.6rem;
 }
 
 html[dir="rtl"] body {
