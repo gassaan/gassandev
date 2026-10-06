@@ -35,6 +35,7 @@ export function OrderConfirmation() {
         href={data.whatsappUrl}
         target="_blank"
         rel="noreferrer"
+        data-button
         className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-lagoon text-sm font-semibold text-sand hover:bg-lagoon/90"
       >
         <MessageCircle size={18} />
