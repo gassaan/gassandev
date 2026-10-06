@@ -75,8 +75,9 @@ export const dv: Translations = {
   // the owner wants them to say, and nothing was adjusted for fit or tone. The
   // English in en.ts is the counterpart; the two have to change together.
   //
-  // The three control labels (agree / agreed / blockedHint) were written here
-  // and are the one part of this block that is not owner-supplied.
+  // blockedHint is the owner's wording too. Only the two labels on the control
+  // itself (agree / agreed) were written here, and they are the one part of
+  // this block that is not owner-supplied.
   dhiraaguTerms: {
     title: 'ޝަރުޠުތަކާއި އުޞޫލުތައް',
     points: [
@@ -88,7 +89,7 @@ export const dv: Translations = {
     ],
     agree: 'އެއްބަސްވަން',
     agreed: 'ޝަރުޠުތަކަށް އެއްބަސްވެވިއްޖެ.',
-    blockedHint: 'ކުރިއަށްދިއުމަށް ޝަރުޠުތަކަށް އެއްބަސްވޭ.',
+    blockedHint: 'ކުރިޔަށް ދިއުމަށް ޝަރުޠުތަކަށް އެއްބަސްވެލައްވާ!',
   },
   checkout: {
     title: 'އޯޑަރު ފުރިހަމަކުރުން',
