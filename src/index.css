@@ -28,6 +28,21 @@
   font-display: swap;
 }
 
+/* Mv MAG Round, the Dhivehi display cut. Used for headings and buttons when
+   the page is in Dhivehi; body copy stays Democrats Akuru.
+
+   Declared across the whole weight range rather than at 700. There is only one
+   cut in the family, and the elements it lands on ask for everything from 500
+   to 800 — pinning it to a single weight would leave the browser synthesising
+   a fake bold on top of a face that is already bold. */
+@font-face {
+  font-family: "Mv MAG Round";
+  src: url("./assets/fonts/mv-mag-round.otf") format("opentype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* One palette, dark. The shop sells a luxury object and the whole design is
    built for a dark ground, so there is no light theme to fall back to and no
    `dark:` variant anywhere in the app.
@@ -122,6 +137,27 @@ html {
    Dhivehi copy gets a size bump to read at the same visual weight. Scoped to
    the html[dir="rtl"] page state rather than a lang selector, since dir is
    what LanguageContext keeps in sync with the active language. */
+/* Dhivehi headings and buttons take Mv MAG Round.
+
+   Gated on html[dir="rtl"], the page state LanguageContext keeps in sync with
+   the active language, rather than put at the head of a shared stack. The font
+   carries no Latin letters, so leading a stack with it would be harmless for
+   English words — but it does carry digits, and an English heading with a year
+   or a price in it would quietly pick up Dhivehi numerals' shapes. Gating costs
+   one selector and removes the question.
+
+   [data-button] covers the links that are buttons by appearance — the home CTA,
+   the empty-cart action, the WhatsApp handoff. They are <a> elements and must
+   stay <a> elements, so they are marked rather than selected by their utility
+   classes, which would turn a styling change into a silent font regression.
+
+   Elements that set their own face keep it: the number on a card is a span with
+   font-numbers inside a button, and that declaration applies to the span, not to
+   the button this rule targets. */
+html[dir="rtl"] :is(h1, h2, h3, h4, h5, h6, button, [data-button]) {
+  font-family: "Mv MAG Round", "Democrats Akuru", "Noto Sans Thaana", ui-sans-serif, system-ui, sans-serif;
+}
+
 html[dir="rtl"] body {
   font-size: 1.0625em;
 }

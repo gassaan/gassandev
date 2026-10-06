@@ -27,6 +27,7 @@ export function Cart() {
           action={
             <Link
               to="/browse"
+              data-button
               className="mt-1 flex h-11 items-center rounded-full bg-lagoon px-5 text-sm font-semibold text-sand hover:bg-lagoon/90"
             >
               {t.cart.browseNumbers}

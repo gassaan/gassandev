@@ -73,6 +73,7 @@ export function Home() {
       <Link
         to="/browse"
         dir="ltr"
+        data-button
         className="group inline-flex h-13 items-center gap-2.5 rounded-full bg-lagoon px-9 text-base font-semibold text-sand transition-colors hover:bg-lagoon/90 active:bg-lagoon/80"
       >
         {t.home.browseButton}
