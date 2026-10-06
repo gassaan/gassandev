@@ -70,24 +70,25 @@ export const dv: Translations = {
     total: 'ޖުމްލަ',
     continueToOrder: 'އޯޑަރަށް ކުރިއަށްދޭ',
   },
-  // These terms are binding, and translating them is not a judgement call a
-  // developer (or a machine) should make: a clause about cancellation without
-  // refund has to say in Dhivehi exactly what it says in English. The English
-  // text therefore shows in both languages until an official Dhivehi version
-  // is supplied, which is the safe failure — the customer reads the real terms
-  // either way, just not yet in their own language.
+  // The clauses below are the shop owner's own Dhivehi text, supplied for this
+  // purpose — not a translation made here. They are binding, so they say what
+  // the owner wants them to say, and nothing was adjusted for fit or tone. The
+  // English in en.ts is the counterpart; the two have to change together.
+  //
+  // The three control labels (agree / agreed / blockedHint) were written here
+  // and are the one part of this block that is not owner-supplied.
   dhiraaguTerms: {
-    title: 'Terms & Conditions',
+    title: 'ޝަރުޠުތަކާއި އުޞޫލުތައް',
     points: [
-      'If you already have a Dhiraagu My Account, ownership of your purchased number will be transferred instantly.',
-      'If the ownership transfer is not completed due to customer delay, you will be given 7 days to complete the process.',
-      'If not completed within 7 days, the number will be cancelled with no refund.',
-      'We reserve the right to resell the cancelled number on our website.',
-      'By purchasing a number, you agree to these terms.',
+      'ދިރާގު \'މައި އެކައުންޓް\' އެއް ކުރިން ހުޅުވާފައިވާ ނަމަ، ބައްލަވައިގަންނަ ނަންބަރުގެ މިލްކުވެރިކަން ވަގުތުން ބަދަލުކޮށްދެވޭނެއެވެ.',
+      'ކަސްޓަމަރުގެ ފަރާތުން ދިމާވާ ސަބަބަކާ ހުރެ ނަންބަރުގެ މިލްކުވެރިކަން ބަދަލުކުރުމުގެ މަރުޙަލާ ފުރިހަމަނުވެއްޖެ ނަމަ، އެ ކަން ފުރިހަމަކުރުމަށް 7 ދުވަހުގެ މުއްދަތެއް ދެވޭނެއެވެ.',
+      'ދެވިފައިވާ 7 ދުވަހުގެ މުއްދަތުގައި މިލްކުވެރިކަން ބަދަލުކުރުމުގެ ކަންކަން ފުރިހަމަނުކޮށްފި ނަމަ، އެ ނަންބަރު ބާޠިލުކުރެވޭނެއެވެ. އަދި މިފަދަ ޙާލަތްތަކުގައި ފައިސާ އަނބުރާ ނުލިބޭނެއެވެ.',
+      'ބާޠިލުކުރެވޭ ނަންބަރުތައް އަލުން ވިއްކުމަށް އަޅުގަނޑުމެންގެ ވެބްސައިޓުގައި ޝާއިޢުކުރުމުގެ އިޚުތިޔާރު ކުންފުންޏަށް ލިބިގެންވެއެވެ.',
+      'ނަންބަރެއް ބައްލަވައިގަތުމުން، މި ބަޔާންކުރެވުނު ޝަރުޠުތަކަށް އެއްބަސްވެވުނީ ކަމުގައި ބެލެވޭނެއެވެ.',
     ],
-    agree: 'I agree',
-    agreed: 'You have agreed to these terms.',
-    blockedHint: 'Agree to the terms to continue.',
+    agree: 'އެއްބަސްވަން',
+    agreed: 'ޝަރުޠުތަކަށް އެއްބަސްވެވިއްޖެ.',
+    blockedHint: 'ކުރިއަށްދިއުމަށް ޝަރުޠުތަކަށް އެއްބަސްވޭ.',
   },
   checkout: {
     title: 'އޯޑަރު ފުރިހަމަކުރުން',
