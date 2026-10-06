@@ -72,6 +72,13 @@ export interface Translations {
     total: string
     continueToOrder: string
   }
+  dhiraaguTerms: {
+    title: string
+    points: readonly string[]
+    agree: string
+    agreed: string
+    blockedHint: string
+  }
   checkout: {
     title: string
     summary: (count: number, total: string) => string
