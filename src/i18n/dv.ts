@@ -62,8 +62,8 @@ export const dv: Translations = {
     addedToast: (number) => `${number} ކާޓަށް އިތުރުކުރެވިއްޖެ`,
   },
   cart: {
-    emptyTitle: 'ކާޓު ހުހެވެ',
-    emptyDescription: 'ލިބެންހުރި ނަންބަރުތައް ބައްލަވާ، ބޭނުންވާ ނަންބަރު އިތުރުކުރައްވާ.',
+    emptyTitle: 'މިވަގުތު ކާޓުގައި އެއްވެސް ނަންބަރެއް ނެތް!',
+    emptyDescription: 'ލިބެންހުރި ނަންބަރުތައް ބައްލަވާ، ބޭނުންވާ ނަންބަރެއް ކާޓައްލާ',
     browseNumbers: 'ނަންބަރުތައް ބައްލަވާ',
     title: 'ކާޓު',
     countAria: (count) => `ކާޓުގައި ${count} ނަންބަރު`,
