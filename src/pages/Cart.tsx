@@ -39,7 +39,25 @@ export function Cart() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 pb-32 pt-6">
-      <h1 className="mb-4 font-display text-2xl font-semibold text-ink">{t.cart.heading(items.length)}</h1>
+      {/* The count was "Your cart (3)". A bracketed number is a programmer's
+          way of writing a quantity — it reads as an aside rather than as part
+          of the design. The pill says the same thing as an object, and the
+          heading gets to be a heading.
+
+          The number carries aria-label rather than being left bare: on its own
+          "3" announces as a stray digit after the title, where "3 numbers" is
+          the sentence a listener needs. aria-hidden on the visible glyph keeps
+          it from being read twice. */}
+      <div className="mb-4 flex items-center gap-2.5">
+        <h1 className="font-display text-2xl font-semibold text-ink">{t.cart.title}</h1>
+        <span
+          role="status"
+          aria-label={t.cart.countAria(items.length)}
+          className="flex h-7 min-w-[1.75rem] items-center justify-center rounded-full bg-lagoon-soft px-2.5 font-numeric text-sm font-semibold text-lagoon"
+        >
+          <span aria-hidden="true">{items.length}</span>
+        </span>
+      </div>
 
       <div className="flex flex-col gap-2">
         {items.map((item) => (
