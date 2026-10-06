@@ -53,7 +53,7 @@ export function Cart() {
         <span
           role="status"
           aria-label={t.cart.countAria(items.length)}
-          className="flex h-7 min-w-[1.75rem] items-center justify-center rounded-full bg-lagoon-soft px-2.5 font-numeric text-sm font-semibold text-lagoon"
+          className="flex h-7 min-w-[1.75rem] items-center justify-center rounded-full bg-lagoon px-2.5 font-numeric text-sm font-semibold text-sand"
         >
           <span aria-hidden="true">{items.length}</span>
         </span>
