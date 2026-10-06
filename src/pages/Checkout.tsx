@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCart } from '@/contexts/CartContext'
 import { useLanguage } from '@/contexts/LanguageContext'
+import { useDhiraaguTerms } from '@/hooks/useDhiraaguTerms'
 import { dataService } from '@/data'
 import { formatCurrency } from '@/utils/format'
 import { buildOrderMessage, buildWhatsAppUrl, generateOrderRef } from '@/utils/whatsapp'
@@ -11,7 +12,15 @@ export function Checkout() {
   useDocumentMeta('Checkout — Salhi Numbers')
   const { t } = useLanguage()
   const { items, total, clearCart } = useCart()
+  const { blocked } = useDhiraaguTerms()
   const navigate = useNavigate()
+
+  // The cart's button is the front door, not the lock. Typing /checkout, using
+  // the back button after removing the acceptance, or restoring a tab would
+  // otherwise walk straight past the terms, so the gate is enforced here too.
+  useEffect(() => {
+    if (blocked) navigate('/cart', { replace: true })
+  }, [blocked, navigate])
 
   const [name, setName] = useState('')
   const [contact, setContact] = useState('')
@@ -28,7 +37,9 @@ export function Checkout() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (!validate() || items.length === 0) return
+    // blocked is re-checked here, not just on mount: a second tab could remove
+    // the acceptance between this page rendering and the order being sent.
+    if (blocked || !validate() || items.length === 0) return
     setSubmitting(true)
 
     const orderRef = generateOrderRef()

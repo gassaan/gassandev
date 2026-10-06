@@ -66,6 +66,19 @@ export const en: Translations = {
     total: 'Total',
     continueToOrder: 'Continue to order',
   },
+  dhiraaguTerms: {
+    title: 'Terms & Conditions',
+    points: [
+      'If you already have a Dhiraagu My Account, ownership of your purchased number will be transferred instantly.',
+      'If the ownership transfer is not completed due to customer delay, you will be given 7 days to complete the process.',
+      'If not completed within 7 days, the number will be cancelled with no refund.',
+      'We reserve the right to resell the cancelled number on our website.',
+      'By purchasing a number, you agree to these terms.',
+    ],
+    agree: 'I agree',
+    agreed: 'You have agreed to these terms.',
+    blockedHint: 'Agree to the terms to continue.',
+  },
   checkout: {
     title: 'Checkout',
     summary: (count, total) => `${count} number${count === 1 ? '' : 's'} · MVR ${total}`,

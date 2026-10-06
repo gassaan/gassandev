@@ -70,6 +70,25 @@ export const dv: Translations = {
     total: 'ޖުމްލަ',
     continueToOrder: 'އޯޑަރަށް ކުރިއަށްދޭ',
   },
+  // These terms are binding, and translating them is not a judgement call a
+  // developer (or a machine) should make: a clause about cancellation without
+  // refund has to say in Dhivehi exactly what it says in English. The English
+  // text therefore shows in both languages until an official Dhivehi version
+  // is supplied, which is the safe failure — the customer reads the real terms
+  // either way, just not yet in their own language.
+  dhiraaguTerms: {
+    title: 'Terms & Conditions',
+    points: [
+      'If you already have a Dhiraagu My Account, ownership of your purchased number will be transferred instantly.',
+      'If the ownership transfer is not completed due to customer delay, you will be given 7 days to complete the process.',
+      'If not completed within 7 days, the number will be cancelled with no refund.',
+      'We reserve the right to resell the cancelled number on our website.',
+      'By purchasing a number, you agree to these terms.',
+    ],
+    agree: 'I agree',
+    agreed: 'You have agreed to these terms.',
+    blockedHint: 'Agree to the terms to continue.',
+  },
   checkout: {
     title: 'އޯޑަރު ފުރިހަމަކުރުން',
     summary: (count, total) => `${count} ނަންބަރު · ${total} ރުފިޔާ`,

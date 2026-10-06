@@ -1,8 +1,10 @@
+import { useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ArrowRight, ShoppingBag, Trash2 } from 'lucide-react'
+import { ArrowRight, Check, ShoppingBag, Trash2 } from 'lucide-react'
 import { tierLabel } from '@/utils/tiers'
 import { useCart } from '@/contexts/CartContext'
 import { useLanguage } from '@/contexts/LanguageContext'
+import { useDhiraaguTerms } from '@/hooks/useDhiraaguTerms'
 import { ProviderLogo } from '@/components/ProviderLogo'
 import { EmptyState } from '@/components/EmptyState'
 import { formatCurrency, formatMsisdn } from '@/utils/format'
@@ -12,6 +14,8 @@ export function Cart() {
   useDocumentMeta('Your cart — Salhi Numbers')
   const { t } = useLanguage()
   const { items, removeItem, total } = useCart()
+  const { required: termsRequired, agreed, accept, blocked } = useDhiraaguTerms()
+  const termsRef = useRef<HTMLElement>(null)
   const navigate = useNavigate()
 
   if (items.length === 0) {
@@ -73,16 +77,76 @@ export function Cart() {
         ))}
       </div>
 
+      {/* Only Dhiraagu numbers carry the ownership-transfer process these terms
+          describe, so an Ooredoo-only cart never sees this. */}
+      {termsRequired && (
+        <section
+          ref={termsRef}
+          aria-labelledby="dhiraagu-terms-title"
+          tabIndex={-1}
+          className="mt-5 rounded-xl border border-border bg-surface p-4"
+        >
+          <h2 id="dhiraagu-terms-title" className="font-display text-base font-semibold text-ink">
+            {t.dhiraaguTerms.title}
+          </h2>
+
+          <ul className="mt-3 flex list-disc flex-col gap-2 ps-5 text-sm leading-relaxed text-muted">
+            {t.dhiraaguTerms.points.map((point) => (
+              <li key={point}>{point}</li>
+            ))}
+          </ul>
+
+          {agreed ? (
+            <p className="mt-4 flex items-center gap-2 text-sm font-semibold text-lagoon">
+              <Check size={16} aria-hidden="true" />
+              {t.dhiraaguTerms.agreed}
+            </p>
+          ) : (
+            <button
+              type="button"
+              onClick={accept}
+              className="mt-4 flex h-11 items-center rounded-full bg-lagoon px-6 text-sm font-semibold text-sand hover:bg-lagoon/90"
+            >
+              {t.dhiraaguTerms.agree}
+            </button>
+          )}
+        </section>
+      )}
+
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-sand/95 backdrop-blur safe-bottom">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3">
           <div>
             <p className="text-xs text-muted">{t.cart.total}</p>
             <p className="font-numeric text-xl font-semibold text-ink">{t.formatPrice(formatCurrency(total))}</p>
+            {blocked && (
+              <p id="cart-terms-hint" className="mt-0.5 max-w-[20ch] text-xs text-muted">
+                {t.dhiraaguTerms.blockedHint}
+              </p>
+            )}
           </div>
+          {/* Deliberately not disabled, nor aria-disabled. Both say "this
+              control does nothing", and assistive tech and automation take
+              that literally — but the button does do something useful while
+              the terms are outstanding: it takes you to them. So it stays a
+              live control that is muted rather than dead, and describes why
+              via the hint beside it. */}
           <button
             type="button"
-            onClick={() => navigate('/checkout')}
-            className="flex h-12 items-center gap-2 rounded-full bg-lagoon px-6 text-sm font-semibold text-sand hover:bg-lagoon/90"
+            aria-describedby={blocked ? 'cart-terms-hint' : undefined}
+            onClick={() => {
+              if (blocked) {
+                termsRef.current?.scrollIntoView({
+                  behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+                  block: 'center',
+                })
+                termsRef.current?.focus({ preventScroll: true })
+                return
+              }
+              navigate('/checkout')
+            }}
+            className={`flex h-12 shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-6 text-sm font-semibold transition-colors ${
+              blocked ? 'bg-muted/20 text-muted hover:bg-muted/25' : 'bg-lagoon text-sand hover:bg-lagoon/90'
+            }`}
           >
             <ShoppingBag size={18} />
             {t.cart.continueToOrder}
