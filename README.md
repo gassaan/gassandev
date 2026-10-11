@@ -156,6 +156,25 @@ The admin dashboard reports both over Today / This month / All time.
 
 **Sales** are computed from the `orders` table. Revenue counts only orders marked **completed**, not every order placed — an order is an intent submitted at checkout, and fulfilment happens later on WhatsApp, so counting them all would inflate takings with abandoned and cancelled ones. Money not yet confirmed appears separately as "awaiting confirmation", so revenue is never mysteriously zero. Marking orders off in the Orders tab is what feeds the revenue figure.
 
+### Sales made off the website
+
+Most numbers are not sold through the checkout. They go on Facebook Marketplace, on Viber, over the counter — and until those are written down, the dashboard reports a fraction of the business and the catalogue keeps advertising numbers that are gone.
+
+**Record a sale**, in the Orders tab, is where they go in. Type the digits and the number is looked up in your stock: a match fills in its grade and its asking price and is marked **sold** when you save, so the shop stops listing it. A number that was never on the site is recorded as a one-off and changes no stock, which is how you capture a sale from before the site existed.
+
+Everything that distinguishes an off-site sale is editable, because the website's assumptions do not hold off it:
+
+- **where it was sold** — the point of the whole feature, and what the dashboard breaks revenue down by
+- **the price actually paid**, per number, since an off-site sale is usually a haggled one
+- **the date it happened**, so a sale written down a week late still lands in the right period
+- **buyer name and contact**, both optional — a Marketplace buyer who paid in person often leaves neither
+
+Recorded sales default to **completed**, since you normally write one down after the money has changed hands, and only completed sales count toward revenue. They sit in the same list as website orders, wearing a gold channel badge, and the Orders tab gains an **All / Website / Recorded by hand** filter once there is something to separate.
+
+The channel list lives in one place, `src/utils/saleSources.ts`, mirrored by a check constraint in the database. It is deliberately a text column with a check rather than a Postgres enum: an enum label can never be dropped, and this list will change as the owner's selling channels do, where a check constraint is just dropped and recreated. `other` carries a free-text "which site or place", because no fixed list covers every classifieds group.
+
+Existing projects need `supabase/sale-source.sql` — it adds the three columns, relaxes the contact check so an empty contact is allowed, and tightens the public insert policy. That last part matters: the old policy let anon insert any order, which with these columns would have let anyone holding the anon key post a *completed* sale straight into your revenue. Anon may now insert only a `website` sale that is `new`, which is all the checkout ever does; staff insert anything. Orders written before the migration have no source and are read as website sales, which is what they all were.
+
 **Traffic** is first-party: page views are recorded into your own Supabase by `usePageViewTracking`, so no third-party analytics service is involved and no data leaves your project. Run `supabase/analytics.sql` to enable it; until then the dashboard says so rather than erroring, and the rest of the page still works.
 
 It stores no IP address, user agent, cookie or anything identifying a person. Sessions are grouped by a random id in `sessionStorage`, which dies with the tab — so the figure is honestly labelled **visits** (browsing sessions), not unique visitors, and it cannot follow anyone between visits. Admin pages are excluded so your own use is not counted as shop traffic. Expect some inflation from bots and link previewers.

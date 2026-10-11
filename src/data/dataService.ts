@@ -1,4 +1,4 @@
-import type { NumberFilters, Order, OrderStatus, PageView, PhoneNumber } from '@/types'
+import type { NumberFilters, Order, OrderStatus, PageView, PhoneNumber, SaleSource } from '@/types'
 
 export interface NumberCounts {
   available: number
@@ -32,6 +32,38 @@ export interface NewOrderInput {
 }
 
 /**
+ * A sale that happened somewhere other than this website — Facebook
+ * Marketplace, Viber, a walk-in — written down after the fact by the owner.
+ *
+ * Deliberately a separate input from NewOrderInput rather than optional fields
+ * on it: a website order is submitted by a customer and is always 'new' and
+ * always dated now, while a recorded sale is entered by staff, carries the
+ * channel it came from, and is usually already completed and often backdated.
+ * Letting the public-facing path set any of that would be a way to forge a
+ * completed sale.
+ */
+export interface NewSaleInput {
+  source: SaleSource
+  /** Free text, only read when `source` is 'other'. */
+  sourceDetail?: string
+  customerName: string
+  /** 7 digits, or empty when the buyer left no number. */
+  customerContact: string
+  items: Order['items']
+  total: number
+  status: OrderStatus
+  note?: string
+  /** ISO timestamp of when the sale happened. Defaults to now. */
+  soldAt?: string
+  /**
+   * Stock rows to flip to `sold`, for the items that were listed on the site.
+   * A number sold off-site that was never in the catalogue has no id and
+   * simply is not in this list.
+   */
+  markSoldIds?: string[]
+}
+
+/**
  * Storage-agnostic contract for the shop's data. The local implementation
  * (localDataService.ts) backs the app today; a Supabase implementation can
  * satisfy the same interface without touching any component.
@@ -57,6 +89,12 @@ export interface DataService {
   getCounts(): Promise<NumberCounts>
 
   createOrder(input: NewOrderInput): Promise<Order>
+  /**
+   * Records a sale made off-site and marks the numbers it covers as sold, as
+   * one action — the two always belong together, so the orchestration lives
+   * here rather than in the admin form.
+   */
+  recordSale(input: NewSaleInput): Promise<Order>
   listOrders(): Promise<Order[]>
   updateOrderStatus(id: string, status: OrderStatus): Promise<Order>
 

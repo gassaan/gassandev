@@ -4,6 +4,7 @@ import type {
   DataService,
   NewNumberInput,
   NewOrderInput,
+  NewSaleInput,
   NumberCounts,
 } from '@/data/dataService'
 import type {
@@ -15,6 +16,7 @@ import type {
   PageView,
   PhoneNumber,
   Provider,
+  SaleSource,
 } from '@/types'
 
 interface NumberRow {
@@ -46,6 +48,10 @@ interface OrderRow {
   items: Order['items']
   total: number | string
   status: OrderStatus
+  // null on rows written before supabase/sale-source.sql was run.
+  source: SaleSource | null
+  source_detail: string | null
+  note: string | null
   created_at: string
 }
 
@@ -78,6 +84,9 @@ function toOrder(row: OrderRow): Order {
     items: row.items,
     total: num(row.total),
     status: row.status,
+    source: row.source ?? 'website',
+    sourceDetail: row.source_detail,
+    note: row.note,
     createdAt: row.created_at,
   }
 }
@@ -341,8 +350,58 @@ export class SupabaseDataService implements DataService {
       items: input.items,
       total: input.total,
       status: 'new',
+      source: 'website',
       createdAt: new Date().toISOString(),
     }
+  }
+
+  async recordSale(input: NewSaleInput): Promise<Order> {
+    const row = {
+      order_ref: `OS-${Math.floor(1000 + Math.random() * 9000)}`,
+      customer_name: input.customerName,
+      customer_contact: input.customerContact,
+      items: input.items,
+      total: input.total,
+      status: input.status,
+      source: input.source,
+      source_detail: input.sourceDetail?.trim() || null,
+      note: input.note?.trim() || null,
+      // Explicit rather than relying on the column default: a sale is often
+      // written down days after it happened, and the dashboard's periods read
+      // this column.
+      created_at: input.soldAt ?? new Date().toISOString(),
+    }
+
+    // Unlike createOrder this does select the row back: recording a sale is an
+    // authenticated admin action, and staff do have a read policy on orders.
+    const { data, error } = await this.client.from('orders').insert(row).select().single()
+    if (error) {
+      // 23514 is a check-constraint violation, which here means the orders
+      // table has not had supabase/sale-source.sql run against it yet — the
+      // old customer_contact check still rejects an empty contact.
+      if (error.code === '42703' || error.code === '23514') {
+        throw new Error(
+          'The orders table is missing the sale-source columns. Run supabase/sale-source.sql in the Supabase SQL editor, then try again.',
+        )
+      }
+      throw new Error(error.message)
+    }
+
+    // Deliberately after the insert, and not rolled back if it fails. The
+    // order row is the record of the money and is the thing that must not be
+    // lost; a stock flag that did not take can be fixed in Numbers, and the
+    // message below says so rather than pretending nothing happened.
+    if (input.markSoldIds?.length) {
+      try {
+        await this.bulkMarkSold(input.markSoldIds)
+      } catch {
+        throw new Error(
+          'Sale recorded, but the numbers could not be marked sold. Set them to Sold in Numbers.',
+        )
+      }
+    }
+
+    return toOrder(data as OrderRow)
   }
 
   async recordPageView(view: Omit<PageView, 'createdAt'>) {

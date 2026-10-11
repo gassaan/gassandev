@@ -4,6 +4,7 @@ import type { NumberCounts } from '@/data'
 import { dataService } from '@/data'
 import type { Order, PageView } from '@/types'
 import { formatCurrency, formatMsisdn } from '@/utils/format'
+import { sourceLabel } from '@/utils/saleSources'
 import { useDocumentMeta } from '@/hooks/useDocumentMeta'
 
 type Period = 'today' | 'month' | 'all'
@@ -64,12 +65,32 @@ export function AdminDashboard() {
     // Money not yet confirmed. Shown separately so revenue never silently
     // counts an order that was only ever placed, or one since cancelled.
     const pending = inPeriod.filter((o) => o.status === 'new' || o.status === 'contacted')
+
+    // Where the money came from — the website's own checkout, Facebook
+    // Marketplace, a walk-in. Grouped on the label rather than the raw value
+    // so the free-text channels each stand on their own name instead of
+    // collapsing into one "Somewhere else" row.
+    const byChannel = new Map<string, { revenue: number; count: number }>()
+    for (const order of completed) {
+      const key = sourceLabel(order)
+      const entry = byChannel.get(key) ?? { revenue: 0, count: 0 }
+      entry.revenue += order.total
+      entry.count += 1
+      byChannel.set(key, entry)
+    }
+
     return {
       revenue: completed.reduce((sum, o) => sum + o.total, 0),
       completedCount: completed.length,
       placedCount: inPeriod.length,
       pendingValue: pending.reduce((sum, o) => sum + o.total, 0),
       pendingCount: pending.length,
+      channels: [...byChannel.entries()]
+        .sort((a, b) => b[1].revenue - a[1].revenue)
+        .map(([label, { revenue, count }]): [string, number] => [
+          `${label} · ${count} sale${count === 1 ? '' : 's'}`,
+          revenue,
+        ]),
     }
   }, [orders, period])
 
@@ -140,8 +161,19 @@ export function AdminDashboard() {
         </div>
         <p className="mt-2 text-xs text-muted">
           Revenue counts orders you have marked <strong className="text-ink">completed</strong>. Mark
-          them off in Orders as you confirm each one on WhatsApp, or this stays at zero.
+          them off in Orders as you confirm each one on WhatsApp, or this stays at zero. Sales made
+          off the website — Facebook Marketplace, Viber, in person — go in through{' '}
+          <strong className="text-ink">Record a sale</strong> on that same page.
         </p>
+
+        <div className="mt-4">
+          <Breakdown
+            title="Where the sales came from"
+            rows={sales.channels}
+            format={(amount) => `MVR ${formatCurrency(amount)}`}
+            empty="No completed sales in this period."
+          />
+        </div>
       </section>
 
       <section>
@@ -205,8 +237,17 @@ export function AdminDashboard() {
             {recentOrders.map((order) => (
               <div key={order.id} className="flex items-center justify-between rounded-xl border border-border bg-surface p-3">
                 <div>
+                  {/* A recorded sale often has no buyer name, and "· OS-2505"
+                      with nothing before the separator reads as a bug. */}
                   <p className="text-sm font-semibold text-ink">
-                    {order.customerName} <span className="font-numeric text-muted">· {order.orderRef}</span>
+                    {order.customerName ? (
+                      <>
+                        {order.customerName}{' '}
+                        <span className="font-numeric text-muted">· {order.orderRef}</span>
+                      </>
+                    ) : (
+                      <span className="font-numeric text-muted">{order.orderRef}</span>
+                    )}
                   </p>
                   <p className="text-xs text-muted">
                     {order.items.length} number{order.items.length === 1 ? '' : 's'} ·{' '}
@@ -247,10 +288,14 @@ function Breakdown({
   title,
   rows,
   empty,
+  // Defaults to a plain count, which is what the traffic breakdowns are; the
+  // sales one passes a currency formatter.
+  format = (value) => String(value),
 }: {
   title: string
   rows: [string, number][]
   empty: string
+  format?: (value: number) => string
 }) {
   return (
     <div className="rounded-xl border border-border bg-surface p-4">
@@ -259,10 +304,10 @@ function Breakdown({
         <p className="text-sm text-muted">{empty}</p>
       ) : (
         <ul className="flex flex-col gap-1.5">
-          {rows.map(([key, count]) => (
+          {rows.map(([key, value]) => (
             <li key={key} className="flex items-center justify-between gap-3 text-sm">
               <span className="truncate text-ink">{key}</span>
-              <span className="font-numeric shrink-0 text-muted">{count}</span>
+              <span className="font-numeric shrink-0 text-muted">{format(value)}</span>
             </li>
           ))}
         </ul>

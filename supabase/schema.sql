@@ -58,10 +58,37 @@ create table if not exists public.orders (
   id uuid primary key default gen_random_uuid(),
   order_ref text not null,
   customer_name text not null,
-  customer_contact text not null check (customer_contact ~ '^[0-9]{7}$'),
+  -- A website checkout always collects 7 digits, because the form requires
+  -- them. A sale recorded by hand often has no contact at all — a Marketplace
+  -- buyer who paid in person — so empty is allowed, while anything non-empty
+  -- is still held to 7 digits so the WhatsApp links keep working.
+  customer_contact text not null check (customer_contact = '' or customer_contact ~ '^[0-9]{7}$'),
   items jsonb not null,
   total numeric(12, 2) not null check (total >= 0),
   status order_status not null default 'new',
+  -- Where the sale came from. Text with a check constraint rather than an
+  -- enum: Postgres cannot drop an enum label, and this list changes as the
+  -- owner's selling channels do. Existing projects get these three columns
+  -- via supabase/sale-source.sql instead.
+  source text not null default 'website' check (
+    source in (
+      'website',
+      'facebook-marketplace',
+      'facebook',
+      'instagram',
+      'tiktok',
+      'viber',
+      'whatsapp',
+      'walk-in',
+      'other'
+    )
+  ),
+  -- Only read when source = 'other': the list above will never cover every
+  -- e-commerce site, so there has to be a way to just say where.
+  source_detail text,
+  note text,
+  -- Backdatable, so a sale written down a week late still lands in the period
+  -- it actually happened in.
   created_at timestamptz not null default now()
 );
 
@@ -74,6 +101,7 @@ create index if not exists numbers_selling_price_idx on public.numbers (selling_
 create index if not exists numbers_created_at_idx on public.numbers (created_at desc);
 create index if not exists numbers_featured_idx on public.numbers (is_featured) where is_featured;
 create index if not exists orders_created_at_idx on public.orders (created_at desc);
+create index if not exists orders_source_idx on public.orders (source);
 
 -- ------------------------------------------------------ row level security --
 
@@ -104,9 +132,18 @@ create policy "staff can remove numbers"
 -- orders: write-only for the public. A customer submits one; only staff read
 -- them back. There is deliberately no anon SELECT policy — adding one would
 -- expose every customer's name and phone number to anyone with the anon key.
+-- The public insert is pinned to a website sale that is still 'new'. Nothing
+-- in the shop ever asks for anything else, and without the restriction anyone
+-- holding the anon key could post a completed off-site sale straight into the
+-- owner's revenue figures.
 drop policy if exists "anyone can submit an order" on public.orders;
 create policy "anyone can submit an order"
-  on public.orders for insert to anon, authenticated
+  on public.orders for insert to anon
+  with check (source = 'website' and status = 'new');
+
+drop policy if exists "staff can record a sale" on public.orders;
+create policy "staff can record a sale"
+  on public.orders for insert to authenticated
   with check (true);
 
 drop policy if exists "only staff can read orders" on public.orders;

@@ -4,6 +4,7 @@ import type {
   DataService,
   NewNumberInput,
   NewOrderInput,
+  NewSaleInput,
   NumberCounts,
 } from '@/data/dataService'
 import type { NumberFilters, Order, OrderStatus, PageView, PhoneNumber } from '@/types'
@@ -95,6 +96,13 @@ function makeId(): string {
 function makeOrderRef(): string {
   const n = Math.floor(1000 + Math.random() * 9000)
   return `SN-${n}`
+}
+
+/** OS for "off-site", so the owner can tell at a glance which refs came from
+ *  the website's own checkout and which were typed in afterwards. */
+function makeSaleRef(): string {
+  const n = Math.floor(1000 + Math.random() * 9000)
+  return `OS-${n}`
 }
 
 export class LocalDataService implements DataService {
@@ -236,11 +244,35 @@ export class LocalDataService implements DataService {
       items: input.items,
       total: input.total,
       status: 'new',
+      source: 'website',
       createdAt: new Date().toISOString(),
     }
     orders.push(order)
     writeOrders(orders)
     return order
+  }
+
+  async recordSale(input: NewSaleInput): Promise<Order> {
+    const orders = readOrders()
+    const sale: Order = {
+      id: makeId(),
+      orderRef: makeSaleRef(),
+      customerName: input.customerName,
+      customerContact: input.customerContact,
+      items: input.items,
+      total: input.total,
+      status: input.status,
+      source: input.source,
+      sourceDetail: input.sourceDetail?.trim() || null,
+      note: input.note?.trim() || null,
+      createdAt: input.soldAt ?? new Date().toISOString(),
+    }
+    orders.push(sale)
+    writeOrders(orders)
+
+    if (input.markSoldIds?.length) await this.bulkMarkSold(input.markSoldIds)
+
+    return sale
   }
 
   async recordPageView(view: Omit<PageView, 'createdAt'>): Promise<void> {
